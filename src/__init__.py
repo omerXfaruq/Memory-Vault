@@ -6,7 +6,7 @@ import asyncio
 
 from .events import Events
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     if Events.TOKEN is None:
         sys.exit("No TELEGRAM_TOKEN found in the environment, exiting now.")
     PORT = 8000
@@ -17,6 +17,12 @@ if __name__ == '__main__':
     loop = asyncio.get_event_loop()
     success = loop.run_until_complete(Events.set_telegram_webhook_url())
     if success:
-        uvicorn.run("src.listener:app", host="127.0.0.1", port=PORT, reload=True, log_level="info")
+        uvicorn.run(
+            "src.listener:app",
+            host="127.0.0.1",
+            port=PORT,
+            reload=True,
+            log_level="info",
+        )
     else:
         print("Fail, closing the app.")

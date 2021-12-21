@@ -16,7 +16,6 @@ def on_startup():
     asyncio.create_task(Events.main_event())
 
 
-
 @app.post("/webhook/{secret}")
 async def listen_telegram_messages(message: MessageBodyModel):
     name = message.message.from_field.first_name
@@ -42,25 +41,23 @@ async def listen_telegram_messages(message: MessageBodyModel):
         user = join_user(user)
 
         if user is not None and user.telegram_chat_id == chat_id:
-            response_message = (
-                f"Welcome onboard {name}, you joined into my system. I will send you a random memory at every midday from your memory vault. You can get more detailed information by writing, *help*."
-            )
+            response_message = f"Welcome onboard {name}, you joined into my system. I will send you a random memory at every midday from your memory vault. You can get more detailed information by writing, *help*."
         else:
             response_message = f"You are already in the system."
 
     elif first_word == "leave":
         user = leave_user(user)
         if user is not None and user.telegram_chat_id == chat_id:
-            response_message = (
-                f"Good bye {name}, I deactivated you in my system. It was nice to have you here. Your memory vault remains with me, you can return whenever you wish with command, *join*."
-            )
+            response_message = f"Good bye {name}, I deactivated you in my system. It was nice to have you here. Your memory vault remains with me, you can return whenever you wish with command, *join*."
         else:
             response_message = f"Your account was already inactive."
 
     elif first_word == "send":
         memory = select_random_memory(user)
         if memory is None:
-            response_message = "The user is not in the system, please join by typing; *join*."
+            response_message = (
+                "The user is not in the system, please join by typing; *join*."
+            )
         elif memory is False:
             response_message = "No memory found in the system. Please add memory, for further information you can type *help*."
         else:
@@ -70,13 +67,13 @@ async def listen_telegram_messages(message: MessageBodyModel):
         memory = " ".join(splitted_text[1:])
 
         if str.isspace(memory) or memory == "":
-            response_message = (
-                f"There is no memory found after the word *add*.\n\n{Constants.HELP_MESSAGE}"
-            )
+            response_message = f"There is no memory found after the word *add*.\n\n{Constants.HELP_MESSAGE}"
         else:
             reminder = add_memory(user, memory)
             if reminder is None:
-                response_message = "The user is not in the system, please join by typing; *join*."
+                response_message = (
+                    "The user is not in the system, please join by typing; *join*."
+                )
             elif reminder is False:
                 response_message = "The memory is already in your memory vault"
             else:
@@ -94,12 +91,18 @@ async def listen_telegram_messages(message: MessageBodyModel):
                 response_message = f"Your timezone is set to GMT{user.gmt}"
 
             else:
-                response_message = f"Please give your timezone correctly \n {Constants.HELP_MESSAGE}"
+                response_message = (
+                    f"Please give your timezone correctly \n {Constants.HELP_MESSAGE}"
+                )
 
         except Exception as ex:
-            response_message = f"Please give your timezone correctly \n {Constants.HELP_MESSAGE}"
+            response_message = (
+                f"Please give your timezone correctly \n {Constants.HELP_MESSAGE}"
+            )
     else:
-        response_message = f"{name}, I do not know that command.{Constants.HELP_MESSAGE}"
+        response_message = (
+            f"{name}, I do not know that command.{Constants.HELP_MESSAGE}"
+        )
 
     return ResponseToMessage(
         **{
@@ -130,7 +133,9 @@ def read_users(
 
 
 @app.post("/reminder/", response_model=ReminderRead)
-def create_reminder(*, session: Session = Depends(get_session), reminder: ReminderCreate):
+def create_reminder(
+    *, session: Session = Depends(get_session), reminder: ReminderCreate
+):
     db_reminder = Reminder.from_orm(reminder)
     session.add(db_reminder)
     session.commit()

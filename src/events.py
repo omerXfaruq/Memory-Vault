@@ -6,7 +6,7 @@ import datetime
 import asyncio
 from httpx import AsyncClient
 
-from .message_validations import MessageBodyModel, ResponseToMessage
+from .message_validations import ResponseToMessage
 from .db import db_read_users, Reminder
 
 
@@ -69,7 +69,13 @@ class Events:
         return waiting_duration.total_seconds()
 
     @classmethod
-    async def single_user_mail(cls, user_id: int, telegram_id: int, timezone: int, memory_list: List[Reminder]) -> bool:
+    async def single_user_mail(
+        cls,
+        user_id: int,
+        telegram_id: int,
+        timezone: int,
+        memory_list: List[Reminder],
+    ) -> bool:
         """
         Waits until users midday according to the timezone. Then sends a random reminder from the memory vault.
 
@@ -120,8 +126,6 @@ class Events:
 
     @classmethod
     async def set_telegram_webhook_url(cls) -> bool:
-        payload = {
-            "url": f"{cls.HOST_URL}/webhook/{cls.TOKEN}"
-        }
+        payload = {"url": f"{cls.HOST_URL}/webhook/{cls.TOKEN}"}
         req = await cls.request(cls.TELEGRAM_SET_WEBHOOK_URL, payload)
         return req.status_code == 200

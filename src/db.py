@@ -74,7 +74,9 @@ def join_user(
     Returns: User or None
 
     """
-    found_user = session.exec(select(User).where(User.telegram_chat_id == user.telegram_chat_id)).first()
+    found_user = session.exec(
+        select(User).where(User.telegram_chat_id == user.telegram_chat_id)
+    ).first()
     if found_user is None:
         user = db_create_user(user, session)
         return user
@@ -103,7 +105,9 @@ def leave_user(
     Returns: User or None
 
     """
-    found_user = session.exec(select(User).where(User.telegram_chat_id == user.telegram_chat_id)).first()
+    found_user = session.exec(
+        select(User).where(User.telegram_chat_id == user.telegram_chat_id)
+    ).first()
     if found_user is None:
         return None
     else:
@@ -131,7 +135,9 @@ def select_random_memory(
     Returns:
 
     """
-    found_user = session.exec(select(User).where(User.telegram_chat_id == user.telegram_chat_id)).first()
+    found_user = session.exec(
+        select(User).where(User.telegram_chat_id == user.telegram_chat_id)
+    ).first()
     if found_user is None:
         return None
     if len(found_user.reminders) > 0:
@@ -158,13 +164,19 @@ def add_memory(
     Returns: Reminder
 
     """
-    found_user = session.exec(select(User).where(User.telegram_chat_id == user.telegram_chat_id)).first()
+    found_user = session.exec(
+        select(User).where(User.telegram_chat_id == user.telegram_chat_id)
+    ).first()
 
     if found_user is None:
         return None
 
     else:
-        found_memory = session.exec(select(Reminder).where(and_(Reminder.user == found_user, Reminder.reminder == memory))).first()
+        found_memory = session.exec(
+            select(Reminder).where(
+                and_(Reminder.user == found_user, Reminder.reminder == memory)
+            )
+        ).first()
         if found_memory is not None:
             print(f"Found: {found_memory}")
             return False
@@ -196,7 +208,9 @@ def update_gmt(
     Returns: User or None
 
     """
-    found_user = session.exec(select(User).where(User.telegram_chat_id == user.telegram_chat_id)).first()
+    found_user = session.exec(
+        select(User).where(User.telegram_chat_id == user.telegram_chat_id)
+    ).first()
     if found_user is None:
         return None
     else:
@@ -230,21 +244,3 @@ def db_read_users(
 ):
     users = session.exec(select(User).offset(offset).limit(limit)).all()
     return users
-
-
-def create_reminder(*, session: Session = Depends(get_session), reminder: ReminderCreate):
-    db_reminder = Reminder.from_orm(reminder)
-    session.add(db_reminder)
-    session.commit()
-    session.refresh(db_reminder)
-    return db_reminder
-
-
-def read_reminders(
-    *,
-    session: Session = Depends(get_session),
-    offset: int = 0,
-    limit: int = Query(default=100, lte=100),
-):
-    reminders = session.exec(select(Reminder).offset(offset).limit(limit)).all()
-    return reminders
