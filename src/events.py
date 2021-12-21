@@ -1,11 +1,13 @@
 import random
 import os
 
+from typing import List
 import datetime
 import asyncio
 from httpx import AsyncClient
 
-from message_validations import MessageBodyModel, ResponseToMessage
+from .message_validations import MessageBodyModel, ResponseToMessage
+from .db import db_read_users, Reminder
 
 
 class Events:
@@ -42,15 +44,16 @@ class Events:
         """
         while True:
             await asyncio.sleep(cls.get_time_until_midday())
-
+            users = db_read_users(limit=100000)
             await asyncio.gather(
                 *(
                     Events.single_user_mail(
-                        user_id,
-                        telegram_id,
-                        timezone - cls.CURRENT_TIMEZONE
+                        user.id,
+                        user.telegram_chat_id,
+                        user.gmt - cls.CURRENT_TIMEZONE,
+                        user.reminders,
                     )
-                    for user_id, [telegram_id, timezone] in cls.receivers.items()
+                    for user in users
                 )
             )
 
@@ -66,14 +69,25 @@ class Events:
         return waiting_duration.total_seconds()
 
     @classmethod
-    async def single_user_mail(cls, user_id: int, telegram_id: int, timezone: int) -> bool:
+    async def single_user_mail(cls, user_id: int, telegram_id: int, timezone: int, memory_list: List[Reminder]) -> bool:
         """
         Waits until users midday according to the timezone. Then sends a random reminder from the memory vault.
-        :param user_id:
-        :param telegram_id:
-        :param timezone:
-        :return: True if successful
+
+        Args:
+            user_id:
+            telegram_id:
+            timezone:
+            memory_list:
+
+        Returns: True if successful
         """
+
+        length = len(memory_list)
+        if length == 0:
+            return True
+        random_index = random.randint(0, length - 1)
+        random_element = memory_list[random_index].reminder
+
         waiting_duration = 0
         if timezone > 0:
             waiting_duration = datetime.timedelta(hours=24 - timezone).total_seconds()
@@ -82,10 +96,8 @@ class Events:
         # Wait until reaching midday on that timezone
         await asyncio.sleep(waiting_duration)
 
-        memory_list = cls.memory_vaults[user_id]
-        random_element = random.choice(memory_list)
-        if_true = await cls.send_a_message_to_user(telegram_id, random_element)
-        return if_true
+        success = await cls.send_a_message_to_user(telegram_id, random_element)
+        return success
 
     @classmethod
     async def send_a_message_to_user(cls, telegram_id: int, message: str) -> bool:
