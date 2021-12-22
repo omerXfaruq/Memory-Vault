@@ -1,0 +1,10 @@
+black
+pytest
+asyncio
+sqlmodel
+sqlalchemy
+uvicorn
+pydantic
+typing
+httpx
+datetime
