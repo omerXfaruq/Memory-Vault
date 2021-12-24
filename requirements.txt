@@ -4,6 +4,7 @@
 #
 #    pip-compile
 #
+
 anyio==3.4.0
     # via httpcore
 asgiref==3.4.1
@@ -64,12 +65,16 @@ pydantic==1.8.2
     # via
     #   -r requirements.in
     #   sqlmodel
+pyngrok==5.1.0
+    # via -r requirements.in
 pyparsing==3.0.6
     # via packaging
 pytest==6.2.5
     # via -r requirements.in
 pytz==2021.3
     # via datetime
+pyyaml==6.0
+    # via pyngrok
 rfc3986[idna2008]==1.5.0
     # via httpx
 sniffio==1.2.0
