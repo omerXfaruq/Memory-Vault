@@ -6,7 +6,9 @@
 #
 
 anyio==3.4.0
-    # via httpcore
+    # via
+    #   httpcore
+    #   starlette
 asgiref==3.4.1
     # via uvicorn
 asyncio==3.4.3
@@ -26,6 +28,8 @@ click==8.0.3
     #   black
     #   uvicorn
 datetime==4.3
+    # via -r requirements.in
+fastapi==0.70.1
     # via -r requirements.in
 greenlet==1.1.2
     # via sqlalchemy
@@ -64,6 +68,7 @@ py==1.11.0
 pydantic==1.8.2
     # via
     #   -r requirements.in
+    #   fastapi
     #   sqlmodel
 pyngrok==5.1.0
     # via -r requirements.in
@@ -90,6 +95,8 @@ sqlalchemy2-stubs==0.0.2a19
     # via sqlmodel
 sqlmodel==0.0.4
     # via -r requirements.in
+starlette==0.16.0
+    # via fastapi
 toml==0.10.2
     # via pytest
 tomli==1.2.3
@@ -106,6 +113,7 @@ typing-extensions==4.0.1
     #   importlib-metadata
     #   pydantic
     #   sqlalchemy2-stubs
+    #   starlette
     #   uvicorn
 uvicorn==0.16.0
     # via -r requirements.in
