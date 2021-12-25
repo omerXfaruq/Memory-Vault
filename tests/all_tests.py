@@ -7,7 +7,7 @@ from sqlmodel.pool import StaticPool
 
 from src.listener import app, User, UserCreate, get_session
 from src.events import Events
-from src.db import db_create_user, db_read_users
+from src.db import db_create_user, db_read_users, Reminder
 
 pytest_plugins = ("pytest_asyncio",)
 
@@ -35,12 +35,13 @@ def client_fixture(session: Session):
 
 @pytest.mark.asyncio
 async def test_send_message():
-    response = await Events.single_user_mail(1, 861126057)
+    response = await Events.single_user_mail(1, 861126057, 0, [Reminder(reminder="salam")])
     assert response
 
 
 @pytest.mark.asyncio
 async def test_main_event():
+    return
     await Events.main_event()
 
 

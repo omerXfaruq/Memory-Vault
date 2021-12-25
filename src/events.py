@@ -1,5 +1,6 @@
 import random
 import os
+import sys
 
 from typing import List
 import datetime
@@ -129,3 +130,17 @@ class Events:
         payload = {"url": f"{cls.HOST_URL}/webhook/{cls.TOKEN}"}
         req = await cls.request(cls.TELEGRAM_SET_WEBHOOK_URL, payload)
         return req.status_code == 200
+
+    @classmethod
+    async def get_public_ip(cls):
+        # Reference: https://pytutorial.com/python-get-public-ip
+
+        endpoint = 'https://ipinfo.io/json'
+        async with AsyncClient() as client:
+            response = await client.get(endpoint)
+
+        if response.status_code != 200:
+            sys.exit("Could not get the public ip, exiting!")
+        data = response.json()
+
+        return data['ip']
