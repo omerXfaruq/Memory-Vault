@@ -25,7 +25,7 @@ if __name__ == "__main__":
         Events.HOST_URL = public_url
     else:
         public_url = loop.run_until_complete(Events.get_public_ip())
-        Events.HOST_URL = public_url
+        Events.HOST_URL = f"{public_url}:{PORT}"
 
     success = loop.run_until_complete(Events.set_telegram_webhook_url())
     if success:
