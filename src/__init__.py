@@ -1,4 +1,5 @@
 import sys
+import os
 
 from pyngrok import ngrok
 import uvicorn
@@ -20,6 +21,12 @@ if __name__ == "__main__":
     PORT = 8443
     loop = asyncio.get_event_loop()
     if is_by_ngrok == "ngrok":
+        ngrok_token = str(os.environ.get("NGROK_AUTH_TOKEN"))
+        if ngrok_token is None:
+            print("NGROK auth token is not found in the environment. Ngrok will timeout after a few hours.")
+        else:
+            print(f"NGROK token: {ngrok_token}")
+            ngrok.set_auth_token(ngrok_token)
         http_tunnel = ngrok.connect(PORT, bind_tls=True)
         public_url = http_tunnel.public_url
         Events.HOST_URL = public_url
