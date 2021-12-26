@@ -17,24 +17,7 @@ class Events:
     TELEGRAM_SET_WEBHOOK_URL = f"https://api.telegram.org/bot{TOKEN}/setWebhook"
     HOST_URL = None
 
-    CURRENT_TIMEZONE = +3
-    receivers = {
-        1: [861126057, +3],
-        2: [1044137329, +3],
-    }
-
-    memory_vaults = {
-        1: [
-            "Time is money",
-            "Follow smart person's focus",
-            "When there is a doubt, take an action and destroy it",
-        ],
-        2: [
-            "Time is money",
-            "Follow smart person's focus",
-            "When there is a doubt, take an action and destroy it",
-        ],
-    }
+    CURRENT_TIMEZONE = int(datetime.datetime.now(datetime.timezone.utc).astimezone().tzname())
 
     @classmethod
     async def main_event(cls) -> None:

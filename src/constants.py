@@ -1,9 +1,13 @@
 class Constants:
     HELP_MESSAGE = (
-        f"\n\nThis bot will send you a random memory at every midday from your memory vault."
+        f"\n\nThis bot will send you a random memory at every day from your memory vault."
         f"\n- You can join my system by writing, *join*"
         f"\n- You leave my system by writing, *leave*"
         f"\n- You can get a random memory by writing, *send*"
+        f"\n- You can list memories by writing, *list*"
+        f"\n- You delete a memory by writing, *delete id*. You can get the memory id with the command, *list*"
+        f"\n*Example*:"
+        f"\n*delete 2*"
         f"\n- You can add memories to your memory vault with command,  *add Sentence*"
         f"\n*Example*:"
         f"\n*add Time does not come back*"
@@ -12,4 +16,5 @@ class Constants:
         f"\nGMT+3: *gmt 3*"
         f"\nGMT0: *gmt 0*"
         f"\nGMT-5: *gmt -5*"
+        f"\n\nYou can use me in groups as well, just can add me to the group and make me admin. Also you can have multiple memory vaults by using groups."
     )

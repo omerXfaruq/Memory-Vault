@@ -31,8 +31,13 @@ async def listen_telegram_messages(message: MessageBodyModel):
 
     if first_word == "/start":
         response_message = (
-            f"Welcome onboard {name}, This bot will send you a random memory at every midday from your memory vault. "
-            f"\n- You can join my system by writing, *join*. "
+            f"Welcome onboard {name} "
+            f"\nThis bot stores your memories in the memory vault and sends a random memory every day."
+            f"\n\nKeeping note of beautiful & important stuff that we come across throughout the life and remembering those memories is quite challenging. "
+            f"\nThis bot solves this problem with a very simple "
+            f"approach, as complex methods makes it harder to keep it them in our life."
+            f"\nSincerely thanks to my wife Seyyide for the beautiful idea."
+            f"\n\n- You can join my system by writing, *join*. "
             f"\n- You can get more detailed information by writing, *help*."
         )
     elif first_word == "help":
@@ -63,9 +68,19 @@ async def listen_telegram_messages(message: MessageBodyModel):
         else:
             response_message = memory.reminder
 
+    elif first_word == "list":
+        response = list_memories(user)
+        if response is None:
+            response_message = (
+                "The user is not in the system, please join by typing; *join*."
+            )
+        elif response is False:
+            response_message = "No memory found in the system. Please add memory, for further information you can type *help*."
+        else:
+            response_message = response
+
     elif first_word == "add":
         memory = " ".join(splitted_text[1:])
-
         if str.isspace(memory) or memory == "":
             response_message = f"There is no memory found after the word *add*.\n\n{Constants.HELP_MESSAGE}"
         else:
@@ -78,11 +93,35 @@ async def listen_telegram_messages(message: MessageBodyModel):
                 response_message = "The memory is already in your memory vault"
             else:
                 memory = reminder.reminder
-
                 response_message = (
                     f"Your memory is added to your memory vault. No worries, I will keep it safe :)."
                     f"\nMemory: {memory}"
                 )
+    elif first_word == "delete":
+        if len(splitted_text) < 2:
+            response_message = f"You need to give me id of the memory, ie: *delete 2*, you can get it by using command, *list*."
+        else:
+            try:
+                memory_id = int(splitted_text[1])
+                if memory_id < 0:
+                    response_message = f"You need to give me id of the memory, ie: *delete 2*, you can get it by using command, *list*."
+                else:
+                    response = delete_memory(user, memory_id)
+                    if response is None:
+                        response_message = "The user is not in the system, please join by typing; *join*."
+                    elif response is False:
+                        response_message = "There is no memory with that id, you can list memory ids by using command, *list*."
+                    else:
+                        memory = response
+
+                        response_message = (
+                            f"Your memory is deleted from your memory vault. Good bye to the forgotten memory :("
+                            f"\nMemory: {memory}"
+                        )
+
+            except Exception as ex:
+                response_message = f"You need to give me id of the memory, ie: *delete 2*, you can get it by using command, *list*."
+
     elif first_word == "gmt":
         try:
             gmt = int(splitted_text[1])
@@ -103,7 +142,6 @@ async def listen_telegram_messages(message: MessageBodyModel):
         response_message = (
             f"{name}, I do not know that command.{Constants.HELP_MESSAGE}"
         )
-
     return ResponseToMessage(
         **{
             "text": response_message,
