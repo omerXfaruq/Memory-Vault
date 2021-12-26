@@ -68,5 +68,5 @@ class MessageBodyModel(BaseModel):
 class ResponseToMessage(BaseModel):
     method: Optional[str] = "sendMessage"
     chat_id: Optional[int] = 861126057
-    text: Optional[str] = "Salam"
+    text: Optional[str] = ""
     parse_mode: Optional[str] = "Markdown"

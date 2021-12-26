@@ -29,12 +29,8 @@ async def listen_telegram_messages(message: MessageBodyModel):
                     "text": Constants.start_message(name),
                 }
             )
-    else:  # Bot is given admin rights or added to the group
-        return ResponseToMessage(
-            **{
-                "text": "Salam",
-            }
-        )
+    else:  # A message is edited
+        return
 
     splitted_text = text.split(" ")
     first_word = splitted_text[0].lower()
