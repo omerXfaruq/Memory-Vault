@@ -1,6 +1,6 @@
 class Constants:
     HELP_MESSAGE = (
-        f"\n\nThis bot will send you a random memory at every day from your memory vault."
+        f"\n\nThis bot will send you a random memory at every midday from your memory vault."
         f"\n- You can join my system by writing, *join*"
         f"\n- You leave my system by writing, *leave*"
         f"\n- You can get a random memory by writing, *send*"
@@ -23,12 +23,11 @@ class Constants:
     def start_message(name: str = "") -> str:
         return (
             f"Welcome onboard {name} "
-            f"\nThis bot stores your memories in the memory vault and sends a random memory every day."
+            f"\nThis bot stores your memories in the memory vault and sends a random memory every midday."
             f"\n\nKeeping note of beautiful & important stuff that we come across throughout the life and remembering those memories is quite challenging. "
             f"\nThis bot solves this problem with a very simple "
             f"approach, as complex methods makes it harder to keep it them in our life."
             f"\nSincerely thanks to my wife Seyyide for the beautiful idea."
             f"\n\n- You can join my system by writing, *join*. "
             f"\n- You can get more detailed information by writing, *help*."
-
         )
