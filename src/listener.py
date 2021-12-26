@@ -27,14 +27,12 @@ async def listen_telegram_messages(message: MessageBodyModel):
             return ResponseToMessage(
                 **{
                     "text": Constants.start_message(name),
-                    "chat_id": chat_id,
                 }
             )
     else:  # Bot is given admin rights or added to the group
         return ResponseToMessage(
             **{
                 "text": "Salam",
-                "chat_id": message.my_chat_member.chat.id,
             }
         )
 
@@ -145,6 +143,12 @@ async def listen_telegram_messages(message: MessageBodyModel):
             response_message = (
                 f"Please give your timezone correctly \n {Constants.HELP_MESSAGE}"
             )
+
+    elif first_word == "broadcast":
+        response_message = (
+            f"{name}, I do not know that command.{Constants.HELP_MESSAGE}"
+        )
+
     else:
         response_message = (
             f"{name}, I do not know that command.{Constants.HELP_MESSAGE}"
@@ -152,7 +156,6 @@ async def listen_telegram_messages(message: MessageBodyModel):
     return ResponseToMessage(
         **{
             "text": response_message,
-            "chat_id": chat_id,
         }
     )
 

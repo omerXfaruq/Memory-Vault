@@ -74,7 +74,7 @@ def test_db_read_users(session):
     user2.active = False
     user2 = db_create_user(user2, session=session)
 
-    user_list = db_read_users(session=session)
+    user_list = db_read_users(session=session, only_active_users=False, limit=1)
     assert 1 == len(user_list)
     assert user_list[0] == user
     print(user_list)

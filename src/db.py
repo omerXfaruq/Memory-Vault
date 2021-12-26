@@ -302,6 +302,7 @@ def db_create_user(
 
 def db_read_users(
     *,
+    only_active_users: bool = True,
     session: Session = next(get_session()),
     offset: int = 0,
     limit: int = 100,
