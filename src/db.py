@@ -307,5 +307,8 @@ def db_read_users(
     offset: int = 0,
     limit: int = 100,
 ):
-    users = session.exec(select(User).where(User.active == True).offset(offset).limit(limit)).all()
+    if only_active_users:
+        users = session.exec(select(User).where(User.active).offset(offset).limit(limit)).all()
+    else:
+        users = session.exec(select(User).offset(offset).limit(limit)).all()
     return users

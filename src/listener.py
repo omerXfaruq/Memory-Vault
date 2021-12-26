@@ -27,6 +27,7 @@ async def listen_telegram_messages(message: MessageBodyModel):
             return ResponseToMessage(
                 **{
                     "text": Constants.start_message(name),
+                    "chat_id": chat_id,
                 }
             )
     else:  # A message is edited
@@ -141,9 +142,15 @@ async def listen_telegram_messages(message: MessageBodyModel):
             )
 
     elif first_word == "broadcast":
-        response_message = (
-            f"{name}, I do not know that command.{Constants.HELP_MESSAGE}"
-        )
+        if chat_id == Constants.BROADCAST_CHAT_ID:
+            normalized_text = " ".join(splitted_text[1:])
+            if str.isspace(normalized_text) or normalized_text == "":
+                response_message = f"There is no memory found after the word *add*.\n\n{Constants.HELP_MESSAGE}"
+            else:
+                await Events.broadcast_message(normalized_text)
+                response_message = "Broadcast is sent"
+        else:
+            response_message = "You have no broadcast right"
 
     else:
         response_message = (
@@ -152,6 +159,7 @@ async def listen_telegram_messages(message: MessageBodyModel):
     return ResponseToMessage(
         **{
             "text": response_message,
+            "chat_id": chat_id,
         }
     )
 

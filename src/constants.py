@@ -18,6 +18,7 @@ class Constants:
         f"\nGMT-5: *gmt -5*"
         f"\n\nYou can use me in groups as well, just can add me to the group and make me admin. Also you can have multiple memory vaults by using groups."
     )
+    BROADCAST_CHAT_ID = -1001786782026
 
     @staticmethod
     def start_message(name: str = "") -> str:

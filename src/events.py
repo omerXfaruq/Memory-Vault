@@ -101,6 +101,19 @@ class Events:
         return req.status_code == 200
 
     @classmethod
+    async def broadcast_message(cls, message: str) -> None:
+        users = db_read_users(limit=100000, only_active_users=False)
+        await asyncio.gather(
+            *(
+                Events.send_a_message_to_user(
+                    user.telegram_chat_id,
+                    message,
+                )
+                for user in users
+            )
+        )
+
+    @classmethod
     async def request(cls, url: str, payload: dict, debug: bool = False):
         async with AsyncClient() as client:
             request = await client.post(url, json=payload)
