@@ -18,9 +18,25 @@ def on_startup():
 
 @app.post("/webhook/{secret}")
 async def listen_telegram_messages(message: MessageBodyModel):
-    name = message.message.from_field.first_name
-    chat_id = message.message.chat.id
-    text = message.message.text
+    print(message.dict())
+    if message.message:
+        name = message.message.from_field.first_name
+        chat_id = message.message.chat.id
+        text = message.message.text
+        if text is None:  # Bot is given admin rights or added to the group
+            return ResponseToMessage(
+                **{
+                    "text": Constants.start_message(name),
+                    "chat_id": chat_id,
+                }
+            )
+    else:  # Bot is given admin rights or added to the group
+        return ResponseToMessage(
+            **{
+                "text": "Salam",
+                "chat_id": message.my_chat_member.chat.id,
+            }
+        )
 
     splitted_text = text.split(" ")
     first_word = splitted_text[0].lower()
@@ -30,16 +46,7 @@ async def listen_telegram_messages(message: MessageBodyModel):
     )
 
     if first_word == "/start":
-        response_message = (
-            f"Welcome onboard {name} "
-            f"\nThis bot stores your memories in the memory vault and sends a random memory every day."
-            f"\n\nKeeping note of beautiful & important stuff that we come across throughout the life and remembering those memories is quite challenging. "
-            f"\nThis bot solves this problem with a very simple "
-            f"approach, as complex methods makes it harder to keep it them in our life."
-            f"\nSincerely thanks to my wife Seyyide for the beautiful idea."
-            f"\n\n- You can join my system by writing, *join*. "
-            f"\n- You can get more detailed information by writing, *help*."
-        )
+        response_message = Constants.start_message(name)
     elif first_word == "help":
         response_message = Constants.HELP_MESSAGE
     elif first_word == "join":

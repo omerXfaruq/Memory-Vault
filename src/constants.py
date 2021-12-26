@@ -18,3 +18,17 @@ class Constants:
         f"\nGMT-5: *gmt -5*"
         f"\n\nYou can use me in groups as well, just can add me to the group and make me admin. Also you can have multiple memory vaults by using groups."
     )
+
+    @staticmethod
+    def start_message(name: str = "") -> str:
+        return (
+            f"Welcome onboard {name} "
+            f"\nThis bot stores your memories in the memory vault and sends a random memory every day."
+            f"\n\nKeeping note of beautiful & important stuff that we come across throughout the life and remembering those memories is quite challenging. "
+            f"\nThis bot solves this problem with a very simple "
+            f"approach, as complex methods makes it harder to keep it them in our life."
+            f"\nSincerely thanks to my wife Seyyide for the beautiful idea."
+            f"\n\n- You can join my system by writing, *join*. "
+            f"\n- You can get more detailed information by writing, *help*."
+
+        )
