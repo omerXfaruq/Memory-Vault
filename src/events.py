@@ -17,7 +17,7 @@ class Events:
     TELEGRAM_SET_WEBHOOK_URL = f"https://api.telegram.org/bot{TOKEN}/setWebhook"
     HOST_URL = None
 
-    CURRENT_TIMEZONE = int(datetime.datetime.now(datetime.timezone.utc).astimezone().tzname())
+    CURRENT_TIMEZONE = 0
 
     @classmethod
     async def main_event(cls) -> None:
