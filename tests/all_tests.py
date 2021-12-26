@@ -59,3 +59,22 @@ def test_add_user_to_db(session):
     user_list = db_read_users(session=session)
     assert 1 == len(user_list)
     assert user_list[0] == user
+
+
+def test_db_read_users(session):
+    user = UserCreate(
+        name="lloll",
+        telegram_chat_id=100100010001,
+    )
+    user = db_create_user(user, session=session)
+    user2 = UserCreate(
+        name="22lloll",
+        telegram_chat_id=12200100010001,
+    )
+    user2.active = False
+    user2 = db_create_user(user2, session=session)
+
+    user_list = db_read_users(session=session)
+    assert 1 == len(user_list)
+    assert user_list[0] == user
+    print(user_list)

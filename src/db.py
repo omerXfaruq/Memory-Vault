@@ -48,7 +48,7 @@ sqlite_file_name = "database.db"
 sqlite_url = f"sqlite:///{sqlite_file_name}"
 
 connect_args = {"check_same_thread": False}
-engine = create_engine(sqlite_url, echo=True, connect_args=connect_args)
+engine = create_engine(sqlite_url, echo=False, connect_args=connect_args)
 
 
 def create_db_and_tables():
@@ -148,6 +148,38 @@ def select_random_memory(
         return False
 
 
+def list_memories(
+    user: UserCreate,
+    session: Session = next(get_session()),
+) -> Optional[Union[str, bool]]:
+    """
+    Return all the memory-vault.
+
+    Args:
+        user:
+        session:
+
+    Returns:
+
+    """
+    found_user = session.exec(
+        select(User).where(User.telegram_chat_id == user.telegram_chat_id)
+    ).first()
+    if found_user is None:
+        return None
+    if len(found_user.reminders) > 0:
+        response_message = (
+            f"Open the gates of the memory vault!"
+            f"\n*id | memory*"
+        )
+
+        for id, reminder in enumerate(found_user.reminders):
+            response_message += f"\n{id}: {reminder.reminder}"
+        return response_message
+    else:
+        return False
+
+
 def add_memory(
     user: UserCreate,
     memory: str,
@@ -191,6 +223,38 @@ def add_memory(
             session.commit()
             session.refresh(db_reminder)
             return db_reminder
+
+
+def delete_memory(
+    user: UserCreate,
+    memory_id: int,
+    session: Session = next(get_session()),
+) -> Union[bool, str, None]:
+    """
+    Delete a memory from user's memory-vault.
+
+    Args:
+        user:
+        memory_id:
+        session:
+
+    Returns: bool
+
+    """
+
+    found_user = session.exec(
+        select(User).where(User.telegram_chat_id == user.telegram_chat_id)
+    ).first()
+    if found_user is None:
+        return None
+    if len(found_user.reminders) > memory_id:
+        reminder = found_user.reminders[memory_id]
+        memory = reminder.reminder
+        session.delete(reminder)
+        session.commit()
+        return memory
+    else:
+        return False
 
 
 def update_gmt(
@@ -242,5 +306,5 @@ def db_read_users(
     offset: int = 0,
     limit: int = 100,
 ):
-    users = session.exec(select(User).offset(offset).limit(limit)).all()
+    users = session.exec(select(User).where(User.active == True).offset(offset).limit(limit)).all()
     return users
