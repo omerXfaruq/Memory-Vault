@@ -42,9 +42,9 @@ async def listen_telegram_messages(message: MessageBodyModel):
 
     if first_word == "/start":
         response_message = Constants.start_message(name)
-    elif first_word == "help":
+    elif first_word == "help" or first_word == "/help":
         response_message = Constants.HELP_MESSAGE
-    elif first_word == "join":
+    elif first_word == "join" or first_word == "/join":
         user = join_user(user)
 
         if user is not None and user.telegram_chat_id == chat_id:
@@ -52,14 +52,14 @@ async def listen_telegram_messages(message: MessageBodyModel):
         else:
             response_message = f"You are already in the system."
 
-    elif first_word == "leave":
+    elif first_word == "leave" or first_word == "/leave":
         user = leave_user(user)
         if user is not None and user.telegram_chat_id == chat_id:
             response_message = f"Good bye {name}, I deactivated you in my system. It was nice to have you here. Your memory vault remains with me, you can return whenever you wish with command, *join*."
         else:
             response_message = f"Your account was already inactive."
 
-    elif first_word == "send":
+    elif first_word == "send" or first_word == "/send":
         memory = select_random_memory(user)
         if memory is None:
             response_message = (
@@ -70,7 +70,7 @@ async def listen_telegram_messages(message: MessageBodyModel):
         else:
             response_message = memory.reminder
 
-    elif first_word == "list":
+    elif first_word == "list" or first_word == "/list":
         response = list_memories(user)
         if response is None:
             response_message = (
@@ -81,7 +81,7 @@ async def listen_telegram_messages(message: MessageBodyModel):
         else:
             response_message = response
 
-    elif first_word == "add":
+    elif first_word == "add" or first_word == "/add":
         memory = " ".join(splitted_text[1:])
         if str.isspace(memory) or memory == "":
             response_message = f"There is no memory found after the word *add*.\n\n{Constants.HELP_MESSAGE}"
@@ -99,7 +99,7 @@ async def listen_telegram_messages(message: MessageBodyModel):
                     f"Your memory is added to your memory vault. No worries, I will keep it safe :)."
                     f"\nMemory: {memory}"
                 )
-    elif first_word == "delete":
+    elif first_word == "delete" or first_word == "/delete":
         if len(splitted_text) < 2:
             response_message = f"You need to give me id of the memory, ie: *delete 2*, you can get it by using command, *list*."
         else:
@@ -124,7 +124,7 @@ async def listen_telegram_messages(message: MessageBodyModel):
             except Exception as ex:
                 response_message = f"You need to give me id of the memory, ie: *delete 2*, you can get it by using command, *list*."
 
-    elif first_word == "gmt":
+    elif first_word == "gmt" or first_word == "/gmt":
         try:
             gmt = int(splitted_text[1])
             if -12 <= gmt <= 12:
@@ -141,7 +141,7 @@ async def listen_telegram_messages(message: MessageBodyModel):
                 f"Please give your timezone correctly \n {Constants.HELP_MESSAGE}"
             )
 
-    elif first_word == "broadcast":
+    elif first_word == "broadcast" or first_word == "/broadcast":
         if chat_id == Constants.BROADCAST_CHAT_ID:
             normalized_text = " ".join(splitted_text[1:])
             if str.isspace(normalized_text) or normalized_text == "":
@@ -151,7 +151,7 @@ async def listen_telegram_messages(message: MessageBodyModel):
                 response_message = "Broadcast is sent"
         else:
             response_message = "You have no broadcast right"
-    elif first_word == "status":
+    elif first_word == "status" or first_word == "/status":
         gmt, active = get_user_status(chat_id)
         if gmt is None:
             response_message = "You have not joined the system yet, please type, *join*."
