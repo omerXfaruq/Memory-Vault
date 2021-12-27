@@ -1,7 +1,7 @@
 class Constants:
     HELP_MESSAGE = (
         f"\n\nThis bot will send you a random memory at every midday from your memory vault."
-        f"\n- You can join my system by writing, *join*"
+        f"\n- You can join my system by writing, *join* or */join*"
         f"\n- You leave my system by, *leave*"
         f"\n- You can get a random memory by, *send*"
         f"\n- You can get your status information by, *status*"
