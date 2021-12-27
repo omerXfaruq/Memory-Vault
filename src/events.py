@@ -76,7 +76,7 @@ class Events:
         if length == 0:
             return True
         random_index = random.randint(0, length - 1)
-        random_element = memory_list[random_index].reminder
+        random_memory = memory_list[random_index].reminder
 
         waiting_duration = 0
         if timezone > 0:
@@ -86,7 +86,7 @@ class Events:
         # Wait until reaching midday on that timezone
         await asyncio.sleep(waiting_duration)
 
-        success = await cls.send_a_message_to_user(telegram_id, random_element)
+        success = await cls.send_a_message_to_user(telegram_id, random_memory)
         return success
 
     @classmethod
@@ -114,7 +114,7 @@ class Events:
         )
 
     @classmethod
-    async def request(cls, url: str, payload: dict, debug: bool = False):
+    async def request(cls, url: str, payload: dict, debug: bool = True):
         async with AsyncClient() as client:
             request = await client.post(url, json=payload)
             if debug:

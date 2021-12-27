@@ -84,7 +84,7 @@ async def listen_telegram_messages(message: MessageBodyModel):
     elif first_word == "add" or first_word == "/add":
         memory = " ".join(splitted_text[1:])
         if str.isspace(memory) or memory == "":
-            response_message = f"There is no memory found after the word *add*.\n\n{Constants.HELP_MESSAGE}"
+            response_message = f"There is no sentence found after the word *add*.{Constants.HELP_MESSAGE}"
         else:
             reminder = add_memory(user, memory)
             if reminder is None:
@@ -145,7 +145,7 @@ async def listen_telegram_messages(message: MessageBodyModel):
         if chat_id == Constants.BROADCAST_CHAT_ID:
             normalized_text = " ".join(splitted_text[1:])
             if str.isspace(normalized_text) or normalized_text == "":
-                response_message = f"There is no memory found after the word *add*.\n\n{Constants.HELP_MESSAGE}"
+                response_message = f"There is no sentence found after the word *broadcast*."
             else:
                 await Events.broadcast_message(normalized_text)
                 response_message = "Broadcast is sent"
@@ -161,6 +161,20 @@ async def listen_telegram_messages(message: MessageBodyModel):
                 f"\n- Gmt: *GMT{gmt}*"
                 f"\n- Daily sending is active: *{active}*"
             )
+    elif first_word == "feedback" or first_word == "/feedback":
+
+        message = " ".join(splitted_text[1:])
+        message_with_user_information = message + f"\nFrom the user: *{name}* \nchat id: *{chat_id}*"
+
+        if str.isspace(message) or message == "":
+            response_message = f"There is no message found after the word *feedback*."
+        else:
+            success = await Events.send_a_message_to_user(Constants.FEEDBACK_FORWARD_CHAT_ID, message_with_user_information)
+            if success:
+                response_message = f"I forwarded your feedback to the admin, thank you for your support.\nFeedback: *{message}*"
+            else:
+                response_message = f"I could not forward your feedback to the admin, an error occurred."
+
     else:
         response_message = (
             f"{name}, I do not know that command.{Constants.HELP_MESSAGE}"

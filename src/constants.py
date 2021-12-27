@@ -12,6 +12,7 @@ class Constants:
         f"\n- You can add memories to your memory vault with command,  *add Sentence*"
         f"\n*Example*:"
         f"\n*add Time does not come back*"
+        f"\n- You can give feedback about the bot with command,  *feedback Sentence*"
         f"\n\n- You can set your timezone with command, *gmt timezone*. Default timezone is GMT0."
         f"\n*Examples*:"
         f"\nGMT+3: *gmt 3*"
@@ -20,6 +21,7 @@ class Constants:
         f"\n\nYou can use me in groups as well, just can add me to the group and make me admin. Also you can have multiple memory vaults by using groups."
     )
     BROADCAST_CHAT_ID = -1001786782026
+    FEEDBACK_FORWARD_CHAT_ID = -683998033
 
     @staticmethod
     def start_message(name: str = "") -> str:
