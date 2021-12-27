@@ -27,7 +27,7 @@ class Constants:
     @staticmethod
     def start_message(name: str = "") -> str:
         return (
-            f"Welcome onboard {name} "
+            f"Welcome onboard {name} 👋🏻"
             f"\nThis bot stores your memories in the memory vault and sends a random memory every midday."
             f"\n\nKeeping note of beautiful & important stuff that we come across throughout the life and remembering those memories is quite challenging. "
             f"\nThis bot solves this problem with a very simple "
