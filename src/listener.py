@@ -151,7 +151,16 @@ async def listen_telegram_messages(message: MessageBodyModel):
                 response_message = "Broadcast is sent"
         else:
             response_message = "You have no broadcast right"
-
+    elif first_word == "status":
+        gmt, active = get_user_status(chat_id)
+        if gmt is None:
+            response_message = "You have not joined the system yet, please type, *join*."
+        else:
+            response_message = (
+                f"Your current status:"
+                f"\n- Gmt: *GMT{gmt}*"
+                f"\n- Daily sending is active: *{active}*"
+            )
     else:
         response_message = (
             f"{name}, I do not know that command.{Constants.HELP_MESSAGE}"

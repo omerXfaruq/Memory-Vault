@@ -1,5 +1,5 @@
 import random
-from typing import List, Optional, Union
+from typing import List, Optional, Union, Tuple
 from fastapi import Depends, Query
 from sqlmodel import Field, Relationship, Session, SQLModel, create_engine, select, and_
 from sqlalchemy import UniqueConstraint
@@ -119,6 +119,29 @@ def leave_user(
             session.commit()
             session.refresh(found_user)
             return found_user
+
+
+def get_user_status(
+    telegram_chat_id: int,
+    session: Session = next(get_session()),
+) -> Optional[Tuple[int, bool]]:
+    """
+    Get status of the user.
+
+    Args:
+        telegram_chat_id:
+        session:
+
+    Returns: (gmt,active)
+
+    """
+    found_user = session.exec(
+        select(User).where(User.telegram_chat_id == telegram_chat_id)
+    ).first()
+    if found_user is None:
+        return None, None
+    else:
+        return found_user.gmt, found_user.active
 
 
 def select_random_memory(
