@@ -124,6 +124,9 @@ async def listen_telegram_messages(message: MessageBodyModel):
             except Exception as ex:
                 response_message = f"You need to give me id of the memory, ie: *delete 2*, you can get it by using command, *list*."
 
+    elif first_word == "schedule" or first_word == "/schedule":
+        pass
+
     elif first_word == "gmt" or first_word == "/gmt":
         try:
             gmt = int(splitted_text[1])

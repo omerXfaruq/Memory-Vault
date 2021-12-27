@@ -57,7 +57,7 @@ class Events:
         cls,
         user_id: int,
         telegram_id: int,
-        timezone: int,
+        timezone_difference: int,
         memory_list: List[Reminder],
     ) -> bool:
         """
@@ -66,7 +66,7 @@ class Events:
         Args:
             user_id:
             telegram_id:
-            timezone:
+            timezone_difference:
             memory_list:
 
         Returns: True if successful
@@ -79,10 +79,10 @@ class Events:
         random_memory = memory_list[random_index].reminder
 
         waiting_duration = 0
-        if timezone > 0:
-            waiting_duration = datetime.timedelta(hours=24 - timezone).total_seconds()
-        elif timezone < 0:
-            waiting_duration = datetime.timedelta(hours=-timezone).total_seconds()
+        if timezone_difference > 0:
+            waiting_duration = datetime.timedelta(hours=24 - timezone_difference).total_seconds()
+        elif timezone_difference < 0:
+            waiting_duration = datetime.timedelta(hours=-timezone_difference).total_seconds()
         # Wait until reaching midday on that timezone
         await asyncio.sleep(waiting_duration)
 

@@ -2,12 +2,12 @@ import pytest
 import asyncio
 
 from fastapi.testclient import TestClient
-from sqlmodel import Session, SQLModel, create_engine
+from sqlmodel import Session, SQLModel, create_engine, select
 from sqlmodel.pool import StaticPool
 
 from src.listener import app, User, UserCreate, get_session
 from src.events import Events
-from src.db import db_create_user, db_read_users, Reminder
+from src.db import db_create_user, db_read_users, Reminder, add_schedules
 
 pytest_plugins = ("pytest_asyncio",)
 
@@ -59,6 +59,61 @@ def test_add_user_to_db(session):
     user_list = db_read_users(session=session)
     assert 1 == len(user_list)
     assert user_list[0] == user
+
+
+def test_user_send_time_list(session):
+    user = UserCreate(
+        name="lloll",
+        telegram_chat_id=100100010001,
+    )
+    user = User.from_orm(user)
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+    user_list = db_read_users(session=session)
+    assert 1 == len(user_list)
+    assert user_list[0] == user
+    found_user = session.exec(
+        select(User).where(User.telegram_chat_id == user.telegram_chat_id)
+    ).first()
+    print(found_user)
+    found_user.scheduled_hours = "1,2"
+    session.add(found_user)
+    session.commit()
+    user_list = db_read_users(session=session)
+    assert 1 == len(user_list)
+    assert user_list[0] == user
+
+
+def test_add_schedules(session):
+    user = UserCreate(
+        name="lloll",
+        telegram_chat_id=100100010001,
+    )
+    user = User.from_orm(user)
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+    user_list = db_read_users(session=session)
+    assert 1 == len(user_list)
+    assert user_list[0] == user
+
+    scheduled_hours = add_schedules(user, ["1", "13"], session)
+    split_hours = scheduled_hours.split(",")
+    str_set1 = set()
+    for str in split_hours:
+        str_set1.add(str)
+    str_set2 = set()
+    str_set2.add("20")
+    str_set2.add("1")
+    str_set2.add("13")
+    str_set2.add("8")
+
+    assert str_set2 == str_set1
+
+    user_list = db_read_users(session=session)
+    assert 1 == len(user_list)
+    print(user_list[0])
 
 
 def test_db_read_users(session):

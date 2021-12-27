@@ -11,6 +11,7 @@ class UserBase(SQLModel):
     telegram_chat_id: int
     gmt: Optional[int] = 0
     active: Optional[bool] = True
+    scheduled_hours: Optional[str] = "8,20"
 
 
 class User(UserBase, table=True):
@@ -306,6 +307,42 @@ def update_gmt(
         session.commit()
         session.refresh(found_user)
         return found_user
+
+
+def add_schedules(
+    user: UserCreate,
+    schedule_list: List[str],
+    session: Session = next(get_session()),
+) -> Optional[str]:
+    """
+    Add schedules to the user.
+
+    Args:
+        user:
+        schedule_list:
+        session:
+
+    Returns: str or None
+
+    """
+    found_user = session.exec(
+        select(User).where(User.telegram_chat_id == user.telegram_chat_id)
+    ).first()
+    if found_user is None:
+        return None
+    else:
+        old_schedule = found_user.scheduled_hours
+        new_schedule = set()
+        for strnumber in old_schedule.split(","):
+            new_schedule.add(strnumber)
+        for strnumber in schedule_list:
+            new_schedule.add(strnumber)
+        new_schedule = ",".join(new_schedule)
+        found_user.scheduled_hours = new_schedule
+        session.add(found_user)
+        session.commit()
+        session.refresh(found_user)
+        return found_user.scheduled_hours
 
 
 def db_create_user(
