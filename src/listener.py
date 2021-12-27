@@ -178,7 +178,7 @@ async def listen_telegram_messages(message: MessageBodyModel):
     elif first_word == "support" or first_word == "/support":
         response_message = (f"Thank you, to support me you can"
                             f"\n- Share me with your friends"
-                            f"\n- Give feedback using the command, *feedback sentence*."
+                            f"\n- Give feedback using the command, *feedback sentence*"
                             f"\n- Star the github repository at https://github.com/FarukOzderim/Memory-Vault/"
                             )
     else:
