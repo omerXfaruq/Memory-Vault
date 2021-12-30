@@ -35,4 +35,8 @@ class Constants:
             f"\nSincerely thanks to my wife Seyyide for the beautiful idea."
             f"\n\n- You can join my system by writing, *join*. "
             f"\n- You can get more detailed information by writing, *help*."
+
         )
+
+    smile = "😊"
+    hello = "👋🏻"
