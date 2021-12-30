@@ -4,6 +4,8 @@ from fastapi import Depends, Query
 from sqlmodel import Field, Relationship, Session, SQLModel, create_engine, select, and_
 from sqlalchemy import UniqueConstraint
 
+default_schedule = "8,20"
+
 
 class UserBase(SQLModel):
     __table_args__ = (UniqueConstraint("telegram_chat_id"),)
@@ -11,7 +13,7 @@ class UserBase(SQLModel):
     telegram_chat_id: int
     gmt: Optional[int] = 0
     active: Optional[bool] = True
-    scheduled_hours: Optional[str] = "8,20"
+    scheduled_hours: Optional[str] = default_schedule
 
 
 class User(UserBase, table=True):
@@ -300,13 +302,103 @@ def update_gmt(
         return found_user
 
 
-def add_schedules(
+def get_schedule(
     user: UserCreate,
-    schedule_list: List[str],
+    session: Session = next(get_session()),
+) -> Optional[List[int]]:
+    """
+    Get schedule of the user.
+
+    Args:
+        user:
+        session:
+
+    Returns: str or None
+
+    """
+    found_user = session.exec(
+        select(User).where(User.telegram_chat_id == user.telegram_chat_id)
+    ).first()
+    if found_user is None:
+        return None
+    else:
+        schedule = found_user.scheduled_hours
+        schedule_list = []
+        for strnumber in schedule.split(","):
+            schedule_list.append(int(strnumber))
+        schedule_list.sort()
+        return schedule_list
+
+
+def reset_schedule(
+    user: UserCreate,
     session: Session = next(get_session()),
 ) -> Optional[str]:
     """
-    Add schedules to the user.
+    Reset schedule of the user.
+
+    Args:
+        user:
+        session:
+
+    Returns: str or None
+
+    """
+    found_user = session.exec(
+        select(User).where(User.telegram_chat_id == user.telegram_chat_id)
+    ).first()
+    if found_user is None:
+        return None
+    else:
+        found_user.scheduled_hours = default_schedule
+        session.add(found_user)
+        session.commit()
+        session.refresh(found_user)
+        return found_user.scheduled_hours
+
+
+def remove_hour_from_schedule(
+    user: UserCreate,
+    hour: str,
+    session: Session = next(get_session()),
+) -> Optional[str]:
+    """
+    Remove hour from schedule of the user.
+
+    Args:
+        user:
+        hour:
+        session:
+
+    Returns: str or None
+
+    """
+    found_user = session.exec(
+        select(User).where(User.telegram_chat_id == user.telegram_chat_id)
+    ).first()
+    if found_user is None:
+        return None
+    else:
+        old_schedule = found_user.scheduled_hours
+        new_schedule = []
+        for str_number in old_schedule.split(","):
+            if not hour == str_number:
+                new_schedule.append(str_number)
+        str_schedule = ",".join(new_schedule)
+        found_user.scheduled_hours = str_schedule
+        session.add(found_user)
+        session.commit()
+        session.refresh(found_user)
+        return found_user.scheduled_hours
+
+
+def add_hours_to_the_schedule(
+    user: UserCreate,
+    schedule_list: List[int],
+    session: Session = next(get_session()),
+) -> Optional[str]:
+    """
+    Add hours to the schedule of the user.
 
     Args:
         user:
@@ -323,13 +415,15 @@ def add_schedules(
         return None
     else:
         old_schedule = found_user.scheduled_hours
-        new_schedule = set()
+        new_schedule = []
         for strnumber in old_schedule.split(","):
-            new_schedule.add(strnumber)
+            new_schedule.append(int(strnumber))
         for strnumber in schedule_list:
-            new_schedule.add(strnumber)
-        new_schedule = ",".join(new_schedule)
-        found_user.scheduled_hours = new_schedule
+            new_schedule.append(strnumber)
+        sorted_schedule = sorted(new_schedule)
+        str_sorted_schedule = [str(number) for number in sorted_schedule]
+        str_schedule = ",".join(str_sorted_schedule)
+        found_user.scheduled_hours = str_schedule
         session.add(found_user)
         session.commit()
         session.refresh(found_user)
