@@ -175,7 +175,7 @@ def select_random_memory(
 def list_memories(
     user: UserCreate,
     session: Session = next(get_session()),
-) -> Optional[Union[str, bool]]:
+) -> Optional[List[Reminder]]:
     """
     Return all the memory-vault.
 
@@ -191,17 +191,8 @@ def list_memories(
     ).first()
     if found_user is None:
         return None
-    if len(found_user.reminders) > 0:
-        response_message = (
-            f"Open the gates of the memory vault!"
-            f"\n*id | memory*"
-        )
 
-        for id, reminder in enumerate(found_user.reminders):
-            response_message += f"\n{id}: {reminder.reminder}"
-        return response_message
-    else:
-        return False
+    return found_user.reminders
 
 
 def add_memory(
