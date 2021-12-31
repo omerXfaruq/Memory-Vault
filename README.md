@@ -31,6 +31,40 @@ GMT0: gmt 0
 GMT-5: gmt -5
 
 You can use me in groups as well, just can add me to the group and make me admin. Also you can have multiple memory vaults by using groups.```
+This bot will send you a random memory at every day from your memory vault.
+- You can join my system by writing, join or /join
+- Leave my system by, leave or /leave
+- Get a random memory by, send or /send
+- Get your status information by, status or /status
+- List memories by, list or /list
+- Learn how to support me by, support or /support
+- Delete a memory with command, delete id, you can get the memory id with the command, list or /list
+Example:
+delete 2
+- Add memories to your memory vault with command,  add Sentence
+Example:
+add Time does not come back
+- Give feedback about the bot with command,  feedback Sentence
+
+- Set your timezone with command, gmt timezone. Default timezone is GMT0.
+Examples:
+GMT+3: gmt 3
+GMT0: gmt 0
+GMT-5: gmt -5
+
+Schedule(daily sending hours) related commands, default schedule is 8,20
+-Show your current schedule by, schedule or /schedule
+-Reset your schedule to the default schedule by, schedule reset
+-Adds hours to your schedule by, schedule add hour1 hour2 hour3
+Example:
+schedule add 1 3 9 11
+-Removes hour from your schedule by schedule remove hour
+Example:
+schedule remove 8
+
+You can use me in groups as well, just can add me to the group and make me admin.
+Also you can have multiple memory vaults by using groups.
+For example I would serve you well in a language learning group, where you add words to your memory-vault.
 ```
 
 ## Requirements

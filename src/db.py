@@ -416,10 +416,10 @@ def add_hours_to_the_schedule(
     else:
         old_schedule = found_user.scheduled_hours
         new_schedule = []
-        for strnumber in old_schedule.split(","):
-            new_schedule.append(int(strnumber))
-        for strnumber in schedule_list:
-            new_schedule.append(strnumber)
+        for str_number in old_schedule.split(","):
+            new_schedule.append(int(str_number))
+        for number in schedule_list:
+            new_schedule.append(number)
         sorted_schedule = sorted(new_schedule)
         str_sorted_schedule = [str(number) for number in sorted_schedule]
         str_schedule = ",".join(str_sorted_schedule)

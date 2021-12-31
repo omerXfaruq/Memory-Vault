@@ -8,7 +8,7 @@ import asyncio
 from httpx import AsyncClient
 
 from .message_validations import ResponseToMessage
-from .db import db_read_users, Reminder
+from .db import db_read_users, Reminder, User
 
 
 class Events:
@@ -24,70 +24,51 @@ class Events:
         """
         Main Event Loop
 
-        Runs in a while loop, Triggers Events.single_user_mail for each user every midday.
+        Runs in a while loop, Triggers Events.send_user_hourly_memories at every hour.
         """
         while True:
-            await asyncio.sleep(cls.get_time_until_midday())
+            await asyncio.sleep(cls.get_time_until_next_hour())
             users = db_read_users(limit=100000)
-            await asyncio.gather(
-                *(
-                    Events.single_user_mail(
-                        user.id,
-                        user.telegram_chat_id,
-                        user.gmt - cls.CURRENT_TIMEZONE,
-                        user.reminders,
-                    )
-                    for user in users
-                )
-            )
+            now = datetime.datetime.now()
+            for user in users:
+                cls.send_user_hourly_memories(user, now.hour)
 
     @classmethod
-    def get_time_until_midday(cls, hour: int = 12, minute: int = 0) -> float:
+    def get_time_until_next_hour(cls) -> float:
+        # Ref: https://stackoverflow.com/a/52808375/15282482
+        delta = datetime.timedelta(hours=1)
         now = datetime.datetime.now()
-        midday = datetime.datetime(now.year, now.month, now.day, hour, minute)
-        if midday >= now:
-            waiting_duration = midday - now
-        else:
-            waiting_duration = midday - now + datetime.timedelta(hours=24)
-
-        return waiting_duration.total_seconds()
+        next_hour = (now + delta).replace(microsecond=0, second=0, minute=0)
+        return (next_hour - now).total_seconds()
 
     @classmethod
-    async def single_user_mail(
+    def send_user_hourly_memories(
         cls,
-        user_id: int,
-        telegram_id: int,
-        timezone_difference: int,
-        memory_list: List[Reminder],
-    ) -> bool:
+        user: User,
+        hour: int,
+    ) -> None:
         """
-        Waits until users midday according to the timezone. Then sends a random reminder from the memory vault.
+        Sends memories to user if the current_hour is in his schedule.
 
         Args:
-            user_id:
-            telegram_id:
-            timezone_difference:
-            memory_list:
+            user:
+            hour:
 
-        Returns: True if successful
+        Returns:
+
         """
-
-        length = len(memory_list)
-        if length == 0:
-            return True
-        random_index = random.randint(0, length - 1)
-        random_memory = memory_list[random_index].reminder
-
-        waiting_duration = 0
-        if timezone_difference > 0:
-            waiting_duration = datetime.timedelta(hours=24 - timezone_difference).total_seconds()
-        elif timezone_difference < 0:
-            waiting_duration = datetime.timedelta(hours=-timezone_difference).total_seconds()
-        # Wait until reaching midday on that timezone
-        await asyncio.sleep(waiting_duration)
-
-        success = await cls.send_a_message_to_user(telegram_id, random_memory)
-        return success
+        hour = (hour + user.gmt) % 24
+        scheduled_hours = user.scheduled_hours.split(",")
+        number_of_messages_at_this_hour = 0
+        for str_hour in scheduled_hours:
+            if int(str_hour) > hour:  # Scheduled_hours are sorted, next items will be > hour as well.
+                break
+            if int(str_hour) == hour:
+                number_of_messages_at_this_hour += 1
+        number_of_messages_at_this_hour = min(len(user.reminders), number_of_messages_at_this_hour)
+        selected_reminders = random.sample(user.reminders, number_of_messages_at_this_hour)
+        for reminder in selected_reminders: # Send the memory in background
+            asyncio.create_task(cls.send_a_message_to_user(user.telegram_chat_id, reminder.reminder))
 
     @classmethod
     async def send_a_message_to_user(cls, telegram_id: int, message: str) -> bool:
