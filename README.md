@@ -2,7 +2,7 @@
 
 Welcome onboard;
 
-This bot stores your memories in the memory vault and sends a random memory every day.
+This bot stores your memories in the memory vault and sends random memories every day according to your decided schedule.
 
 Keeping note of beautiful & important stuff that we come across throughout the life and remembering those memories is quite challenging. This bot solves this problem with a very simple approach, as complex methods makes it harder
 to keep it them in our life. 
