@@ -1,5 +1,4 @@
 import pytest
-import asyncio
 
 from fastapi.testclient import TestClient
 from sqlmodel import Session, SQLModel, create_engine, select
@@ -7,7 +6,7 @@ from sqlmodel.pool import StaticPool
 
 from src.listener import app, User, UserCreate, get_session
 from src.events import Events
-from src.db import db_create_user, db_read_users, Reminder, add_schedules
+from src.db import db_create_user, db_read_users, Reminder, add_hours_to_the_schedule
 
 pytest_plugins = ("pytest_asyncio",)
 
@@ -34,20 +33,14 @@ def client_fixture(session: Session):
 
 
 @pytest.mark.asyncio
-async def test_send_message():
-    response = await Events.single_user_mail(1, 861126057, 0, [Reminder(reminder="salam")])
-    assert response
-
-
-@pytest.mark.asyncio
 async def test_main_event():
-    return
+    return True
     await Events.main_event()
 
 
 @pytest.mark.asyncio
 def test_time_until_midday():
-    print(Events.get_time_until_midday())
+    print(Events.get_time_until_next_hour())
 
 
 def test_add_user_to_db(session):
@@ -98,7 +91,7 @@ def test_add_schedules(session):
     assert 1 == len(user_list)
     assert user_list[0] == user
 
-    scheduled_hours = add_schedules(user, ["1", "13"], session)
+    scheduled_hours = add_hours_to_the_schedule(user, [1, 13], session)
     split_hours = scheduled_hours.split(",")
     str_set1 = set()
     for str in split_hours:
