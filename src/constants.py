@@ -2,10 +2,13 @@ from .db import default_schedule
 
 
 class Constants:
+    smile = "😊"
+    hello = "👋🏻"
+
     HELP_MESSAGE = (
-        f"\n\nThis bot will send you a random memory at every day from your memory vault."
-        f"\n- You can join my system by writing, *join* or */join*"
-        f"\n- Leave my system by, *leave* or */leave*"
+        f"\n\nThis bot will send you random memories every day from your memory vault."
+        f"\n- You can activate daily memory sending by writing, *join* or */join*"
+        f"\n- Deactivate daily sending by, *leave* or */leave*"
         f"\n- Get a random memory by, *send* or */send*"
         f"\n- Get your status information by, *status* or */status*"
         f"\n- List memories by, *list* or */list*"
@@ -22,7 +25,7 @@ class Constants:
         f"\nGMT+3: *gmt 3*"
         f"\nGMT0: *gmt 0*"
         f"\nGMT-5: *gmt -5*"
-        f"\n\nSchedule related commands: "
+        f"\n\n*Schedule related commands:*"
         f"\nThe default scheduled hours are *{default_schedule}*. You can add an hour multiple times to receive multiple memories"
         f"\n-Show your current schedule by, *schedule* or */schedule*"
         f"\n-Reset your schedule to the default schedule by, *schedule reset*"
@@ -35,7 +38,7 @@ class Constants:
 
         f"\n\nYou can use me in groups as well, just can add me to the group and make me admin."
         f"\nAlso you can have multiple memory vaults by using groups."
-        f"\nFor example I would serve you well in a language learning group, where you add words to your memory-vault."
+        f"\nFor example I would serve you well in a language learning group, where you add words to your memory vault."
     )
 
     BROADCAST_CHAT_ID = -1001786782026
@@ -44,16 +47,11 @@ class Constants:
     @staticmethod
     def start_message(name: str = "") -> str:
         return (
-            f"Welcome onboard {name} 👋🏻"
-            f"\nThis bot stores your memories in the memory vault and sends a random memory every day."
+            f"Welcome onboard {name} {Constants.hello}"
+            f"\nThis bot stores your memories in the memory vault and sends random memories every day."
             f"\n\nKeeping note of beautiful & important stuff that we come across throughout the life and remembering those memories is quite challenging. "
-            f"\nThis bot solves this problem with a very simple "
-            f"approach, as complex methods makes it harder to keep it them in our life."
+            f"\nThis bot solves this problem with a very simple approach, as complex methods makes it harder to keep it them in our life."
             f"\nSincerely thanks to my wife Seyyide for the beautiful idea."
-            f"\n\n- You can join my system by writing, *join*. "
-            f"\n- You can get more detailed information by writing, *help*."
-
+            f"\n\n-You can activate daily sendings by writing, *join* or /join. "
+            f"\n-You can get more detailed information by writing, *help* or /help."
         )
-
-    smile = "😊"
-    hello = "👋🏻"

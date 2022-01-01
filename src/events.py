@@ -30,6 +30,7 @@ class Events:
             await asyncio.sleep(cls.get_time_until_next_hour())
             users = db_read_users(limit=100000)
             now = datetime.datetime.now()
+            print(f"Sending is triggered at hour {now.hour}, GMT:{cls.CURRENT_TIMEZONE}")
             for user in users:
                 cls.send_user_hourly_memories(user, now.hour)
 
@@ -67,7 +68,7 @@ class Events:
                 number_of_messages_at_this_hour += 1
         number_of_messages_at_this_hour = min(len(user.reminders), number_of_messages_at_this_hour)
         selected_reminders = random.sample(user.reminders, number_of_messages_at_this_hour)
-        for reminder in selected_reminders: # Send the memory in background
+        for reminder in selected_reminders:  # Send the memory in background
             asyncio.create_task(cls.send_a_message_to_user(user.telegram_chat_id, reminder.reminder))
 
     @classmethod

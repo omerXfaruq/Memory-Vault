@@ -14,9 +14,9 @@ Sincerely thanks to my wife Seyyide for the beautiful idea.
 ## Functionalities
 
 ```
-This bot will send you a random memory at every day from your memory vault.
-- You can join my system by writing, join or /join
-- Leave my system by, leave or /leave
+This bot will send you random memories every day from your memory vault.
+- You can activate daily memory sending by writing, join or /join
+- Deactivate daily sending by, leave or /leave
 - Get a random memory by, send or /send
 - Get your status information by, status or /status
 - List memories by, list or /list
@@ -48,7 +48,7 @@ schedule remove 8
 
 You can use me in groups as well, just can add me to the group and make me admin.
 Also you can have multiple memory vaults by using groups.
-For example I would serve you well in a language learning group, where you add words to your memory-vault.
+For example I would serve you well in a language learning group, where you add words to your memory vault.
 ```
 
 ## Requirements

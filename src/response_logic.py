@@ -1,4 +1,5 @@
-from .db import UserCreate, join_user, leave_user, select_random_memory, add_memory, delete_memory, list_memories, update_gmt, get_user_status, get_schedule, reset_schedule, add_hours_to_the_schedule, remove_hour_from_schedule
+from .db import (
+    UserCreate, join_user, leave_user, select_random_memory, add_memory, delete_memory, list_memories, update_gmt, get_user_status, get_schedule, reset_schedule, add_hours_to_the_schedule, remove_hour_from_schedule, default_schedule)
 from .events import Events
 from .constants import Constants
 
@@ -15,6 +16,7 @@ class ResponseLogic:
         )
 
         if first_word == "/start":
+            await Events.send_a_message_to_user(chat_id, Constants.hello)
             return Constants.start_message(name)
         elif first_word == "help" or first_word == "/help":
             return Constants.HELP_MESSAGE
@@ -22,14 +24,17 @@ class ResponseLogic:
             user = join_user(user)
 
             if user is not None:
-                return f"Welcome onboard {name}, you joined into my system. I will send you a random memory at every midday from your memory vault. You can get more detailed information by writing, *help*."
+                return (
+                    f"Welcome onboard {name}, you activated daily memory sending. I will send you random memories from your memory vault according to your schedule."
+                    f"The default schedule hours are {default_schedule}. You can get more detailed information by writing, *help* or */help*."
+                )
             else:
-                return f"You are already in the system."
+                return f"Your account is already active."
 
         elif first_word == "leave" or first_word == "/leave":
             user = leave_user(user)
             if user is not None and user.telegram_chat_id == chat_id:
-                return f"Good bye {name}, I deactivated you in my system. It was nice to have you here. Your memory vault remains with me, you can return whenever you wish with command, *join*."
+                return f"Good bye {name}, you deactivated daily memory sending. It was nice to have you here. Your memory vault remains with me, you can return whenever you wish with command, join or */join*."
             else:
                 return f"Your account was already inactive."
 
@@ -37,10 +42,10 @@ class ResponseLogic:
             memory = select_random_memory(user)
             if memory is None:
                 return (
-                    "The user is not in the system, please join by typing; *join*."
+                    "The user is not in the system, please join by typing; *join* or /join"
                 )
             elif memory is False:
-                return "No memory found in the system. Please add memory, for further information you can type *help*."
+                return "No memory found in the system. Please add memory, for further information you can type *help* or /help"
             else:
                 return memory.reminder
 
@@ -48,10 +53,10 @@ class ResponseLogic:
             memories = list_memories(user)
             if memories is None:
                 return (
-                    "The user is not in the system, please join by typing; *join*."
+                    "The user is not in the system, please join by typing; join or */join*."
                 )
             elif len(memories) == 0:
-                return "No memory found in the system. Please add memory, for further information you can type *help*."
+                return "No memory found in the system. Please add memory, for further information you can type help or */help*."
             else:
                 # TODO: send in batches of 10 messages
                 response_message = (
