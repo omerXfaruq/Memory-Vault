@@ -32,7 +32,7 @@ class Events:
             now = datetime.datetime.now()
             print(f"Sending is triggered at hour {now.hour}, GMT:{cls.CURRENT_TIMEZONE}")
             for user in users:
-                cls.send_user_hourly_memories(user, now.hour)
+                cls.send_user_hourly_memories(user, 13)
 
     @classmethod
     def get_time_until_next_hour(cls) -> float:
@@ -72,14 +72,18 @@ class Events:
             asyncio.create_task(cls.send_a_message_to_user(user.telegram_chat_id, reminder.reminder))
 
     @classmethod
-    async def send_a_message_to_user(cls, telegram_id: int, message: str) -> bool:
+    async def send_a_message_to_user(cls, telegram_id: int, message: str, retry_count: int = 5) -> bool:
         message = ResponseToMessage(
             **{
                 "text": message,
                 "chat_id": telegram_id,
             }
         )
-        req = await cls.request(cls.TELEGRAM_SEND_MESSAGE_URL, message.dict())
+        for retry in range(retry_count):
+            req = await cls.request(cls.TELEGRAM_SEND_MESSAGE_URL, message.dict())
+            if req.status_code == 200:
+                return True
+
         return req.status_code == 200
 
     @classmethod
