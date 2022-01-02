@@ -1,5 +1,9 @@
+import random
+import asyncio
+
 from .db import (
-    UserCreate, join_user, leave_user, select_random_memory, add_memory, delete_memory, list_memories, update_gmt, get_user_status, get_schedule, reset_schedule, add_hours_to_the_schedule, remove_hour_from_schedule, default_schedule)
+    UserCreate, join_user, leave_user, select_random_memory, add_memory, delete_memory, list_memories, update_gmt, get_user_status, get_schedule, reset_schedule, add_hours_to_the_schedule, remove_hour_from_schedule,
+    default_schedule)
 from .events import Events
 from .constants import Constants
 
@@ -39,15 +43,30 @@ class ResponseLogic:
                 return f"Your account was already inactive."
 
         elif first_word == "send" or first_word == "/send":
-            memory = select_random_memory(user)
-            if memory is None:
-                return (
-                    "The user is not in the system, please join by typing; *join* or /join"
-                )
-            elif memory is False:
-                return "No memory found in the system. Please add memory, for further information you can type *help* or /help"
+            if len(split_text) == 1:
+                memory = select_random_memory(user)
+                if memory is None:
+                    return (
+                        "The user is not in the system, please join by typing; *join* or /join"
+                    )
+                elif memory is False:
+                    return "No memory found in the system. Please add memory, for further information you can type *help* or /help"
+                else:
+                    return memory.reminder
             else:
-                return memory.reminder
+                try:
+                    number_of_sending = int(split_text[1])
+                    if not (1 <= number_of_sending < 50):
+                        return "Please give a number which is 1<n<50  after *send*"
+                except:
+                    return "Please give a number which is 1<n<50  after *send*"
+
+                all_memories = list_memories(user)
+                number_of_sending = min(len(all_memories), number_of_sending)
+                selected_memories = random.sample(all_memories, number_of_sending)
+                for memory in selected_memories:  # Send the memories in background
+                    asyncio.create_task(Events.send_a_message_to_user(user.telegram_chat_id, memory.reminder))
+                return ""
 
         elif first_word == "list" or first_word == "/list":
             memories = list_memories(user)
