@@ -32,7 +32,7 @@ class Events:
             now = datetime.datetime.now()
             print(f"Sending is triggered at hour {now.hour}, GMT:{cls.CURRENT_TIMEZONE}")
             for user in users:
-                cls.send_user_hourly_memories(user, 13)
+                cls.send_user_hourly_memories(user, now.hour)
 
     @classmethod
     def get_time_until_next_hour(cls) -> float:
@@ -70,6 +70,8 @@ class Events:
         selected_reminders = random.sample(user.reminders, number_of_messages_at_this_hour)
         for reminder in selected_reminders:  # Send the memory in background
             asyncio.create_task(cls.send_a_message_to_user(user.telegram_chat_id, reminder.reminder))
+            now = datetime.datetime.now()
+            print(f"Created task to, {user.name}, {reminder.reminder}, hour: {hour}, gmt: {user.gmt}, now: {now}")
 
     @classmethod
     async def send_a_message_to_user(cls, telegram_id: int, message: str, retry_count: int = 5) -> bool:
@@ -82,7 +84,7 @@ class Events:
         for retry in range(retry_count):
             req = await cls.request(cls.TELEGRAM_SEND_MESSAGE_URL, message.dict())
             if req.status_code == 200:
-                return True
+                break
 
         return req.status_code == 200
 
