@@ -18,6 +18,7 @@ This bot will send you random memories every day from your memory vault.
 - You can activate daily memory sending by writing, join or /join
 - Deactivate daily sending by, leave or /leave
 - Get a random memory by, send or /send
+- Get multiple random memories by, send number
 - Get your status information by, status or /status
 - List memories by, list or /list
 - Learn how to support me by, support or /support
@@ -35,7 +36,7 @@ GMT+3: gmt 3
 GMT0: gmt 0
 GMT-5: gmt -5
 
-Schedule related commands: 
+Schedule related commands:
 The default scheduled hours are 8,20. You can add an hour multiple times to receive multiple memories
 -Show your current schedule by, schedule or /schedule
 -Reset your schedule to the default schedule by, schedule reset

@@ -10,6 +10,7 @@ class Constants:
         f"\n- You can activate daily memory sending by writing, *join* or */join*"
         f"\n- Deactivate daily sending by, *leave* or */leave*"
         f"\n- Get a random memory by, *send* or */send*"
+        f"\n- Get multiple random memories by, *send number*"
         f"\n- Get your status information by, *status* or */status*"
         f"\n- List memories by, *list* or */list*"
         f"\n- Learn how to support me by, *support* or */support*"
