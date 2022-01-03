@@ -51,8 +51,8 @@ class Constants:
             f"Welcome onboard {name} {Constants.hello}"
             f"\nThis bot stores your memories in the memory vault and sends random memories every day."
             f"\n\nKeeping note of beautiful & important stuff that we come across throughout the life and remembering those memories is quite challenging. "
-            f"\nThis bot solves this problem with a very simple approach, as complex methods makes it harder to keep it them in our life."
+            f"\nThis bot solves this problem with a very simple approach, as complex methods makes it harder to keep them in our life."
             f"\nSincerely thanks to my wife Seyyide for the beautiful idea."
-            f"\n\n-You can activate daily sendings by writing, *join* or /join. "
+            f"\n\n-You can activate daily sending by writing, *join* or /join. "
             f"\n-You can get more detailed information by writing, *help* or /help."
         )
