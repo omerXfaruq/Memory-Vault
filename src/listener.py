@@ -8,7 +8,7 @@ from .constants import Constants
 from .events import Events
 from .response_logic import ResponseLogic
 
-app = FastAPI()
+app = FastAPI(openapi_url=None)
 
 
 @app.on_event("startup")
@@ -17,7 +17,7 @@ def on_startup():
     asyncio.create_task(Events.main_event())
 
 
-@app.get("/")
+@app.get("/health")
 async def health():
     return {"healthy": True}
 
