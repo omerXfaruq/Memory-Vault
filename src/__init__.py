@@ -33,6 +33,7 @@ if __name__ == "__main__":
     else:
         public_url = loop.run_until_complete(Events.get_public_ip())
         Events.HOST_URL = f"https://{public_url}"
+        Events.SELF_SIGNED = True
 
     print(Events.HOST_URL)
     success = loop.run_until_complete(Events.set_telegram_webhook_url())

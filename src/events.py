@@ -16,7 +16,7 @@ class Events:
     TELEGRAM_SEND_MESSAGE_URL = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     TELEGRAM_SET_WEBHOOK_URL = f"https://api.telegram.org/bot{TOKEN}/setWebhook"
     HOST_URL = None
-
+    SELF_SIGNED = False
     CURRENT_TIMEZONE = 0
 
     @classmethod
@@ -111,7 +111,13 @@ class Events:
 
     @classmethod
     async def set_telegram_webhook_url(cls) -> bool:
-        payload = {"url": f"{cls.HOST_URL}/webhook/{cls.TOKEN}"}
+        if cls.SELF_SIGNED:
+            payload = {
+                "url": f"{cls.HOST_URL}/webhook/{cls.TOKEN}",
+                "certificate": open(os.environ.get("PEM_FILE"), "rb")
+            }
+        else:
+            payload = {"url": f"{cls.HOST_URL}/webhook/{cls.TOKEN}"}
         req = await cls.request(cls.TELEGRAM_SET_WEBHOOK_URL, payload)
         return req.status_code == 200
 
