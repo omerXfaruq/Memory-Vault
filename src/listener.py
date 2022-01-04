@@ -17,7 +17,12 @@ def on_startup():
     asyncio.create_task(Events.main_event())
 
 
-@app.post("/webhook/{secret}")
+@app.get("/")
+async def health():
+    return {"healthy": True}
+
+
+@app.post(f"/webhook/{Events.TOKEN}")
 async def listen_telegram_messages(message: MessageBodyModel):
     print(message.dict())
     if message.message:
