@@ -18,7 +18,7 @@ if __name__ == "__main__":
     if len(sys.argv) == 2:
         is_by_ngrok = sys.argv[1]
 
-    PORT = 8443
+    PORT = 8000
     loop = asyncio.get_event_loop()
     if is_by_ngrok == "ngrok":
         ngrok_token = str(os.environ.get("NGROK_AUTH_TOKEN"))
