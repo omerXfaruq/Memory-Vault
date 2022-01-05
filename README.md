@@ -1,5 +1,4 @@
 # Memory-Vault
-
 Welcome onboard;
 
 This bot stores your memories in the memory vault and sends random memories every day according to your decided schedule.
@@ -9,7 +8,8 @@ to keep it them in our life.
 
 Sincerely thanks to my wife Seyyide for the beautiful idea.
 
-## [Try it!](https://t.me/Memory_Vault_Bot)
+## [Try it!](https://t.me/Memory_Vault_Bot) 
+<img src="img/memory_vault_pp.png" alt="drawing" width="200"/>
 
 ## Functionalities
 
@@ -78,7 +78,13 @@ python3 -m src.__init__ ngrok
 ```
 
 ## Run With Public IP
+Run with self-signed ssl certificate
+```
+export TELEGRAM_TOKEN={TOKEN} 
+python3 -m src.__init__ self-signed
+```
 
+Run with authority-signed ssl certificate
 ```
 export TELEGRAM_TOKEN={TOKEN} 
 python3 -m src.__init__

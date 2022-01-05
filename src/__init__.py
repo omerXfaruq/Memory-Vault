@@ -14,13 +14,13 @@ if __name__ == "__main__":
         sys.exit("No TELEGRAM_TOKEN found in the environment, exiting now.")
 
     # Run with ngrok if the parameter is given
-    is_by_ngrok = None
+    running_option = None
     if len(sys.argv) == 2:
-        is_by_ngrok = sys.argv[1]
+        running_option = sys.argv[1]
 
     PORT = 8000
     loop = asyncio.get_event_loop()
-    if is_by_ngrok == "ngrok":
+    if running_option == "ngrok":
         ngrok_token = str(os.environ.get("NGROK_AUTH_TOKEN"))
         if ngrok_token == "None":
             print("NGROK auth token is not found in the environment. Ngrok will timeout after a few hours.")
@@ -33,7 +33,8 @@ if __name__ == "__main__":
     else:
         public_url = loop.run_until_complete(Events.get_public_ip())
         Events.HOST_URL = f"https://{public_url}"
-        Events.SELF_SIGNED = True
+        if running_option == "self_signed":
+            Events.SELF_SIGNED = True
 
     print(Events.HOST_URL)
     success = loop.run_until_complete(Events.set_telegram_webhook_url())
