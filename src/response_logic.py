@@ -84,7 +84,7 @@ class ResponseLogic:
 
                 for message_id, reminder in enumerate(memories):
                     message = f"\n{message_id}: {reminder.reminder}"
-                    asyncio.create_task(Events.send_a_message_to_user(telegram_id=chat_id, message=message, sleep_time=message_id / 100))
+                    asyncio.create_task(Events.send_a_message_to_user(telegram_id=chat_id, message=message, sleep_time=message_id / 10))
                 return response_message
 
         elif first_word == "add" or first_word == "/add":
