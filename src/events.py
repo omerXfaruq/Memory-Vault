@@ -76,6 +76,7 @@ class Events:
     @classmethod
     async def send_a_message_to_user(cls, telegram_id: int, message: str, retry_count: int = 5, sleep_time: float = 0) -> bool:
         await asyncio.sleep(sleep_time)
+        print(sleep_time)
         message = ResponseToMessage(
             **{
                 "text": message,
