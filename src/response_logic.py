@@ -79,7 +79,7 @@ class ResponseLogic:
             else:
                 response_message = (
                     f"Brace yourself, you will receive a message every second."
-                    f"\nOpen the gates of the memory vault!"
+                    f"\n\nOpen the gates of the memory vault!"
                     f"\n*id | memory*"
                 )
 
