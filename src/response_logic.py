@@ -77,14 +77,14 @@ class ResponseLogic:
             elif len(memories) == 0:
                 return "No memory found in the system. Please add memory, for further information you can type help or */help*."
             else:
-                # TODO: send in batches of 10 messages
                 response_message = (
                     f"Open the gates of the memory vault!"
                     f"\n*id | memory*"
                 )
 
-                for id, reminder in enumerate(memories):
-                    response_message += f"\n{id}: {reminder.reminder}"
+                for message_id, reminder in enumerate(memories):
+                    message = f"\n{message_id}: {reminder.reminder}"
+                    asyncio.create_task(Events.send_a_message_to_user(telegram_id=chat_id, message=message))
                 return response_message
 
         elif first_word == "add" or first_word == "/add":
