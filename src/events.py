@@ -87,7 +87,6 @@ class Events:
                 "chat_id": telegram_id,
             }
         )
-        await asyncio.sleep(sleep_time)
         for retry in range(retry_count):
             # Avoid too many requests error from Telegram
             response = await cls.request(cls.TELEGRAM_SEND_MESSAGE_URL, message.dict())
