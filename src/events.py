@@ -75,8 +75,6 @@ class Events:
 
     @classmethod
     async def send_a_message_to_user(cls, telegram_id: int, message: str, retry_count: int = 5, sleep_time: float = 0.1) -> bool:
-        # Avoid too many requests error from Telegram
-        await asyncio.sleep(sleep_time)
         message = ResponseToMessage(
             **{
                 "text": message,
@@ -84,6 +82,8 @@ class Events:
             }
         )
         for retry in range(retry_count):
+            # Avoid too many requests error from Telegram
+            await asyncio.sleep(sleep_time)
             req = await cls.request(cls.TELEGRAM_SEND_MESSAGE_URL, message.dict())
             if req.status_code == 200:
                 break
