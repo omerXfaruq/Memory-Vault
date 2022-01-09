@@ -80,13 +80,14 @@ class Events:
         return True
 
     @classmethod
-    async def send_a_message_to_user(cls, telegram_id: int, message: str, retry_count: int = 5) -> bool:
+    async def send_a_message_to_user(cls, telegram_id: int, message: str, retry_count: int = 5, sleep_time: int = 1.0) -> bool:
         message = ResponseToMessage(
             **{
                 "text": message,
                 "chat_id": telegram_id,
             }
         )
+        await asyncio.sleep(sleep_time)
         for retry in range(retry_count):
             # Avoid too many requests error from Telegram
             response = await cls.request(cls.TELEGRAM_SEND_MESSAGE_URL, message.dict())
