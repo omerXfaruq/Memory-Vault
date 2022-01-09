@@ -74,14 +74,19 @@ class Events:
             print(f"Created task to, {user.name}, {reminder.reminder}, hour: {hour}, gmt: {user.gmt}, now: {now}")
 
     @classmethod
-    async def send_a_message_to_user(cls, telegram_id: int, message: str, retry_count: int = 5, sleep_time: float = 0.1, debug=True) -> bool:
+    async def send_message_list_at_background(cls, telegram_chat_id: int, message_list: List[str]) -> bool:
+        for message in message_list:
+            await Events.send_a_message_to_user(telegram_id=telegram_chat_id, message=message)
+        return True
+
+    @classmethod
+    async def send_a_message_to_user(cls, telegram_id: int, message: str, retry_count: int = 5) -> bool:
         message = ResponseToMessage(
             **{
                 "text": message,
                 "chat_id": telegram_id,
             }
         )
-        await asyncio.sleep(sleep_time)
         for retry in range(retry_count):
             # Avoid too many requests error from Telegram
             response = await cls.request(cls.TELEGRAM_SEND_MESSAGE_URL, message.dict())

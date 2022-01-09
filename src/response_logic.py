@@ -82,13 +82,13 @@ class ResponseLogic:
                     f"\n\nOpen the gates of the memory vault!"
                     f"\n*id | memory*"
                 )
-                await Events.send_a_message_to_user(telegram_id=chat_id, message=response_message)
 
+                background_message_list = []
                 for message_id, reminder in enumerate(memories):
-                    message = f"\n{message_id}: {reminder.reminder}"
-                    await Events.send_a_message_to_user(telegram_id=chat_id, message=message)
+                    background_message_list.append(f"\n{message_id}: {reminder.reminder}")
+                asyncio.create_task(Events.send_message_list_at_background(telegram_chat_id=chat_id, message_list=background_message_list))
 
-                return ""
+                return response_message
 
         elif first_word == "add" or first_word == "/add":
             memory = " ".join(split_text[1:])
