@@ -94,7 +94,7 @@ class Events:
                 return True
             elif response.status_code == 429:
                 retry_after = int(response.json()["parameters"]["retry_after"])
-                print(f"Retry After: {retry_after}, json: {response.json()}")
+                print(f"Retry After: {retry_after}, message: {message}")
                 await asyncio.sleep(retry_after)
 
         return False
