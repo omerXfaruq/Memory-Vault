@@ -78,7 +78,7 @@ class ResponseLogic:
                 return "No memory found in the system. Please add memory, for further information you can type help or */help*."
             else:
                 response_message = (
-                    f"Brace yourself, you will receive a message every second."
+                    f"Brace yourself, you will receive a message one by one."
                     f"\n\nOpen the gates of the memory vault!"
                     f"\n*id | memory*"
                 )
