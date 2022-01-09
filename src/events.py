@@ -74,7 +74,7 @@ class Events:
             print(f"Created task to, {user.name}, {reminder.reminder}, hour: {hour}, gmt: {user.gmt}, now: {now}")
 
     @classmethod
-    async def send_a_message_to_user(cls, telegram_id: int, message: str, retry_count: int = 5, sleep_time: float = 0.1) -> bool:
+    async def send_a_message_to_user(cls, telegram_id: int, message: str, retry_count: int = 5, sleep_time: float = 0.1, debug=True) -> bool:
         message = ResponseToMessage(
             **{
                 "text": message,
@@ -87,7 +87,9 @@ class Events:
             if response.status_code == 200:
                 return True
             elif response.status_code == 429:
-                await asyncio.sleep(int(response.json()["parameters"]["retry_after"]))
+                retry_after = int(response.json()["parameters"]["retry_after"])
+                print(f"Retry After: {retry_after}, json: {response.json()}")
+                await asyncio.sleep()
 
         return False
 
