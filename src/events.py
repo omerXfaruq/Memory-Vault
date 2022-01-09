@@ -5,7 +5,7 @@ import sys
 from typing import List
 import datetime
 import asyncio
-from httpx import AsyncClient
+from httpx import AsyncClient, Response
 
 from .message_validations import ResponseToMessage
 from .db import db_read_users, Reminder, User
@@ -83,12 +83,13 @@ class Events:
         )
         for retry in range(retry_count):
             # Avoid too many requests error from Telegram
-            await asyncio.sleep(sleep_time)
-            req = await cls.request(cls.TELEGRAM_SEND_MESSAGE_URL, message.dict())
-            if req.status_code == 200:
-                break
+            response = await cls.request(cls.TELEGRAM_SEND_MESSAGE_URL, message.dict())
+            if response.status_code == 200:
+                return True
+            elif response.status_code == 429:
+                await asyncio.sleep(int(response.json()["parameters"]["retry_after"]))
 
-        return req.status_code == 200
+        return False
 
     @classmethod
     async def broadcast_message(cls, message: str) -> None:
@@ -104,7 +105,7 @@ class Events:
         )
 
     @classmethod
-    async def request(cls, url: str, payload: dict, debug: bool = True):
+    async def request(cls, url: str, payload: dict, debug: bool = True) -> Response:
         async with AsyncClient() as client:
             request = await client.post(url, json=payload)
             if debug:
