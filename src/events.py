@@ -80,7 +80,7 @@ class Events:
         return True
 
     @classmethod
-    async def send_a_message_to_user(cls, telegram_id: int, message: str, retry_count: int = 5, sleep_time: int = 1.0) -> bool:
+    async def send_a_message_to_user(cls, telegram_id: int, message: str, retry_count: int = 5, sleep_time: int = 0.1) -> bool:
         message = ResponseToMessage(
             **{
                 "text": message,
