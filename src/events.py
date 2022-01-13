@@ -28,11 +28,9 @@ class Events:
         """
         while True:
             await asyncio.sleep(cls.get_time_until_next_hour())
-            users = db_read_users(limit=100000)
-            now = datetime.datetime.now()
-            print(f"Sending is triggered at hour {now.hour}, GMT:{cls.CURRENT_TIMEZONE}")
-            for user in users:
-                cls.send_user_hourly_memories(user, now.hour)
+            async with AsyncClient() as client:
+                endpoint = f"http://0.0.0.0/trigger_send_user_hourly_memories/{Events.TOKEN}"
+                response = await client.post(endpoint)
 
     @classmethod
     def get_time_until_next_hour(cls) -> float:

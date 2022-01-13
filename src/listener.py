@@ -1,7 +1,7 @@
 import asyncio
+import datetime
 
-from fastapi import FastAPI
-
+from fastapi import FastAPI, Depends
 from .db import *
 from .message_validations import MessageBodyModel, ResponseToMessage
 from .constants import Constants
@@ -46,3 +46,12 @@ async def listen_telegram_messages(message: MessageBodyModel):
             "chat_id": chat_id,
         }
     )
+
+
+@app.post(f"/trigger_send_user_hourly_memories/{Events.TOKEN}")
+async def trigger_send_user_hourly_memories(session: Depends(get_session())):
+    users = db_read_users(limit=100000, session=session)
+    now = datetime.datetime.now()
+    print(f"Sending is triggered at hour {now.hour}, GMT:{Events.CURRENT_TIMEZONE}")
+    for user in users:
+        Events.send_user_hourly_memories(user, now.hour)
