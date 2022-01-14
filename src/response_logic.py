@@ -139,7 +139,7 @@ class ResponseLogic:
                 if schedule is None:
                     return f"You are not in the system, please join by, */join*."
                 elif schedule == []:
-                    return f"Your schedule is empty, you can add hours to your schedule with, *schedule add hour1, hour2, hour3*"
+                    return f"Your schedule is empty, you can add hours to your schedule with command, *schedule add hour1 hour2 hour3*, ie: *schedule add 8 12*"
 
                 else:
                     return (
@@ -206,7 +206,7 @@ class ResponseLogic:
                         if not number_check:
                             return f"Please use numbers 0<=number<=23, ie. *schedule add 1 3 5 21*"
                         else:
-                            new_schedule = remove_hour_from_schedule(user, str_number)
+                            new_schedule = remove_hour_from_schedule(user, int(str_number))
                             if new_schedule is None:
                                 return f"You are not in the system, please join by, */join*."
                             else:

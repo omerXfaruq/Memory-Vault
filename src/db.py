@@ -322,15 +322,7 @@ def get_schedule(
     if found_user is None:
         return None
     else:
-        schedule = found_user.scheduled_hours
-        if schedule == "":
-            return []
-
-        schedule_list = []
-        for strnumber in schedule.split(","):
-            schedule_list.append(int(strnumber))
-        schedule_list.sort()
-        return schedule_list
+        return create_schedule_array(user.scheduled_hours)
 
 
 def reset_schedule(
@@ -362,7 +354,7 @@ def reset_schedule(
 
 def remove_hour_from_schedule(
     user: UserCreate,
-    hour: str,
+    hour: int,
     session: Session = next(get_session()),
 ) -> Optional[str]:
     """
@@ -382,12 +374,13 @@ def remove_hour_from_schedule(
     if found_user is None:
         return None
     else:
-        old_schedule = found_user.scheduled_hours
+        old_schedule = create_schedule_array(found_user.scheduled_hours)
         new_schedule = []
-        for str_number in old_schedule.split(","):
-            if not hour == str_number:
-                new_schedule.append(str_number)
-        str_schedule = ",".join(new_schedule)
+        for number in old_schedule:
+            if not hour == number:
+                new_schedule.append(number)
+        str_schedule_list = [str(number) for number in new_schedule]
+        str_schedule = ",".join(str_schedule_list)
         found_user.scheduled_hours = str_schedule
         session.add(found_user)
         session.commit()
@@ -417,10 +410,10 @@ def add_hours_to_the_schedule(
     if found_user is None:
         return None
     else:
-        old_schedule = found_user.scheduled_hours
+        old_schedule = create_schedule_array(found_user.scheduled_hours)
         new_schedule = []
-        for str_number in old_schedule.split(","):
-            new_schedule.append(int(str_number))
+        for number in old_schedule:
+            new_schedule.append(number)
         for number in schedule_list:
             new_schedule.append(number)
         sorted_schedule = sorted(new_schedule)
@@ -460,3 +453,16 @@ def db_read_users(
     else:
         users = session.exec(select(User).offset(offset).limit(limit)).all()
     return users
+
+
+def create_schedule_array(schedule_str: str) -> List[int]:
+    """
+    Create schedule array from schedule string splitted by comas(,).
+    """
+    if schedule_str == "":
+        return []
+    else:
+        schedule_list = []
+        str_list = schedule_str.split(",")
+        for str_number in str_list:
+            schedule_list.append(int(str_number))
