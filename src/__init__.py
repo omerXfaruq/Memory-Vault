@@ -13,13 +13,14 @@ if __name__ == "__main__":
     if Events.TOKEN is None:
         sys.exit("No TELEGRAM_TOKEN found in the environment, exiting now.")
 
+    PORT = Events.PORT
+    loop = asyncio.get_event_loop()
+
     # Run with ngrok if the parameter is given
     running_option = None
     if len(sys.argv) == 2:
         running_option = sys.argv[1]
 
-    PORT = 8000
-    loop = asyncio.get_event_loop()
     if running_option == "ngrok":
         ngrok_token = str(os.environ.get("NGROK_AUTH_TOKEN"))
         if ngrok_token == "None":

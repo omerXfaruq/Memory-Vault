@@ -15,6 +15,7 @@ class Events:
     TOKEN = os.environ.get("TELEGRAM_TOKEN")
     TELEGRAM_SEND_MESSAGE_URL = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     TELEGRAM_SET_WEBHOOK_URL = f"https://api.telegram.org/bot{TOKEN}/setWebhook"
+    PORT = 8000
     HOST_URL = None
     SELF_SIGNED = False
     CURRENT_TIMEZONE = 0
@@ -27,10 +28,11 @@ class Events:
         Runs in a while loop, Triggers Events.send_user_hourly_memories at every hour.
         """
         while True:
-            await asyncio.sleep(cls.get_time_until_next_hour())
+            await asyncio.sleep(10)
             async with AsyncClient() as client:
-                endpoint = f"http://0.0.0.0/trigger_send_user_hourly_memories/{Events.TOKEN}"
-                response = await client.post(endpoint)
+                print(cls.HOST_URL)
+                endpoint = f"http://0.0.0.0:{cls.PORT}/trigger_send_user_hourly_memories/{Events.TOKEN}"
+                response = await client.post(url=endpoint)
 
     @classmethod
     def get_time_until_next_hour(cls) -> float:
@@ -121,6 +123,7 @@ class Events:
 
     @classmethod
     async def set_telegram_webhook_url(cls) -> bool:
+        print(f"webhook_url:{cls.HOST_URL}")
         if cls.SELF_SIGNED:
             payload = {
                 "url": f"{cls.HOST_URL}/webhook/{cls.TOKEN}",
