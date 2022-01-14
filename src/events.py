@@ -50,17 +50,13 @@ class Events:
     ) -> None:
         """
         Sends memories to user if the current_hour is in his schedule.
-
-        Args:
-            user:
-            hour:
-
-        Returns:
-
         """
         hour = (hour + user.gmt) % 24
+        if user.scheduled_hours == "":
+            return
         scheduled_hours = user.scheduled_hours.split(",")
         number_of_messages_at_this_hour = 0
+
         for str_hour in scheduled_hours:
             if int(str_hour) > hour:  # Scheduled_hours are sorted, next items will be > hour as well.
                 break
