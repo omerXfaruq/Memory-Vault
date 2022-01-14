@@ -466,3 +466,5 @@ def create_schedule_array(schedule_str: str) -> List[int]:
         str_list = schedule_str.split(",")
         for str_number in str_list:
             schedule_list.append(int(str_number))
+
+        return schedule_list
