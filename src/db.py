@@ -358,7 +358,7 @@ def remove_hour_from_schedule(
     session: Session = next(get_session()),
 ) -> Optional[str]:
     """
-    Remove hour from schedule of the user.
+    Remove all appearances of hour from schedule of the user.
 
     Args:
         user:
