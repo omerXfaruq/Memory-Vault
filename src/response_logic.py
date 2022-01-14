@@ -138,6 +138,9 @@ class ResponseLogic:
                 schedule = get_schedule(user)
                 if schedule is None:
                     return f"You are not in the system, please join by, */join*."
+                elif schedule == []:
+                    return f"Your schedule is empty, you can add hours to your schedule with, *schedule add hour1, hour2, hour3*"
+
                 else:
                     return (
                         f"*Schedule*:"
