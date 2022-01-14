@@ -322,7 +322,7 @@ def get_schedule(
     if found_user is None:
         return None
     else:
-        return create_schedule_array(user.scheduled_hours)
+        return create_schedule_array(found_user.scheduled_hours)
 
 
 def reset_schedule(
