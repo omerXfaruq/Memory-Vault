@@ -28,7 +28,7 @@ class Events:
         Runs in a while loop, Triggers Events.send_user_hourly_memories at every hour.
         """
         while True:
-            await asyncio.sleep(10)
+            await asyncio.sleep(cls.get_time_until_next_hour())
             async with AsyncClient() as client:
                 print(cls.HOST_URL)
                 endpoint = f"http://0.0.0.0:{cls.PORT}/trigger_send_user_hourly_memories/{Events.TOKEN}"
