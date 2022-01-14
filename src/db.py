@@ -323,6 +323,9 @@ def get_schedule(
         return None
     else:
         schedule = found_user.scheduled_hours
+        if schedule == "":
+            return []
+
         schedule_list = []
         for strnumber in schedule.split(","):
             schedule_list.append(int(strnumber))
