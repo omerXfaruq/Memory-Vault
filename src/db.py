@@ -305,7 +305,7 @@ def update_gmt(
 def get_schedule(
     user: UserCreate,
     session: Session = next(get_session()),
-) -> Optional[List[int]]:
+) -> Optional[str]:
     """
     Get schedule of the user.
 
@@ -314,7 +314,6 @@ def get_schedule(
         session:
 
     Returns: str or None
-
     """
     found_user = session.exec(
         select(User).where(User.telegram_chat_id == user.telegram_chat_id)
@@ -322,7 +321,7 @@ def get_schedule(
     if found_user is None:
         return None
     else:
-        return create_schedule_array(found_user.scheduled_hours)
+        return found_user.scheduled_hours
 
 
 def reset_schedule(
