@@ -25,27 +25,43 @@ async def health():
 @app.post(f"/webhook/{Events.TOKEN}")
 async def listen_telegram_messages(message: MessageBodyModel):
     print(message.dict())
+
     if message.message:
         name = message.message.from_field.first_name
         chat_id = message.message.chat.id
         text = message.message.text
-        if text is None:  # Bot is given admin rights or added to the group
+        language_code = message.message.from_field.language_code
+        if not text:  # Edit of message  etc.
+            return
+        else:
+            response_message = await ResponseLogic.create_response(text, name, chat_id, language_code)
             return ResponseToMessage(
                 **{
-                    "text": Constants.start_message(name),
+                    "text": response_message,
                     "chat_id": chat_id,
                 }
             )
-    else:  # A message is edited
-        return
 
-    response_message = await ResponseLogic.create_response(text, name, chat_id)
-    return ResponseToMessage(
-        **{
-            "text": response_message,
-            "chat_id": chat_id,
-        }
-    )
+    if not message.message:  # Bot is added to a group
+        if not message.my_chat_member:
+            return
+
+        chat_id = message.my_chat_member.chat.id
+        name = message.my_chat_member.from_field.first_name
+        language_code = message.my_chat_member.from_field.language_code
+
+        new_member = message.my_chat_member.new_chat_member
+        if new_member and new_member.user.id == Constants.BOT_ID and new_member.status == "member":
+            await Events.send_a_message_to_user(chat_id, Constants.hello)
+            response_message = Constants.Start.start_message(name, language_code)
+            return ResponseToMessage(
+                **{
+                    "text": response_message,
+                    "chat_id": chat_id,
+                }
+            )
+
+    return
 
 
 @app.post(f"/trigger_send_user_hourly_memories/{Events.TOKEN}")

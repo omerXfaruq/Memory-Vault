@@ -16,6 +16,7 @@ class From(BaseModel):
     id: Optional[int]
     first_name: Optional[str]
     user_name: Optional[str]
+    language_code: Optional[str]
     is_bot: Optional[str]
 
 
