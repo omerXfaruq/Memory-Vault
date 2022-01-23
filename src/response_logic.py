@@ -13,20 +13,20 @@ class ResponseLogic:
     async def create_response(text: str, name: str, chat_id: int, language_code: str) -> str:
 
         split_text = text.split(" ")
-        first_word = split_text[0].lower()
+        first_word = split_text[0]
         user = UserCreate(
             name=name,
             telegram_chat_id=chat_id,
         )
 
-        if first_word == "/start":
+        if ResponseLogic.optional_command_check(first_word, "start"):
             await Events.send_a_message_to_user(chat_id, Constants.hello)
             return Constants.Start.start_message(name, language_code)
-        elif first_word == "help" or first_word == "/help":
+        elif ResponseLogic.optional_command_check(first_word, "help"):
             message = Constants.Help.help_message(name, language_code)
             return message
 
-        elif first_word == "join" or first_word == "/join":
+        elif ResponseLogic.optional_command_check(first_word, "join"):
             user = join_user(user)
 
             if user is not None:
@@ -34,14 +34,14 @@ class ResponseLogic:
             else:
                 return Constants.Join.already_joined(name, language_code)
 
-        elif first_word == "leave" or first_word == "/leave":
+        elif ResponseLogic.optional_command_check(first_word, "leave"):
             user = leave_user(user)
             if user is not None and user.telegram_chat_id == chat_id:
                 return Constants.Leave.successful_leave(name, language_code)
             else:
                 return Constants.Leave.already_left(name, language_code)
 
-        elif first_word == "send" or first_word == "/send":
+        elif ResponseLogic.optional_command_check(first_word, "send"):
             if len(split_text) == 1:  # send
                 memory = select_random_memory(user)
                 if memory is None:
@@ -68,7 +68,7 @@ class ResponseLogic:
                     asyncio.create_task(Events.send_a_message_to_user(user.telegram_chat_id, memory.reminder))
                 return ""
 
-        elif first_word == "list" or first_word == "/list":
+        elif ResponseLogic.optional_command_check(first_word, "list"):
             memories = list_memories(user)
             if memories is None:
                 return Constants.Common.inactive_user(name, language_code)
@@ -83,7 +83,7 @@ class ResponseLogic:
                 response_message = Constants.List.list_messages(name, language_code)
                 return response_message
 
-        elif first_word == "add" or first_word == "/add":
+        elif ResponseLogic.optional_command_check(first_word, "add"):
             memory = " ".join(split_text[1:])
             if str.isspace(memory) or memory == "":
                 return Constants.Add.no_sentence(name, language_code)
@@ -97,7 +97,7 @@ class ResponseLogic:
                     memory = reminder.reminder
                     return Constants.Add.success(name, language_code, memory)
 
-        elif first_word == "delete" or first_word == "/delete":
+        elif ResponseLogic.optional_command_check(first_word, "delete"):
             if len(split_text) < 2:
                 return Constants.Delete.no_id(name, language_code)
             else:
@@ -119,7 +119,7 @@ class ResponseLogic:
                 except Exception as ex:
                     return Constants.Delete.no_id(name, language_code)
 
-        elif first_word == "schedule" or first_word == "/schedule":
+        elif ResponseLogic.optional_command_check(first_word, "schedule"):
             if len(split_text) == 1:
                 schedule = get_schedule(user)
                 if schedule is None:
@@ -191,7 +191,7 @@ class ResponseLogic:
                 else:
                     return Constants.Schedule.unknown_command(name, language_code)
 
-        elif first_word == "gmt" or first_word == "/gmt":
+        elif ResponseLogic.optional_command_check(first_word, "gmt"):
             try:
                 gmt = int(split_text[1])
                 if -12 <= gmt <= 12:
@@ -204,7 +204,7 @@ class ResponseLogic:
             except Exception as ex:
                 return Constants.Gmt.incorrect_timezone(name, language_code)
 
-        elif first_word == "broadcast" or first_word == "/broadcast":
+        elif ResponseLogic.optional_command_check(first_word, "broadcast"):
             if not chat_id == Constants.BROADCAST_CHAT_ID:
                 return Constants.Broadcast.no_right(name, language_code)
             else:
@@ -215,7 +215,7 @@ class ResponseLogic:
                     await Events.broadcast_message(normalized_text)
                     return Constants.Broadcast.success(name, language_code)
 
-        elif first_word == "status" or first_word == "/status":
+        elif ResponseLogic.optional_command_check(first_word, "status"):
             gmt, active = get_user_status(chat_id)
             if gmt is None:
                 return Constants.Common.inactive_user(name, language_code)
@@ -223,7 +223,7 @@ class ResponseLogic:
                 schedule = get_schedule(user)
                 return Constants.Status.get_status(name, language_code, gmt, active, schedule)
 
-        elif first_word == "feedback" or first_word == "/feedback":
+        elif ResponseLogic.optional_command_check(first_word, "feedback"):
 
             message = " ".join(split_text[1:])
             message_with_user_information = message + f"\nFrom the user: *{name}* \nchat id: *{chat_id}*"
@@ -237,7 +237,25 @@ class ResponseLogic:
                 else:
                     return Constants.Feedback.fail(name, language_code)
 
-        elif first_word == "support" or first_word == "/support":
+        elif ResponseLogic.optional_command_check(first_word, "support"):
             return Constants.Support.support(name, language_code)
+
+        elif ResponseLogic.optional_command_check(first_word, "tutorial1"):
+            return Constants.Tutorial.tutorial_1(name, language_code)
+
+        elif ResponseLogic.optional_command_check(first_word, "tutorial2"):
+            return Constants.Tutorial.tutorial_2(name, language_code)
+
+        elif ResponseLogic.optional_command_check(first_word, "tutorial3"):
+            return Constants.Tutorial.tutorial_3(name, language_code)
+
         else:
             return Constants.Common.unknown_command(name, language_code)
+
+    @staticmethod
+    def optional_command_check(input_command: str, correct_command: str) -> bool:
+        input_command = input_command.lower()
+        if input_command == correct_command or input_command == f"/{correct_command}":
+            return True
+        else:
+            return False

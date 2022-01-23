@@ -5,6 +5,7 @@ class Constants:
     smile = "😊"
     hello = "👋🏻"
     sad = "😔"
+    sun_glasses = "😎"
 
     BROADCAST_CHAT_ID = -1001786782026
     FEEDBACK_FORWARD_CHAT_ID = -683998033
@@ -54,13 +55,13 @@ class Constants:
             if language_code == "tr":
                 return (
                     f"Merhabalar {name} {Constants.hello}"
-                    f"\nHatıra Kasası notlarını(hatıralar) kaydetmene imkan sağlar ve sana her gün rastgele hatıralar yollar."
+                    f"\nHatıra Kasası notlarını(hatıralarını) kaydetmene imkan sağlar ve sana her gün Kasandan rastgele hatıralar yollar."
                     f"\n\nHayatımızda karşılaştığımız güzel ve önemli cümleleri bir yere not almak ve sonrasında onları hatırlamak oldukça zor değil mi? {Constants.sad}"
-                    f"\nİşte ben bu sorunu oldukça basit ve kullanması kolay bir yöntemle çözüyorum 😎. Zira karışık çözümleri devam ettirmek zor oluyor. "
+                    f"\nİşte ben bu sorunu oldukça basit ve kullanması kolay bir yöntemle çözüyorum {Constants.sun_glasses}. Zira karışık çözümleri hayatımıza sokmak zor {Constants.sad}."
                     f"\nBu yöntemdeki güzellik şurada, bana verdiğin her hatırayı elbet bir gün sana yollayacağım. Ne zaman yollayacağımı da düşünmene gerek yok."
-                    f"\nBu güzel fikri verdiği için Sevgili hanımım Seyyide'ye teşekkür ederim."
-                    f"\n\n- /join veya *join* ile günlük hatıra yollamayı açabilirsin."
-                    f"\n- /help veya *help* ile daha detaylı bilgi alabilirsin."
+                    f"\nBu güzel fikri verdiği için sevgili hanımım Seyyide'ye teşekkür ederim."
+                    f"\n\n- Botu kullanmaya başlamak için buyur tıkla, /join"
+                    f"\nBotu anlatan kısa rehbere geçmek için buyur tıkla, /tutorial1"
                 )
             else:
                 return (
@@ -70,8 +71,8 @@ class Constants:
                     f"\nHere is the Memory Vault for the rescue! I solve this problem with a very simple and easy to use method, since complex methods makes it harder to keep them in our life."
                     f"\nHere is the catch, I will definitely send you each memory you give to me one day. And you don't need to think over when I will send it."
                     f"\nSincerely thanks to my dear wife Seyyide for the beautiful idea."
-                    f"\n\n- /join or *join* to activate daily sending."
-                    f"\n- /help or *help* to get more detailed information."
+                    f"\n\n- To start using the bot please click, /join"
+                    f"\nTo start to a small tutorial please click, /tutorial1"
                 )
 
     class Help:
@@ -85,7 +86,7 @@ class Constants:
                     f"\n- /leave veya *leave* ile günlük yollamayı durdurabilirsin"
                     f"\n- /send veya *send* ile rastgele bir hatıra yollarım"
                     f"\n- *send number* ile çok sayıda hatıra yollarım"
-                    f"\n- /status or status ile status bilgini yollarım"
+                    f"\n- /status veya *status* ile status bilgini yollarım"
                     f"\n- /list veya *list* ile tüm hatıralarını gönderirim"
 
                     f"\n\n- *add Memory* ile kasana bir hatıra ekleyebilirsin"
@@ -127,7 +128,7 @@ class Constants:
                     f"\n- /leave or *leave* to deactivate daily sending"
                     f"\n- /send or *send* to get a random memory"
                     f"\n- *send number* to get multiple random memories"
-                    f"\n- /status or status to get your status information"
+                    f"\n- /status or *status* to get your status information"
                     f"\n- /list or *list* to list memories"
 
                     f"\n\n- *add Memory* to add a memory to your memory vault"
@@ -167,13 +168,16 @@ class Constants:
         def successful_join(name: str, language_code: str = "en") -> str:
             if language_code == "tr":
                 return (
-                    f"Hoşgeldin, sefa geldin {name}! Günlük hatıra yollamamı açtın. Takvimindeki saatlere göre sana hatıra kasandan her gün hatıralar yollayacağım."
-                    f"Varsayılan takvimindeki yollama saatleri 8:00 ve 20:00'dır. Daha detaylı bilgi için, *help* veya /help."
+                    f"Hoşgeldin, sefa geldin {name}! Günlük hatıra yollamayı açtın. Takvimindeki saatlere göre sana hatıra kasandan her gün hatıralar yollayacağım."
+                    f"Varsayılan takvimindeki saatleri {default_schedule}'dır. (8 -> 8:00, 20 -> 20:00). Daha detaylı bilgi için, *help* veya /help."
+                    f"Yeni bir kullanıcı ile lütfen bu komuta tıklayarak rehbere başla, /tutorial1 {Constants.smile}"
                 )
             else:
                 return (
-                    f"Welcome onboard {name}! You activated daily memory sending. I will send you random memories from your memory vault according to your schedule."
-                    f"The default schedule hours are {default_schedule}. You can get more detailed information by writing, *help* or /help."
+                    f"Welcome onboard {name}! "
+                    f"\nYou activated daily memory sending. I will send you random memories from your memory vault according to your schedule."
+                    f"The default hours in the schedule are {default_schedule}(8 -> 8:00, 20 -> 20:00). You can get more detailed information by writing, *help* or /help."
+                    f"If you are a new user, please start the tutorial by clicking, /tutorial1 {Constants.smile}"
                 )
 
         @staticmethod
@@ -467,4 +471,66 @@ class Constants:
                     f"\n- Share me with your friends"
                     f"\n- Give feedback using the command, *feedback sentence*"
                     f"\n- Star the github repository at https://github.com/FarukOzderim/Memory-Vault/"
+                )
+
+    class Tutorial:
+        @staticmethod
+        def tutorial_1(name: str, language_code: str = "en"):
+            if language_code == "tr":
+                return (
+                    f"*gmt zaman-dilimi* ile zaman dilimi belirleyebilirsin, varsayılan zaman dilimi *GMT0*'dır. Bu arada Türkiye GMT+3 zaman diliminde."
+                    f"\nÖrnek:"
+                    f"\nGMT+3: *gmt 3*"
+                    f"\nGMT0: *gmt 0*"
+                    f"\nGMT-5: *gmt -5*"
+                    f"\n\nBir sonraki rehber adımına geçmek için, /tutorial2"
+
+                )
+            else:
+                return (
+                    f"Use *gmt timezone* to set your timezone, the default timezone is *GMT0*. Btw New York is GMT-5, London is GMT0, Malaysia is GMT+8."
+                    f"\nExamples:"
+                    f"\nGMT+3: *gmt 3*"
+                    f"\nGMT0: *gmt 0*"
+                    f"\nGMT-5: *gmt -5*"
+                    f"\n\nFor the next tutorial step please use, /tutorial2"
+                )
+
+        @staticmethod
+        def tutorial_2(name: str, language_code: str = "en"):
+            if language_code == "tr":
+                return (
+                    f"Hatıra Kasana bir not(hatıra) eklemek için *add Cümle* komutunu kullanabilirsin."
+                    f"\nÖrnek:"
+                    f"\n*add Zaman çok kıymetlidir, her daim eriyen bir dondurmaya benzer.*"
+                    f"\n\nBir sonraki rehber adımına geçmek için, /tutorial3"
+                )
+            else:
+                return (
+                    f"To add a note(memory) to your Memory Vault, please use the command, *add Sentence*."
+                    f"\nExamples:"
+                    f"\n*add Time never does come back*"
+                    f"\n\nFor the next tutorial step please use, /tutorial3"
+                )
+
+        @staticmethod
+        def tutorial_3(name: str, language_code: str = "en"):
+            if language_code == "tr":
+                return (
+                    f"\n- /leave veya *leave* ile günlük yollamayı durdurabilirsin"
+                    f"\n- /send veya *send* ile rastgele bir hatıra yollarım"
+                    f"\n- *send number* ile çok sayıda hatıra yollarım"
+                    f"\n- /status veya *status* ile status bilgini yollarım"
+                    f"\n- /list veya *list* ile tüm hatıralarını gönderirim"
+                    f"\n\n{name} tebrikler rehberi bitirdin {Constants.smile}. Temel komutlarım bunlardı, günlük takvimi ayarlama vb. diğer komutları görmek için, /help."
+                )
+
+            else:
+                return (
+                    f"\n- /leave or *leave* to deactivate daily sending"
+                    f"\n- /send or *send* to get a random memory"
+                    f"\n- *send number* to get multiple random memories"
+                    f"\n- /status or *status* to get your status information"
+                    f"\n- /list or *list* to list memories"
+                    f"\n\n{name} congratulations, you finished the tutorial {Constants.smile}. These were my main commands, to see additional commands like editing daily schedule please us, /help."
                 )
