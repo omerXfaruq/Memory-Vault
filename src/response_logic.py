@@ -194,15 +194,16 @@ class ResponseLogic:
         elif first_word == "gmt" or first_word == "/gmt":
             try:
                 gmt = int(split_text[1])
-                if -12 <= gmt <= 12:
-                    user = update_gmt(user, gmt)
-                    return Constants.Gmt.success(name, language_code, user.gmt)
-
-                else:
-                    return Constants.Gmt.incorrect_timezone(name, language_code)
-
             except Exception as ex:
                 return Constants.Gmt.incorrect_timezone(name, language_code)
+            if not (-12 <= gmt <= 12):
+                return Constants.Gmt.incorrect_timezone(name, language_code)
+            else:
+                user = update_gmt(user, gmt)
+                if user is None:
+                    return Constants.Common.inactive_user(name, language_code)
+                else:
+                    return Constants.Gmt.success(name, language_code, user.gmt)
 
         elif first_word == "broadcast" or first_word == "/broadcast":
             if not chat_id == Constants.BROADCAST_CHAT_ID:
