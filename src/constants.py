@@ -48,7 +48,7 @@ class Constants:
                 return (
                     f"Merhabalar {name} {Constants.hello}"
                     f"\nHatıra Kasası notlarını(hatıralarını) kaydetmene imkan sağlar ve sana her gün Kasandan rastgele hatıralar yollar."
-                    f"\n\nHayatımızda karşılaştığımız güzel ve önemli cümleleri bir yere not almak ve sonrasında onları hatırlamak oldukça zor değil mi? {Constants.sad}"
+                    f"\n\nHayatımızda karşılaştığımız güzel ve önemli cümleleri bir yere not almak ve sonrasında onları hatırlamak oldukça zor değil mi {Constants.sad}?"
                     f"\nİşte ben bu sorunu oldukça basit ve kullanması kolay bir yöntemle çözüyorum {Constants.sun_glasses}. Zira karışık çözümleri hayatımıza sokmak zor {Constants.sad}."
                     f"\nBu yöntemdeki güzellik şurada, bana verdiğin her hatırayı elbet bir gün sana yollayacağım. Ne zaman yollayacağımı da düşünmene gerek yok."
                     f"\nBu güzel fikri verdiği için sevgili hanımım Seyyide'ye teşekkür ederim."
@@ -72,7 +72,7 @@ class Constants:
         def help_message(name: str, language_code: str = "eng") -> str:
             if language_code == "tr":
                 return (
-                    f"\n\nHafıza Kasası sana her gün, takvimini izleyerek kasandan rastgele hatıralar gönderir."
+                    f"\n\nHafıza Kasası sana her gün, takvimindeki saatlerde kasandan rastgele hatıralar gönderir."
                     f"\n- /help veya *help* yardım mesajını alabilirsin"
                     f"\n- /join veya *join* ile günlük gönderimi aktifleştirebilirsin"
                     f"\n- /leave veya *leave* ile günlük yollamayı durdurabilirsin"
@@ -110,7 +110,7 @@ class Constants:
                 )
             else:
                 return (
-                    f"\n\nMemory Vault will send you random memories from your memory vault every day."
+                    f"\n\nMemory Vault will send you random memories from your memory vault, at the hours in your schedule every day."
                     f"\n- /help or *help* to get help message"
                     f"\n- /join or *join* to activate daily memory sending"
                     f"\n- /leave or *leave* to deactivate daily sending"
@@ -498,7 +498,8 @@ class Constants:
                     f"\n- *send number* ile çok sayıda hatıra yollarım"
                     f"\n- /status veya *status* ile status bilgini yollarım"
                     f"\n- /list veya *list* ile tüm hatıralarını gönderirim"
-                    f"\n\n{name} tebrikler rehberi bitirdin {Constants.smile}. Temel komutlarım bunlardı, günlük takvimi ayarlama vb. diğer komutları görmek için, /help."
+                    f"\n\n{name} tebrikler rehberi bitirdin {Constants.smile}. "
+                    f"\nTemel komutlarım bunlardı, günlük takvimi ayarlama vb. diğer komutları görmek için, /help."
                 )
 
             else:
@@ -508,5 +509,6 @@ class Constants:
                     f"\n- *send number* to get multiple random memories"
                     f"\n- /status or *status* to get your status information"
                     f"\n- /list or *list* to list memories"
-                    f"\n\n{name} congratulations, you finished the tutorial {Constants.smile}. These were my main commands, to see additional commands like editing daily schedule please use, /help."
+                    f"\n\n{name} congratulations, you finished the tutorial {Constants.smile}. "
+                    f"\nThese were my main commands, to see additional commands like editing daily schedule please use, /help."
                 )
