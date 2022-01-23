@@ -282,12 +282,7 @@ def update_gmt(
     """
     Update GMT of the user.
 
-    Args:
-        user:
-        session:
-
     Returns: User or None
-
     """
     found_user = session.exec(
         select(User).where(User.telegram_chat_id == user.telegram_chat_id)
