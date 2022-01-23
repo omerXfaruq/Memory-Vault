@@ -126,3 +126,19 @@ def test_db_read_users(session):
     assert 1 == len(user_list)
     assert user_list[0] == user
     print(user_list)
+
+
+def test_print_start_message():
+    name = ""
+    language_code = "en"
+    from src.constants import Constants
+    print()
+    print(Constants.Start.start_message(name, language_code))
+
+
+def test_print_help_message():
+    name = ""
+    language_code = "en"
+    from src.constants import Constants
+    print()
+    print(Constants.Help.help_message(name, language_code))

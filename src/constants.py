@@ -47,7 +47,7 @@ class Constants:
             if language_code == "tr":
                 return (
                     f"Merhabalar {name} {Constants.hello}"
-                    f"\nHatıra Kasası notlarını(hatıralarını) kaydetmene imkan sağlar ve sana her gün Kasandan rastgele hatıralar yollar."
+                    f"\nHatıra Kasası notlarını(hatıralarını) kaydetmene imkan sağlar ve her gün sana rastgele hatıralar yollar."
                     f"\n\nHayatımızda karşılaştığımız güzel ve önemli cümleleri bir yere not almak ve sonrasında onları hatırlamak oldukça zor değil mi {Constants.sad}?"
                     f"\nİşte ben bu sorunu oldukça basit ve kullanması kolay bir yöntemle çözüyorum {Constants.sun_glasses}. Zira karışık çözümleri hayatımıza sokmak zor {Constants.sad}."
                     f"\nBu yöntemdeki güzellik şurada, bana verdiğin her hatırayı elbet bir gün sana yollayacağım. Ne zaman yollayacağımı da düşünmene gerek yok."
@@ -59,7 +59,7 @@ class Constants:
                 return (
                     f"Hello {name} {Constants.hello}"
                     f"\nMemory Vault stores your notes(memories) in the memory vault and sends you random memories every day."
-                    f"\n\nKeeping note of beautiful & important stuff that we come across throughout the life, and later remembering them is quite difficult isn't it? {Constants.sad}"
+                    f"\n\nKeeping note of beautiful & important stuff that we come across throughout the life, and later remembering them is quite difficult isn't it {Constants.sad}?"
                     f"\nHere is the Memory Vault for the rescue! I solve this problem with a very simple and easy to use method {Constants.sun_glasses}. Because, complex methods makes it harder to keep them in our life."
                     f"\nHere is the catch, I will definitely send you each memory you give to me one day. And you don't need to think over when I will send it."
                     f"\nSincerely thanks to my dear wife Seyyide for the beautiful idea."
