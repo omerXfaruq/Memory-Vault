@@ -72,6 +72,7 @@ class Events:
     @classmethod
     async def send_message_list_at_background(cls, telegram_chat_id: int, message_list: List[str]) -> bool:
         for message in message_list:
+            print(f"sending the message: {message}, to chat: {telegram_chat_id} ")
             await Events.send_a_message_to_user(telegram_id=telegram_chat_id, message=message)
         return True
 
@@ -85,6 +86,7 @@ class Events:
         )
         await asyncio.sleep(sleep_time)
         for retry in range(retry_count):
+            print(f"Sending the message in send_a_message_to_user, count {retry}")
             # Avoid too many requests error from Telegram
             response = await cls.request(cls.TELEGRAM_SEND_MESSAGE_URL, message.dict())
             if response.status_code == 200:
