@@ -93,7 +93,8 @@ class Events:
                 retry_after = int(response.json()["parameters"]["retry_after"])
                 print(f"Retry After: {retry_after}, message: {message}")
                 await asyncio.sleep(retry_after)
-
+            else:
+                print(f"Unhandled response code: {response.status_code}, response: {response.json()}")
         return False
 
     @classmethod
