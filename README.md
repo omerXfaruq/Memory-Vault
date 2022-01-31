@@ -1,6 +1,5 @@
 # Memory-Vault
 
-```
 Hello  👋🏻
 Memory Vault stores your notes(memories) in the memory vault and sends you random memories every day.
 
@@ -8,7 +7,6 @@ Keeping note of beautiful & important stuff that we come across throughout the l
 Here is the Memory Vault for the rescue! I solve this problem with a very simple and easy to use method 😎. Because, complex methods makes it harder to keep them in our life.
 Here is the catch, I will definitely send you each memory you give to me one day. And you don't need to think over when I will send it.
 Sincerely thanks to my dear wife Seyyide for the beautiful idea.
-```
 
 ## [Try it!](https://t.me/Memory_Vault_Bot)
 
