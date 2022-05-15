@@ -2,6 +2,7 @@
 Take your notes and let memory vault remind them to you.
 
 Hello 👋🏻
+
 Memory Vault is a telegram bot that stores your notes in the Vault and reminds random memories every day.
 
 Keeping note of beautiful & important stuff that we come across throughout the life, and later remembering them is quite difficult isn't it 😔?
