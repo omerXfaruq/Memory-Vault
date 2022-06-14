@@ -243,7 +243,9 @@ class Constants:
                 return f"{name} bu not zaten kasada {Constants.smile}"
 
             else:
-                return f"{name} the note is already in your memory vault {Constants.smile}"
+                return (
+                    f"{name} the note is already in your memory vault {Constants.smile}"
+                )
 
         @staticmethod
         def success(name: str, language_code: str = "en", note: str = "") -> str:
