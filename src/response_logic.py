@@ -322,7 +322,7 @@ class ResponseLogic:
         if (
             input_command == correct_command
             or input_command == f"/{correct_command}"
-            or input_command == f"/{correct_command}@Memory_Vault_Bot"
+            or input_command == f"/{correct_command}@memoryvaultbot"
         ):
             return True
         else:

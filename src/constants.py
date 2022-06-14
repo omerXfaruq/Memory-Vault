@@ -115,8 +115,9 @@ class Constants:
                     f"\n- *schedule remove saat* ile bir saati takviminden tamamen kaldırabilirsin"
                     f"\nÖrnek:"
                     f"\n*schedule remove 8*"
-                    f"\n\n- Beni *gruplarda da kullanabilirsin*, gruba ekleyip yönetici yapman yeterli. Yönetici yapmak istemiyorsan da grupta benim mesajlarıma yanıtla yaparak da komutları kullanabilirsin."
-                    f"\n- *Birden fazla Hatıra Kasasına* sahip olmak için beni farklı gruplarda kullanabilirsin. Örneğin hatırlamak istediğin kelimeleri hatıralar olarak eklediğin bir dil öğrenme grubunda sana güzelce hizmet ederim."
+                    f"\n\n*Grup Kullanımı*"
+                    f"\n - Beni *gruplarda da kullanabilirsin*, gruba ekleyip yönetici yapman yeterli. Yönetici yapmak istemiyorsan da grupta benim mesajlarıma yanıtla yaparak da komutları kullanabilirsin."
+                    f"\n- *Birden fazla Hatıra Kasasına* sahip olmak için beni farklı gruplarda kullanabilirsin. Mesela bir kelime öğrenme grubu kurabilirsin."
                     f"\n- Örnek grup: Kuran'ı Kerim'den Dualar(@PrayersFromQuran)"
                 )
             else:
@@ -153,7 +154,8 @@ class Constants:
                     f"\n- *schedule remove hour* to remove an hour from your schedule"
                     f"\nExample:"
                     f"\n*schedule remove 8*"
-                    f"\n\n- You can *use me in groups* as well, just add me to a group and promote me to admin there. If you don't want to make me an admin, you can reply to my messages in the group to use my commands."
+                    f"\n\n*Group Usage*"
+                    f"\n - You can *use me in groups* as well, just add me to a group and promote me to admin there. If you don't want to make me an admin, you can reply to my messages in the group to use my commands."
                     f"\n- Furthermore *you can have multiple memory vaults* by using different groups. For example I would serve you well in a *language learning group*, where you add words you want to remember to your memory vault."
                     f"\n- Example group: @PrayersFromQuran"
                 )
