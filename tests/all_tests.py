@@ -6,7 +6,7 @@ from sqlmodel.pool import StaticPool
 
 from src.listener import app, User, UserCreate, get_session
 from src.events import Events
-from src.db import db_create_user, db_read_users, Reminder, add_hours_to_the_schedule
+from src.db import *
 
 pytest_plugins = ("pytest_asyncio",)
 
@@ -76,6 +76,23 @@ def test_user_send_time_list(session):
     user_list = db_read_users(session=session)
     assert 1 == len(user_list)
     assert user_list[0] == user
+
+
+def test_add_and_remove_users(session):
+    user = UserCreate(
+        name="lloll",
+        telegram_chat_id=100100010001,
+    )
+    user = User.from_orm(user)
+    db_create_user(user, session)
+    add_memory(user, "hey", session)
+    add_memory(user, "heyyo", session)
+    delete_memory(user, 0, session)
+    add_memory(user, "hey", session)
+    assert list_memories(user, session) == [
+        Reminder(user_id=1, reminder="heyyo", id=2),
+        Reminder(user_id=1, reminder="hey", id=3),
+    ]
 
 
 def test_add_schedules(session):

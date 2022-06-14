@@ -218,7 +218,7 @@ class Constants:
         def list_messages(name: str, language_code: str = "en") -> str:
             if language_code == "tr":
                 return (
-                    f"{name} Destur! Hatıraların birer birer akacak."
+                    f"{name} Destur! Notların birer birer akacak."
                     f"\n\nHatıra kasasının kapılarını açın!"
                     f"\n*id | not*"
                 )
@@ -252,13 +252,17 @@ class Constants:
             if language_code == "tr":
                 return (
                     f"{name}, not kasana eklendi. Merak etme, onu güvende tutacağım {Constants.smile}"
-                    f"\n*Hatıra*: \n{note}"
+                    f"\n*Not*: \n{note}"
+                    f""
+                    f"\n\n Eğer son eklediğin notu silmek istiyorsan, bu komutu kullan */deletelast*"
                 )
 
             else:
                 return (
                     f"{name}, note is added to your memory vault. No worries, I will keep it safe {Constants.smile}"
                     f"\n*Note*: \n{note}"
+                    f""
+                    f"\n\nIf you want to delete the last added note, you can use */deletelast*"
                 )
 
     class Delete:
@@ -275,7 +279,7 @@ class Constants:
             if language_code == "tr":
                 return (
                     f"{name}, not kasadan silindi. Unutulan hatıraya elveda {Constants.sad}"
-                    f"\n*Silinen Hatıra*:"
+                    f"\n*Silinen Not*:"
                     f"\n{note}"
                 )
             else:
