@@ -22,9 +22,9 @@ class Constants:
         @staticmethod
         def no_memory_found(name: str, language_code: str = "en") -> str:
             if language_code == "tr":
-                return f"{name}, ne yazık ki hatıra kasan boş. Lütfen bu komutla hatıra ekle *add Cümle* {Constants.smile}"
+                return f"{name}, ne yazık ki hatıra kasan boş. Lütfen bu komutla not ekle *add Cümle* {Constants.smile}"
             else:
-                return f"{name}, I could not find any memory in your Vault. Please add a memory with, *add Sentence* {Constants.smile}"
+                return f"{name}, I could not find any note in your Vault. Please add a note with, *add Sentence* {Constants.smile}"
 
         @staticmethod
         def unknown_command(name: str, language_code: str = "en") -> str:
@@ -34,10 +34,10 @@ class Constants:
                     f"Sevgili {name}, ne yazık ki bu komutu bilmiyorum {Constants.sad}"
                     f"\n- /start veya *start* ile başlangıç mesajını görebilirsin"
                     f"\n- /leave veya *leave* ile günlük hatırlatmaları durdurabilirsin"
-                    f"\n- /send veya *send* ile rastgele bir hatıra yollarım"
-                    f"\n- *send number* ile çok sayıda hatıra yollarım"
+                    f"\n- /send veya *send* ile rastgele bir not yollarım"
+                    f"\n- *send number* ile çok sayıda not yollarım"
                     f"\n- /status veya *status* ile status bilgini yollarım"
-                    f"\n- /list veya *list* ile tüm hatıralarını gönderirim"
+                    f"\n- /list veya *list* ile tüm notlarını gönderirim"
                     f"\nTemel komutlarım bunlardı, günlük takvimi ayarlama vb. diğer tüm detaylı komutları görmek için, *help veya /help"
                 )
             else:
@@ -45,7 +45,7 @@ class Constants:
                     f"Dear {name}, unfortunately I do not know that command {Constants.sad}"
                     f"\n- /start or *start* to see the start message"
                     f"\n- /leave or *leave* to deactivate daily reminders"
-                    f"\n- /send or *send* to get a random memory"
+                    f"\n- /send or *send* to get a random note"
                     f"\n- *send number* to get multiple random memories"
                     f"\n- /status or *status* to get your status information"
                     f"\n- /list or *list* to list memories"
@@ -58,10 +58,10 @@ class Constants:
             if language_code == "tr":
                 return (
                     f"Merhabalar {name} {Constants.hello}"
-                    f"\nHatıra Kasası notlarını(hatıralarını) kaydetmene imkan sağlar ve her gün sana rastgele hatıralar yollar."
+                    f"\nHatıra Kasası notlarını kaydetmene imkan sağlar ve her gün sana rastgele notlar yollar."
                     f"\n\nHayatımızda karşılaştığımız güzel ve önemli cümleleri bir yere not almak ve sonrasında onları hatırlamak oldukça zor değil mi {Constants.sad}?"
                     f"\nİşte ben bu sorunu oldukça basit ve kullanması kolay bir yöntemle çözüyorum {Constants.sun_glasses}. Zira karışık çözümleri hayatımıza sokmak zor {Constants.sad}."
-                    f"\nBu yöntemdeki güzellik şurada, bana verdiğin her hatırayı elbet bir gün sana yollayacağım. Ne zaman yollayacağımı da düşünmene gerek yok."
+                    f"\nBu yöntemdeki güzellik şurada, bana verdiğin her notu elbet bir gün sana yollayacağım. Ne zaman yollayacağımı da düşünmene gerek yok."
                     f"\nBu güzel fikri verdiği için sevgili hanımım Seyyide'ye teşekkür ederim."
                     f"\n\n- Botu kullanmaya başlamak için buyur tıkla, /join"
                     f"\n- Botu anlatan kısa rehbere geçmek için buyur tıkla, /tutorial1"
@@ -72,7 +72,7 @@ class Constants:
                     f"\nMemory Vault stores your notes(memories) in the memory vault and sends you random memories every day."
                     f"\n\nKeeping note of beautiful & important stuff that we come across throughout the life, and later remembering them is quite difficult isn't it {Constants.sad}?"
                     f"\nHere is the Memory Vault for the rescue! I solve this problem with a very simple and easy to use method {Constants.sun_glasses}. Because, complex methods makes it harder to keep them in our life."
-                    f"\nHere is the catch, I will definitely send you each memory you give to me one day. And you don't need to think over when I will send it."
+                    f"\nHere is the catch, I will definitely send you each note you give to me one day. And you don't need to think over when I will send it."
                     f"\nSincerely thanks to my dear wife Seyyide for the beautiful idea."
                     f"\n\n- To start using the bot please click, /join"
                     f"\n- To start to a small tutorial please click, /tutorial1"
@@ -83,18 +83,18 @@ class Constants:
         def help_message(name: str, language_code: str = "eng") -> str:
             if language_code == "tr":
                 return (
-                    f"\n\nHafıza Kasası sana her gün, takvimindeki saatlerde kasandan rastgele hatıralar gönderir."
+                    f"\n\nHafıza Kasası sana her gün, takvimindeki saatlerde kasandan rastgele notlar gönderir."
                     f"\n- /help veya *help* yardım mesajını alabilirsin"
                     f"\n- /join veya *join* ile günlük gönderimi aktifleştirebilirsin"
                     f"\n- /leave veya *leave* ile günlük hatırlatmayı durdurabilirsin"
-                    f"\n- /send veya *send* ile rastgele bir hatıra yollarım"
-                    f"\n- *send number* ile çok sayıda hatıra yollarım"
+                    f"\n- /send veya *send* ile rastgele bir not yollarım"
+                    f"\n- *send number* ile çok sayıda not yollarım"
                     f"\n- /status veya *status* ile status bilgini yollarım"
-                    f"\n- /list veya *list* ile tüm hatıralarını gönderirim"
-                    f"\n\n- *add Memory* ile kasana bir hatıra ekleyebilirsin"
+                    f"\n- /list veya *list* ile tüm notlarını gönderirim"
+                    f"\n\n- *add Note* ile kasana bir not ekleyebilirsin"
                     f"\nÖrnek:"
                     f"\n*add Vakit hiç bir zaman geri gelmez*"
-                    f"\n\n- *delete id* ile bir hatırayı silebilirsin. Hatıra id'lerini bu komutlarla öğrenebilirsin, *list* veya /list"
+                    f"\n\n- *delete id* ile bir notu silebilirsin. Not id'lerini bu komutlarla öğrenebilirsin, *list* veya /list"
                     f"\nÖrnek:"
                     f"\n*delete 2*"
                     f"\n\n- *gmt zaman-dilimi* ile zaman dilimi belirleyebilirsin, varsayılan zaman dilimi *GMT0*'dır"
@@ -105,8 +105,8 @@ class Constants:
                     f"\n\n- /support veya *support* ile beni nasıl destekleyebileceğini öğrenebilirsin"
                     f"\n- *feedback Cümle* ile bot hakkındaki düşüncelerini veya ƒeedback'lerini yollayabilirsin"
                     f"\n\n*Schedule(takvim) hakkındaki komutlar:*"
-                    f"\nHer gün takvimindeki saat başlarında sana hatıralar yollarım. Varsayılan takvim saatleri *{default_schedule}*'dır. Yani her gün 8:00 ve 20:00'de sana bir adet hatıra yollayacağım."
-                    f"\nSchedule komutlarıyla kendi günlük takvimini oluşturabilirsin. Ayrıca bir saati birden fazla kez ekleyerek o saatte birden çok hatıra alabilirsin."
+                    f"\nHer gün takvimindeki saat başlarında sana notlar yollarım. Varsayılan takvim saatleri *{default_schedule}*'dır. Yani her gün 8:00 ve 20:00'de sana bir adet not yollayacağım."
+                    f"\nSchedule komutlarıyla kendi günlük takvimini oluşturabilirsin. Ayrıca bir saati birden fazla kez ekleyerek o saatte birden çok not alabilirsin."
                     f"\n- /schedule veya *schedule* ile şuanki takvimini yollarım"
                     f"\n- *schedule reset* ile takvimini varsayılan takvime({default_schedule}) çekerim"
                     f"\n- *schedule add saat1 saat2 saat3* ile saatleri takvimine eklerim"
@@ -124,16 +124,16 @@ class Constants:
                 return (
                     f"\n\nMemory Vault will send you random memories from your memory vault, at the hours in your schedule every day."
                     f"\n- /help or *help* to get help message"
-                    f"\n- /join or *join* to activate daily memory sending"
+                    f"\n- /join or *join* to activate daily note sending"
                     f"\n- /leave or *leave* to deactivate daily reminders"
-                    f"\n- /send or *send* to get a random memory"
+                    f"\n- /send or *send* to get a random note"
                     f"\n- *send number* to get multiple random memories"
                     f"\n- /status or *status* to get your status information"
                     f"\n- /list or *list* to list memories"
-                    f"\n\n- *add Memory* to add a memory to your memory vault"
+                    f"\n\n- *add Note* to add a note to your memory vault"
                     f"\nExample:"
                     f"\n*add Time never does come back*"
-                    f"\n\n- *delete id* to delete a memory. You can learn the memory ids with the command, *list* or /list"
+                    f"\n\n- *delete id* to delete a note. You can learn the note ids with the command, *list* or /list"
                     f"\nExample:"
                     f"\n*delete 2*"
                     f"\n\n- *gmt timezone* to set your timezone,  the default timezone is *GMT0*"
@@ -144,7 +144,7 @@ class Constants:
                     f"\n\n- /support or *support* to learn how to support me"
                     f"\n- *feedback Sentence* to send your thoughts and feedbacks about the bot"
                     f"\n\n*Schedule related commands:*"
-                    f"\nI send memories according to the hours in your schedule. Default schedule hours are *{default_schedule}*. I will send you a memory at 8:00 and 20:00 everyday."
+                    f"\nI send memories according to the hours in your schedule. Default schedule hours are *{default_schedule}*. I will send you a note at 8:00 and 20:00 everyday."
                     f"\nYou can create your own daily schedule. Furthermore you can add an hour multiple times to receive multiple memories at that hour."
                     f"\n- /schedule or *schedule* to display your current schedule"
                     f"\n- *schedule reset* to reset your schedule to the default schedule"
@@ -165,14 +165,14 @@ class Constants:
         def successful_join(name: str, language_code: str = "en") -> str:
             if language_code == "tr":
                 return (
-                    f"Hoşgeldin, sefa geldin {name}! Günlük hatıra yollamayı açtın. Takvimindeki saatlere göre sana hatıra kasandan her gün hatıralar yollayacağım."
+                    f"Hoşgeldin, sefa geldin {name}! Günlük not yollamayı açtın. Takvimindeki saatlere göre sana hatıra kasandan her gün notlar yollayacağım."
                     f"Varsayılan takvimindeki saatleri {default_schedule}'dır. (8 -> 8:00, 20 -> 20:00). Daha detaylı bilgi için, *help* veya /help."
                     f"\nYeni bir kullanıcı isen lütfen bu komuta tıklayarak rehbere başla, /tutorial1 {Constants.smile}"
                 )
             else:
                 return (
                     f"Welcome onboard {name}! "
-                    f"\nYou activated daily memory sending. I will send you random memories from your memory vault according to your schedule."
+                    f"\nYou activated daily note sending. I will send you random memories from your memory vault according to your schedule."
                     f"The default hours in the schedule are {default_schedule}(8 -> 8:00, 20 -> 20:00). You can get more detailed information by writing, *help* or /help."
                     f"\nIf you are a new user, please start the tutorial by clicking, /tutorial1 {Constants.smile}"
                 )
@@ -189,12 +189,12 @@ class Constants:
         def successful_leave(name: str, language_code: str = "en") -> str:
             if language_code == "tr":
                 return (
-                    f"Allah'a emanet ol {name}. Günlük hatıra yollamamı kapattın, ama merak etme hatıra kasan benimle."
+                    f"Allah'a emanet ol {name}. Günlük not yollamamı kapattın, ama merak etme hatıra kasan benimle."
                     f"İstediğin zaman bu komutlarla geri gelebilirsin, *join veya /join."
                 )
             else:
                 return (
-                    f"Good bye {name}, you deactivated daily memory sending. It was nice to have you here. "
+                    f"Good bye {name}, you deactivated daily note sending. It was nice to have you here. "
                     f"Your memory vault remains with me, you can return whenever you wish with command, *join* or /join."
                 )
 
@@ -220,13 +220,13 @@ class Constants:
                 return (
                     f"{name} Destur! Hatıraların birer birer akacak."
                     f"\n\nHatıra kasasının kapılarını açın!"
-                    f"\n*id | hatıra*"
+                    f"\n*id | not*"
                 )
             else:
                 return (
                     f"Brace yourself {name}, you will receive memories one by one."
                     f"\n\nOpen the gates of the memory vault!"
-                    f"\n*id | memory*"
+                    f"\n*id | note*"
                 )
 
     class Add:
@@ -240,47 +240,47 @@ class Constants:
         @staticmethod
         def already_added(name: str, language_code: str = "en") -> str:
             if language_code == "tr":
-                return f"{name} bu hatıra zaten kasada {Constants.smile}"
+                return f"{name} bu not zaten kasada {Constants.smile}"
 
             else:
-                return f"{name} the memory is already in your memory vault {Constants.smile}"
+                return f"{name} the note is already in your memory vault {Constants.smile}"
 
         @staticmethod
-        def success(name: str, language_code: str = "en", memory: str = "") -> str:
+        def success(name: str, language_code: str = "en", note: str = "") -> str:
             if language_code == "tr":
                 return (
-                    f"{name}, hatıran kasana eklendi. Merak etme, onu güvende tutacağım {Constants.smile}"
-                    f"\n*Hatıra*: \n{memory}"
+                    f"{name}, not kasana eklendi. Merak etme, onu güvende tutacağım {Constants.smile}"
+                    f"\n*Hatıra*: \n{note}"
                 )
 
             else:
                 return (
-                    f"{name}, memory is added to your memory vault. No worries, I will keep it safe {Constants.smile}"
-                    f"\n*Memory*: \n{memory}"
+                    f"{name}, note is added to your memory vault. No worries, I will keep it safe {Constants.smile}"
+                    f"\n*Note*: \n{note}"
                 )
 
     class Delete:
         @staticmethod
         def no_id(name: str, language_code: str = "en") -> str:
             if language_code == "tr":
-                return f"{name}, bana hatıranın id'sini vermen gerekiyor, örn: *delete 2*, bu komut ile id'leri öğrenebilirsin *list* veya /list"
+                return f"{name}, bana notun id'sini vermen gerekiyor, örn: *delete 2*, bu komut ile id'leri öğrenebilirsin *list* veya /list"
 
             else:
-                return f"{name}, need to give me id of the memory, ie: *delete 2*, you can get it by using command, *list* or /list"
+                return f"{name}, need to give me id of the note, ie: *delete 2*, you can get it by using command, *list* or /list"
 
         @staticmethod
-        def success(name: str, language_code: str = "en", memory: str = "") -> str:
+        def success(name: str, language_code: str = "en", note: str = "") -> str:
             if language_code == "tr":
                 return (
-                    f"{name}, hatıran kasadan silindi. Unutulan hatıraya elveda {Constants.sad}"
+                    f"{name}, not kasadan silindi. Unutulan hatıraya elveda {Constants.sad}"
                     f"\n*Silinen Hatıra*:"
-                    f"\n{memory}"
+                    f"\n{note}"
                 )
             else:
                 return (
-                    f"{name}, your memory is deleted from your memory vault. Good bye to the forgotten memory {Constants.sad}"
-                    f"\n*Deleted Memory*:"
-                    f"\n{memory}"
+                    f"{name}, your note is deleted from your memory vault. Good bye to the forgotten memory {Constants.sad}"
+                    f"\n*Deleted Note*:"
+                    f"\n{note}"
                 )
 
     class Schedule:
@@ -296,13 +296,13 @@ class Constants:
         def success(name: str, language_code: str = "en", schedule: str = "") -> str:
             if language_code == "tr":
                 return (
-                    f"{name}, güncel takvimin aşağıda, takvimindeki saat başlarında rastgele bir hatıra alacaksın. örn: 8 -> 8:00"
+                    f"{name}, güncel takvimin aşağıda, takvimindeki saat başlarında rastgele bir not alacaksın. örn: 8 -> 8:00"
                     f"\n*Takvim*:"
                     f"\n{schedule}"
                 )
             else:
                 return (
-                    f"{name}, your current schedule is below, You will get a random memory at each of these hours everyday. ie: 8 -> 8:00"
+                    f"{name}, your current schedule is below, You will get a random note at each of these hours everyday. ie: 8 -> 8:00"
                     f"\n*Schedule*:"
                     f"\n{schedule}"
                 )
@@ -489,14 +489,14 @@ class Constants:
         def tutorial_2(name: str, language_code: str = "en"):
             if language_code == "tr":
                 return (
-                    f"Hatıra Kasana bir not(hatıra) eklemek için *add Cümle* komutunu kullanabilirsin."
+                    f"Hatıra Kasana bir not eklemek için *add Cümle* komutunu kullanabilirsin."
                     f"\nÖrnek:"
                     f"\n*add Zaman çok kıymetlidir, her daim eriyen bir dondurmaya benzer.*"
                     f"\n\nBir sonraki rehber adımına geçmek için, /tutorial3"
                 )
             else:
                 return (
-                    f"To add a note(memory) to your Memory Vault, please use the command, *add Sentence*."
+                    f"To add a note to your Memory Vault, please use the command, *add Sentence*."
                     f"\nExample:"
                     f"\n*add Time never does come back*"
                     f"\n\nFor the next tutorial step please use, /tutorial3"
@@ -507,10 +507,10 @@ class Constants:
             if language_code == "tr":
                 return (
                     f"\n- /leave veya *leave* ile günlük hatırlatmayı durdurabilirsin"
-                    f"\n- /send veya *send* ile rastgele bir hatıra yollarım"
-                    f"\n- *send number* ile çok sayıda hatıra yollarım"
+                    f"\n- /send veya *send* ile rastgele bir not yollarım"
+                    f"\n- *send number* ile çok sayıda not yollarım"
                     f"\n- /status veya *status* ile status bilgini yollarım"
-                    f"\n- /list veya *list* ile tüm hatıralarını gönderirim"
+                    f"\n- /list veya *list* ile tüm notlarını gönderirim"
                     f"\n\n{name} tebrikler rehberi bitirdin {Constants.smile}. "
                     f"\nTemel komutlarım bunlardı, günlük takvimi ayarlama vb. diğer komutları görmek için, /help."
                 )
@@ -518,7 +518,7 @@ class Constants:
             else:
                 return (
                     f"\n- /leave or *leave* to deactivate daily reminders"
-                    f"\n- /send or *send* to get a random memory"
+                    f"\n- /send or *send* to get a random note"
                     f"\n- *send number* to get multiple random memories"
                     f"\n- /status or *status* to get your status information"
                     f"\n- /list or *list* to list memories"
