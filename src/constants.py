@@ -46,9 +46,9 @@ class Constants:
                     f"\n- /start or *start* to see the start message"
                     f"\n- /leave or *leave* to deactivate daily reminders"
                     f"\n- /send or *send* to get a random note"
-                    f"\n- *send number* to get multiple random memories"
+                    f"\n- *send number* to get multiple random notes"
                     f"\n- /status or *status* to get your status information"
-                    f"\n- /list or *list* to list memories"
+                    f"\n- /list or *list* to list notes"
                     f"\nThese were my main commands, to see additional commands like editing daily schedule please use, *help* or /help"
                 )
 
@@ -69,7 +69,7 @@ class Constants:
             else:
                 return (
                     f"Hello {name} {Constants.hello}"
-                    f"\nMemory Vault stores your notes(memories) in the memory vault and sends you random memories every day."
+                    f"\nMemory Vault stores your notes in the memory vault and sends you random notes every day."
                     f"\n\nKeeping note of beautiful & important stuff that we come across throughout the life, and later remembering them is quite difficult isn't it {Constants.sad}?"
                     f"\nHere is the Memory Vault for the rescue! I solve this problem with a very simple and easy to use method {Constants.sun_glasses}. Because, complex methods makes it harder to keep them in our life."
                     f"\nHere is the catch, I will definitely send you each note you give to me one day. And you don't need to think over when I will send it."
@@ -122,14 +122,14 @@ class Constants:
                 )
             else:
                 return (
-                    f"\n\nMemory Vault will send you random memories from your memory vault, at the hours in your schedule every day."
+                    f"\n\nMemory Vault will send you random notes from your memory vault, at the hours in your schedule every day."
                     f"\n- /help or *help* to get help message"
                     f"\n- /join or *join* to activate daily note sending"
                     f"\n- /leave or *leave* to deactivate daily reminders"
                     f"\n- /send or *send* to get a random note"
-                    f"\n- *send number* to get multiple random memories"
+                    f"\n- *send number* to get multiple random notes"
                     f"\n- /status or *status* to get your status information"
-                    f"\n- /list or *list* to list memories"
+                    f"\n- /list or *list* to list notes"
                     f"\n\n- *add Note* to add a note to your memory vault"
                     f"\nExample:"
                     f"\n*add Time never does come back*"
@@ -144,8 +144,8 @@ class Constants:
                     f"\n\n- /support or *support* to learn how to support me"
                     f"\n- *feedback Sentence* to send your thoughts and feedbacks about the bot"
                     f"\n\n*Schedule related commands:*"
-                    f"\nI send memories according to the hours in your schedule. Default schedule hours are *{default_schedule}*. I will send you a note at 8:00 and 20:00 everyday."
-                    f"\nYou can create your own daily schedule. Furthermore you can add an hour multiple times to receive multiple memories at that hour."
+                    f"\nI send notes according to the hours in your schedule. Default schedule hours are *{default_schedule}*. I will send you a note at 8:00 and 20:00 everyday."
+                    f"\nYou can create your own daily schedule. Furthermore you can add an hour multiple times to receive multiple notes at that hour."
                     f"\n- /schedule or *schedule* to display your current schedule"
                     f"\n- *schedule reset* to reset your schedule to the default schedule"
                     f"\n- *schedule add hour1 hour2 hour3* to add hours to your schedule"
@@ -172,7 +172,7 @@ class Constants:
             else:
                 return (
                     f"Welcome onboard {name}! "
-                    f"\nYou activated daily note sending. I will send you random memories from your memory vault according to your schedule."
+                    f"\nYou activated daily note sending. I will send you random notes from your memory vault according to your schedule."
                     f"The default hours in the schedule are {default_schedule}(8 -> 8:00, 20 -> 20:00). You can get more detailed information by writing, *help* or /help."
                     f"\nIf you are a new user, please start the tutorial by clicking, /tutorial1 {Constants.smile}"
                 )
@@ -224,7 +224,7 @@ class Constants:
                 )
             else:
                 return (
-                    f"Brace yourself {name}, you will receive memories one by one."
+                    f"Brace yourself {name}, you will receive notes one by one."
                     f"\n\nOpen the gates of the memory vault!"
                     f"\n*id | note*"
                 )
@@ -521,9 +521,9 @@ class Constants:
                 return (
                     f"\n- /leave or *leave* to deactivate daily reminders"
                     f"\n- /send or *send* to get a random note"
-                    f"\n- *send number* to get multiple random memories"
+                    f"\n- *send number* to get multiple random notes"
                     f"\n- /status or *status* to get your status information"
-                    f"\n- /list or *list* to list memories"
+                    f"\n- /list or *list* to list notes"
                     f"\n\n{name} congratulations, you finished the tutorial {Constants.smile}. "
                     f"\nThese were my main commands, to see additional commands like editing daily schedule please use, /help."
                 )
