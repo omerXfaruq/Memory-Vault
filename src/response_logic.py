@@ -1,22 +1,7 @@
 import random
 import asyncio
 
-from .db import (
-    UserCreate,
-    join_user,
-    leave_user,
-    select_random_memory,
-    add_memory,
-    delete_memory,
-    list_memories,
-    update_gmt,
-    get_user_status,
-    get_schedule,
-    reset_schedule,
-    add_hours_to_the_schedule,
-    remove_hour_from_schedule,
-    default_schedule,
-)
+from .db import *
 from .events import Events
 from .constants import Constants
 
@@ -290,6 +275,15 @@ class ResponseLogic:
                     return Constants.Feedback.success(name, language_code, message)
                 else:
                     return Constants.Feedback.fail(name, language_code)
+
+        elif ResponseLogic.check_command_type(first_word, "deletelast"):
+            response = delete_last_memory(user)
+            if response is None:
+                return Constants.Common.inactive_user(name, language_code)
+            elif response is False:
+                return Constants.Common.no_memory_found(name, language_code)
+            else:
+                return Constants.Delete.success(name, language_code, response)
 
         elif ResponseLogic.check_command_type(first_word, "support"):
             return Constants.Support.support(name, language_code)

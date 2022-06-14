@@ -227,7 +227,6 @@ def add_memory(
             )
         ).first()
         if found_memory is not None:
-            print(f"Found: {found_memory}")
             return False
         else:
             reminder = ReminderCreate(
@@ -266,6 +265,36 @@ def delete_memory(
         return None
     if len(found_user.reminders) > memory_id:
         reminder = found_user.reminders[memory_id]
+        memory = reminder.reminder
+        session.delete(reminder)
+        session.commit()
+        return memory
+    else:
+        return False
+
+
+def delete_last_memory(
+    user: UserCreate,
+    session: Session = next(get_session()),
+) -> Union[bool, str, None]:
+    """
+    Delete the last memory from user's memory-vault.
+
+    Args:
+        user:
+        session:
+
+    Returns: bool
+
+    """
+
+    found_user = session.exec(
+        select(User).where(User.telegram_chat_id == user.telegram_chat_id)
+    ).first()
+    if found_user is None:
+        return None
+    if found_user.reminders:
+        reminder = found_user.reminders.pop()
         memory = reminder.reminder
         session.delete(reminder)
         session.commit()
