@@ -24,7 +24,9 @@ if __name__ == "__main__":
     if running_option == "ngrok":
         ngrok_token = str(os.environ.get("NGROK_AUTH_TOKEN"))
         if ngrok_token == "None":
-            print("NGROK auth token is not found in the environment. Ngrok will timeout after a few hours.")
+            print(
+                "NGROK auth token is not found in the environment. Ngrok will timeout after a few hours."
+            )
         else:
             print(f"NGROK TOKEN: {ngrok_token}")
             ngrok.set_auth_token(ngrok_token)

@@ -34,7 +34,9 @@ async def listen_telegram_messages(message: MessageBodyModel):
         if not text:  # Edit of message  etc.
             return
         else:
-            response_message = await ResponseLogic.create_response(text, name, chat_id, language_code)
+            response_message = await ResponseLogic.create_response(
+                text, name, chat_id, language_code
+            )
             return ResponseToMessage(
                 **{
                     "text": response_message,
@@ -51,7 +53,11 @@ async def listen_telegram_messages(message: MessageBodyModel):
         language_code = message.my_chat_member.from_field.language_code
 
         new_member = message.my_chat_member.new_chat_member
-        if new_member and new_member.user.id == Constants.BOT_ID and new_member.status == "member":
+        if (
+            new_member
+            and new_member.user.id == Constants.BOT_ID
+            and new_member.status == "member"
+        ):
             await Events.send_a_message_to_user(chat_id, Constants.hello)
             response_message = Constants.Start.start_message(name, language_code)
             return ResponseToMessage(
