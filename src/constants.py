@@ -28,17 +28,28 @@ class Constants:
 
         @staticmethod
         def unknown_command(name: str, language_code: str = "en") -> str:
-            help_message = Constants.Help.help_message(name, language_code)
 
             if language_code == "tr":
                 return (
-                    f"Sevgili {name}, ne yazık ki bu komutu bilmiyorum {Constants.sad}, sana yardım mesajımı yollayayım, /help."
-                    f"\n{help_message}"
+                    f"Sevgili {name}, ne yazık ki bu komutu bilmiyorum {Constants.sad}"
+                    f"\n- /start veya *start* ile başlangıç mesajını görebilirsin"
+                    f"\n- /leave veya *leave* ile günlük hatırlatmaları durdurabilirsin"
+                    f"\n- /send veya *send* ile rastgele bir hatıra yollarım"
+                    f"\n- *send number* ile çok sayıda hatıra yollarım"
+                    f"\n- /status veya *status* ile status bilgini yollarım"
+                    f"\n- /list veya *list* ile tüm hatıralarını gönderirim"
+                    f"\nTemel komutlarım bunlardı, günlük takvimi ayarlama vb. diğer tüm detaylı komutları görmek için, *help veya /help"
                 )
             else:
                 return (
-                    f"Dear {name}, unfortunately I do not know that command {Constants.sad}, let me send you my /help message."
-                    f"\n{help_message}"
+                    f"Dear {name}, unfortunately I do not know that command {Constants.sad}"
+                    f"\n- /start or *start* to see the start message"
+                    f"\n- /leave or *leave* to deactivate daily reminders"
+                    f"\n- /send or *send* to get a random memory"
+                    f"\n- *send number* to get multiple random memories"
+                    f"\n- /status or *status* to get your status information"
+                    f"\n- /list or *list* to list memories"
+                    f"\nThese were my main commands, to see additional commands like editing daily schedule please use, *help* or /help"
                 )
 
     class Start:
@@ -75,7 +86,7 @@ class Constants:
                     f"\n\nHafıza Kasası sana her gün, takvimindeki saatlerde kasandan rastgele hatıralar gönderir."
                     f"\n- /help veya *help* yardım mesajını alabilirsin"
                     f"\n- /join veya *join* ile günlük gönderimi aktifleştirebilirsin"
-                    f"\n- /leave veya *leave* ile günlük yollamayı durdurabilirsin"
+                    f"\n- /leave veya *leave* ile günlük hatırlatmayı durdurabilirsin"
                     f"\n- /send veya *send* ile rastgele bir hatıra yollarım"
                     f"\n- *send number* ile çok sayıda hatıra yollarım"
                     f"\n- /status veya *status* ile status bilgini yollarım"
@@ -104,8 +115,9 @@ class Constants:
                     f"\n- *schedule remove saat* ile bir saati takviminden tamamen kaldırabilirsin"
                     f"\nÖrnek:"
                     f"\n*schedule remove 8*"
-                    f"\n\n- Beni *gruplarda da kullanabilirsin*, gruba ekleyip yönetici yapman yeterli. Yönetici yapmak istemiyorsan da grupta benim mesajlarıma yanıtla yaparak da komutları kullanabilirsin."
-                    f"\n- *Birden fazla Hatıra Kasasına* sahip olmak için beni farklı gruplarda kullanabilirsin. Örneğin hatırlamak istediğin kelimeleri hatıralar olarak eklediğin bir dil öğrenme grubunda sana güzelce hizmet ederim."
+                    f"\n\n*Grup Kullanımı*"
+                    f"\n - Beni *gruplarda da kullanabilirsin*, gruba ekleyip yönetici yapman yeterli. Yönetici yapmak istemiyorsan da grupta benim mesajlarıma yanıtla yaparak da komutları kullanabilirsin."
+                    f"\n- *Birden fazla Hatıra Kasasına* sahip olmak için beni farklı gruplarda kullanabilirsin. Mesela bir kelime öğrenme grubu kurabilirsin."
                     f"\n- Örnek grup: Kuran'ı Kerim'den Dualar(@PrayersFromQuran)"
                 )
             else:
@@ -113,7 +125,7 @@ class Constants:
                     f"\n\nMemory Vault will send you random memories from your memory vault, at the hours in your schedule every day."
                     f"\n- /help or *help* to get help message"
                     f"\n- /join or *join* to activate daily memory sending"
-                    f"\n- /leave or *leave* to deactivate daily sending"
+                    f"\n- /leave or *leave* to deactivate daily reminders"
                     f"\n- /send or *send* to get a random memory"
                     f"\n- *send number* to get multiple random memories"
                     f"\n- /status or *status* to get your status information"
@@ -142,7 +154,8 @@ class Constants:
                     f"\n- *schedule remove hour* to remove an hour from your schedule"
                     f"\nExample:"
                     f"\n*schedule remove 8*"
-                    f"\n\n- You can *use me in groups* as well, just add me to a group and promote me to admin there. If you don't want to make me an admin, you can reply to my messages in the group to use my commands."
+                    f"\n\n*Group Usage*"
+                    f"\n - You can *use me in groups* as well, just add me to a group and promote me to admin there. If you don't want to make me an admin, you can reply to my messages in the group to use my commands."
                     f"\n- Furthermore *you can have multiple memory vaults* by using different groups. For example I would serve you well in a *language learning group*, where you add words you want to remember to your memory vault."
                     f"\n- Example group: @PrayersFromQuran"
                 )
@@ -493,7 +506,7 @@ class Constants:
         def tutorial_3(name: str, language_code: str = "en"):
             if language_code == "tr":
                 return (
-                    f"\n- /leave veya *leave* ile günlük yollamayı durdurabilirsin"
+                    f"\n- /leave veya *leave* ile günlük hatırlatmayı durdurabilirsin"
                     f"\n- /send veya *send* ile rastgele bir hatıra yollarım"
                     f"\n- *send number* ile çok sayıda hatıra yollarım"
                     f"\n- /status veya *status* ile status bilgini yollarım"
@@ -504,7 +517,7 @@ class Constants:
 
             else:
                 return (
-                    f"\n- /leave or *leave* to deactivate daily sending"
+                    f"\n- /leave or *leave* to deactivate daily reminders"
                     f"\n- /send or *send* to get a random memory"
                     f"\n- *send number* to get multiple random memories"
                     f"\n- /status or *status* to get your status information"

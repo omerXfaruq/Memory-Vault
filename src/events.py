@@ -58,26 +58,46 @@ class Events:
         number_of_messages_at_this_hour = 0
 
         for str_hour in scheduled_hours:
-            if int(str_hour) > hour:  # Scheduled_hours are sorted, next items will be > hour as well.
+            if (
+                int(str_hour) > hour
+            ):  # Scheduled_hours are sorted, next items will be > hour as well.
                 break
             if int(str_hour) == hour:
                 number_of_messages_at_this_hour += 1
-        number_of_messages_at_this_hour = min(len(user.reminders), number_of_messages_at_this_hour)
-        selected_reminders = random.sample(user.reminders, number_of_messages_at_this_hour)
+        number_of_messages_at_this_hour = min(
+            len(user.reminders), number_of_messages_at_this_hour
+        )
+        selected_reminders = random.sample(
+            user.reminders, number_of_messages_at_this_hour
+        )
         for reminder in selected_reminders:  # Send the memory in background
-            asyncio.create_task(cls.send_a_message_to_user(user.telegram_chat_id, reminder.reminder))
+            asyncio.create_task(
+                cls.send_a_message_to_user(user.telegram_chat_id, reminder.reminder)
+            )
             now = datetime.datetime.now()
-            print(f"Created task to, {user.name}, {reminder.reminder}, hour: {hour}, gmt: {user.gmt}, now: {now}")
+            print(
+                f"Created task to, {user.name}, {reminder.reminder}, hour: {hour}, gmt: {user.gmt}, now: {now}"
+            )
 
     @classmethod
-    async def send_message_list_at_background(cls, telegram_chat_id: int, message_list: List[str]) -> bool:
+    async def send_message_list_at_background(
+        cls, telegram_chat_id: int, message_list: List[str]
+    ) -> bool:
         for message in message_list:
             print(f"sending the message: {message}, to chat: {telegram_chat_id} ")
-            await Events.send_a_message_to_user(telegram_id=telegram_chat_id, message=message)
+            await Events.send_a_message_to_user(
+                telegram_id=telegram_chat_id, message=message
+            )
         return True
 
     @classmethod
-    async def send_a_message_to_user(cls, telegram_id: int, message: str, retry_count: int = 3, sleep_time: float = 0.1) -> bool:
+    async def send_a_message_to_user(
+        cls,
+        telegram_id: int,
+        message: str,
+        retry_count: int = 3,
+        sleep_time: float = 0.1,
+    ) -> bool:
         message = ResponseToMessage(
             **{
                 "text": message,
@@ -96,7 +116,9 @@ class Events:
                 print(f"Retry After: {retry_after}, message: {message}")
                 await asyncio.sleep(retry_after)
             else:
-                print(f"Unhandled response code: {response.status_code}, response: {response.json()}")
+                print(
+                    f"Unhandled response code: {response.status_code}, response: {response.json()}"
+                )
         return False
 
     @classmethod
@@ -126,7 +148,7 @@ class Events:
         if cls.SELF_SIGNED:
             payload = {
                 "url": f"{cls.HOST_URL}/webhook/{cls.TOKEN}",
-                "certificate": open(os.environ.get("PEM_FILE"), "rb")
+                "certificate": open(os.environ.get("PEM_FILE"), "rb"),
             }
         else:
             payload = {"url": f"{cls.HOST_URL}/webhook/{cls.TOKEN}"}
@@ -137,7 +159,7 @@ class Events:
     async def get_public_ip(cls):
         # Reference: https://pytutorial.com/python-get-public-ip
 
-        endpoint = 'https://ipinfo.io/json'
+        endpoint = "https://ipinfo.io/json"
         async with AsyncClient() as client:
             response = await client.get(endpoint)
 
@@ -145,4 +167,4 @@ class Events:
             sys.exit("Could not get the public ip, exiting!")
         data = response.json()
 
-        return data['ip']
+        return data["ip"]

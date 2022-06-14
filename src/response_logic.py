@@ -2,15 +2,30 @@ import random
 import asyncio
 
 from .db import (
-    UserCreate, join_user, leave_user, select_random_memory, add_memory, delete_memory, list_memories, update_gmt, get_user_status, get_schedule, reset_schedule, add_hours_to_the_schedule, remove_hour_from_schedule,
-    default_schedule)
+    UserCreate,
+    join_user,
+    leave_user,
+    select_random_memory,
+    add_memory,
+    delete_memory,
+    list_memories,
+    update_gmt,
+    get_user_status,
+    get_schedule,
+    reset_schedule,
+    add_hours_to_the_schedule,
+    remove_hour_from_schedule,
+    default_schedule,
+)
 from .events import Events
 from .constants import Constants
 
 
 class ResponseLogic:
     @staticmethod
-    async def create_response(text: str, name: str, chat_id: int, language_code: str) -> str:
+    async def create_response(
+        text: str, name: str, chat_id: int, language_code: str
+    ) -> str:
 
         split_text = text.split(" ")
         first_word = split_text[0]
@@ -19,14 +34,14 @@ class ResponseLogic:
             telegram_chat_id=chat_id,
         )
 
-        if ResponseLogic.optional_command_check(first_word, "start"):
+        if ResponseLogic.check_command_type(first_word, "start"):
             await Events.send_a_message_to_user(chat_id, Constants.hello)
             return Constants.Start.start_message(name, language_code)
-        elif ResponseLogic.optional_command_check(first_word, "help"):
+        elif ResponseLogic.check_command_type(first_word, "help"):
             message = Constants.Help.help_message(name, language_code)
             return message
 
-        elif ResponseLogic.optional_command_check(first_word, "join"):
+        elif ResponseLogic.check_command_type(first_word, "join"):
             user = join_user(user)
 
             if user is not None:
@@ -34,14 +49,14 @@ class ResponseLogic:
             else:
                 return Constants.Join.already_joined(name, language_code)
 
-        elif ResponseLogic.optional_command_check(first_word, "leave"):
+        elif ResponseLogic.check_command_type(first_word, "leave"):
             user = leave_user(user)
             if user is not None and user.telegram_chat_id == chat_id:
                 return Constants.Leave.successful_leave(name, language_code)
             else:
                 return Constants.Leave.already_left(name, language_code)
 
-        elif ResponseLogic.optional_command_check(first_word, "send"):
+        elif ResponseLogic.check_command_type(first_word, "send"):
             if len(split_text) == 1:  # send
                 memory = select_random_memory(user)
                 if memory is None:
@@ -54,7 +69,9 @@ class ResponseLogic:
                 try:
                     number_of_sending = int(split_text[1])
                     if not (1 <= number_of_sending < 50):
-                        return Constants.Send.send_count_out_of_bound(name, language_code)
+                        return Constants.Send.send_count_out_of_bound(
+                            name, language_code
+                        )
                 except:
                     return Constants.Send.send_count_out_of_bound(name, language_code)
 
@@ -65,10 +82,14 @@ class ResponseLogic:
                 send_count = min(len(all_memories), number_of_sending)
                 selected_memories = random.sample(all_memories, send_count)
                 for memory in selected_memories:  # Send the memories in background
-                    asyncio.create_task(Events.send_a_message_to_user(user.telegram_chat_id, memory.reminder))
+                    asyncio.create_task(
+                        Events.send_a_message_to_user(
+                            user.telegram_chat_id, memory.reminder
+                        )
+                    )
                 return ""
 
-        elif ResponseLogic.optional_command_check(first_word, "list"):
+        elif ResponseLogic.check_command_type(first_word, "list"):
             memories = list_memories(user)
             if memories is None:
                 return Constants.Common.inactive_user(name, language_code)
@@ -77,13 +98,19 @@ class ResponseLogic:
             else:
                 background_message_list = []
                 for message_id, reminder in enumerate(memories):
-                    background_message_list.append(f"\n{message_id}: {reminder.reminder}")
-                asyncio.create_task(Events.send_message_list_at_background(telegram_chat_id=chat_id, message_list=background_message_list))
+                    background_message_list.append(
+                        f"\n{message_id}: {reminder.reminder}"
+                    )
+                asyncio.create_task(
+                    Events.send_message_list_at_background(
+                        telegram_chat_id=chat_id, message_list=background_message_list
+                    )
+                )
 
                 response_message = Constants.List.list_messages(name, language_code)
                 return response_message
 
-        elif ResponseLogic.optional_command_check(first_word, "add"):
+        elif ResponseLogic.check_command_type(first_word, "add"):
             memory = " ".join(split_text[1:])
             if str.isspace(memory) or memory == "":
                 return Constants.Add.no_sentence(name, language_code)
@@ -97,7 +124,7 @@ class ResponseLogic:
                     memory = reminder.reminder
                     return Constants.Add.success(name, language_code, memory)
 
-        elif ResponseLogic.optional_command_check(first_word, "delete"):
+        elif ResponseLogic.check_command_type(first_word, "delete"):
             if len(split_text) < 2:
                 return Constants.Delete.no_id(name, language_code)
             else:
@@ -119,7 +146,7 @@ class ResponseLogic:
                 except Exception as ex:
                     return Constants.Delete.no_id(name, language_code)
 
-        elif ResponseLogic.optional_command_check(first_word, "schedule"):
+        elif ResponseLogic.check_command_type(first_word, "schedule"):
             if len(split_text) == 1:
                 schedule = get_schedule(user)
                 if schedule is None:
@@ -135,7 +162,9 @@ class ResponseLogic:
                     if new_schedule is None:
                         return Constants.Common.inactive_user(name, language_code)
                     else:
-                        return Constants.Schedule.success(name, language_code, new_schedule)
+                        return Constants.Schedule.success(
+                            name, language_code, new_schedule
+                        )
 
                 elif split_text[1] == "add":
                     str_numbers = []
@@ -152,23 +181,31 @@ class ResponseLogic:
                                 number_check = False
                                 break
                     except:
-                        return Constants.Schedule.add_incorrect_number_input(name, language_code)
+                        return Constants.Schedule.add_incorrect_number_input(
+                            name, language_code
+                        )
 
                     if not number_check:
-                        return Constants.Schedule.add_incorrect_number_input(name, language_code)
+                        return Constants.Schedule.add_incorrect_number_input(
+                            name, language_code
+                        )
 
                     else:
                         new_schedule = add_hours_to_the_schedule(user, str_numbers)
                         if new_schedule is None:
                             return Constants.Common.inactive_user(name, language_code)
                         else:
-                            return Constants.Schedule.success(name, language_code, new_schedule)
+                            return Constants.Schedule.success(
+                                name, language_code, new_schedule
+                            )
 
                 elif split_text[1] == "remove":
                     preceding_text = " ".join(split_text[2:])
                     number_check = True
                     if str.isspace(preceding_text) or preceding_text == "":
-                        return Constants.Schedule.remove_incorrect_number_input(name, language_code)
+                        return Constants.Schedule.remove_incorrect_number_input(
+                            name, language_code
+                        )
                     else:
                         try:
                             str_number = split_text[2]
@@ -176,22 +213,32 @@ class ResponseLogic:
                             if not (0 <= number <= 23):
                                 number_check = False
                         except:
-                            return Constants.Schedule.remove_incorrect_number_input(name, language_code)
+                            return Constants.Schedule.remove_incorrect_number_input(
+                                name, language_code
+                            )
 
                         if not number_check:
-                            return Constants.Schedule.remove_incorrect_number_input(name, language_code)
+                            return Constants.Schedule.remove_incorrect_number_input(
+                                name, language_code
+                            )
 
                         else:
-                            new_schedule = remove_hour_from_schedule(user, int(str_number))
+                            new_schedule = remove_hour_from_schedule(
+                                user, int(str_number)
+                            )
                             if new_schedule is None:
-                                return Constants.Common.inactive_user(name, language_code)
+                                return Constants.Common.inactive_user(
+                                    name, language_code
+                                )
                             else:
-                                return Constants.Schedule.success(name, language_code, new_schedule)
+                                return Constants.Schedule.success(
+                                    name, language_code, new_schedule
+                                )
 
                 else:
                     return Constants.Schedule.unknown_command(name, language_code)
 
-        elif ResponseLogic.optional_command_check(first_word, "gmt"):
+        elif ResponseLogic.check_command_type(first_word, "gmt"):
             try:
                 gmt = int(split_text[1])
             except Exception as ex:
@@ -205,7 +252,7 @@ class ResponseLogic:
                 else:
                     return Constants.Gmt.success(name, language_code, user.gmt)
 
-        elif ResponseLogic.optional_command_check(first_word, "broadcast"):
+        elif ResponseLogic.check_command_type(first_word, "broadcast"):
             if not chat_id == Constants.BROADCAST_CHAT_ID:
                 return Constants.Broadcast.no_right(name, language_code)
             else:
@@ -216,47 +263,67 @@ class ResponseLogic:
                     await Events.broadcast_message(normalized_text)
                     return Constants.Broadcast.success(name, language_code)
 
-        elif ResponseLogic.optional_command_check(first_word, "status"):
+        elif ResponseLogic.check_command_type(first_word, "status"):
             gmt, active = get_user_status(chat_id)
             if gmt is None:
                 return Constants.Common.inactive_user(name, language_code)
             else:
                 schedule = get_schedule(user)
-                return Constants.Status.get_status(name, language_code, gmt, active, schedule)
+                return Constants.Status.get_status(
+                    name, language_code, gmt, active, schedule
+                )
 
-        elif ResponseLogic.optional_command_check(first_word, "feedback"):
+        elif ResponseLogic.check_command_type(first_word, "feedback"):
 
             message = " ".join(split_text[1:])
-            message_with_user_information = message + f"\nFrom the user: *{name}* \nchat id: *{chat_id}*"
+            message_with_user_information = (
+                message + f"\nFrom the user: *{name}* \nchat id: *{chat_id}*"
+            )
 
             if str.isspace(message) or message == "":
                 return Constants.Feedback.no_message(name, language_code)
             else:
-                success = await Events.send_a_message_to_user(Constants.FEEDBACK_FORWARD_CHAT_ID, message_with_user_information)
+                success = await Events.send_a_message_to_user(
+                    Constants.FEEDBACK_FORWARD_CHAT_ID, message_with_user_information
+                )
                 if success:
                     return Constants.Feedback.success(name, language_code, message)
                 else:
                     return Constants.Feedback.fail(name, language_code)
 
-        elif ResponseLogic.optional_command_check(first_word, "support"):
+        elif ResponseLogic.check_command_type(first_word, "support"):
             return Constants.Support.support(name, language_code)
 
-        elif ResponseLogic.optional_command_check(first_word, "tutorial1"):
+        elif ResponseLogic.check_command_type(first_word, "tutorial1"):
             return Constants.Tutorial.tutorial_1(name, language_code)
 
-        elif ResponseLogic.optional_command_check(first_word, "tutorial2"):
+        elif ResponseLogic.check_command_type(first_word, "tutorial2"):
             return Constants.Tutorial.tutorial_2(name, language_code)
 
-        elif ResponseLogic.optional_command_check(first_word, "tutorial3"):
+        elif ResponseLogic.check_command_type(first_word, "tutorial3"):
             return Constants.Tutorial.tutorial_3(name, language_code)
 
         else:
             return Constants.Common.unknown_command(name, language_code)
 
     @staticmethod
-    def optional_command_check(input_command: str, correct_command: str) -> bool:
+    def check_command_type(input_command: str, correct_command: str) -> bool:
+        """
+        Checks the first word of the command, which starts the decision tree.
+
+        Args:
+            input_command:
+            correct_command:
+
+        Returns: bool
+
+        """
         input_command = input_command.lower()
-        if input_command == correct_command or input_command == f"/{correct_command}":
+        if (
+            input_command == correct_command
+            or input_command == f"/{correct_command}"
+            or input_command == f"/{correct_command}@memoryvaultbot"
+        ):
             return True
         else:
             return False

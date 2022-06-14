@@ -443,7 +443,9 @@ def db_read_users(
     limit: int = 100,
 ) -> List[User]:
     if only_active_users:
-        users = session.exec(select(User).where(User.active).offset(offset).limit(limit)).all()
+        users = session.exec(
+            select(User).where(User.active).offset(offset).limit(limit)
+        ).all()
     else:
         users = session.exec(select(User).offset(offset).limit(limit)).all()
     return users
