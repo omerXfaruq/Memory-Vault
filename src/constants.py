@@ -215,16 +215,16 @@ class Constants:
 
     class List:
         @staticmethod
-        def list_messages(name: str, language_code: str = "en") -> str:
+        def list_messages(name: str, note_count: int, language_code: str = "en") -> str:
             if language_code == "tr":
                 return (
-                    f"{name} Destur! Notların birer birer akacak."
+                    f"{name} Destur! {note_count} notun birer birer akacak."
                     f"\n\nHatıra kasasının kapılarını açın!"
                     f"\n*id | not*"
                 )
             else:
                 return (
-                    f"Brace yourself {name}, you will receive notes one by one."
+                    f"Brace yourself {name}, you will receive {note_count} notes one by one."
                     f"\n\nOpen the gates of the memory vault!"
                     f"\n*id | note*"
                 )
@@ -303,13 +303,17 @@ class Constants:
             if language_code == "tr":
                 return (
                     f"{name}, güncel takvimin aşağıda, takvimindeki saat başlarında rastgele bir not alacaksın. örn: 8 -> 8:00"
-                    f"\n*Takvim*:"
+                    f"\nUyarı: Eğer bu bottan faydalanmak istiyorsan, takvimini dolup taşırmamaya dikkat et ve gelen mesajlara dikkatini ver, göz atıp geçme."
+                    f""
+                    f"\n\n*Takvim*:"
                     f"\n{schedule}"
                 )
             else:
                 return (
                     f"{name}, your current schedule is below, You will get a random note at each of these hours everyday. ie: 8 -> 8:00"
-                    f"\n*Schedule*:"
+                    f"\nWarning: If you want to make use of this bot, be careful to not overflow your schedule and give attention to the incoming messages, do not just look and pass."
+                    f""
+                    f"\n\n*Schedule*:"
                     f"\n{schedule}"
                 )
 
@@ -403,6 +407,7 @@ class Constants:
             gmt: int = 0,
             active: bool = True,
             schedule: str = "",
+            note_count: str = 0,
         ) -> str:
             if language_code == "tr":
                 if active:
@@ -413,14 +418,18 @@ class Constants:
                     f"Mevcut durumun:"
                     f"\n- Gmt: *GMT{gmt}*"
                     f"\n- Günlük gönderim aktif: *{is_active}*"
+                    f"\n- Hatıra Kasandaki not sayısı: {note_count}"
                     f"\n- Takvim: {schedule}"
+                    f"\nUyarı: Eğer bu bottan faydalanmak istiyorsan, takvimini dolup taşırmamaya dikkat et ve gelen mesajlara dikkatini ver, göz atıp geçme."
                 )
             else:
                 return (
                     f"Your current status:"
                     f"\n- Gmt: *GMT{gmt}*"
                     f"\n- Daily sending is active: *{active}*"
+                    f"\n- Number of notes in your Mmoery Vault: {note_count}"
                     f"\n- Schedule: {schedule}"
+                    f"\nWarning: If you want to make use of this bot, be careful to not overflow your schedule and give attention to the incoming messages, do not just look and pass."
                 )
 
     class Feedback:
