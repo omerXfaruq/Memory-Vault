@@ -255,9 +255,9 @@ class ResponseLogic:
                 return Constants.Common.inactive_user(name, language_code)
             else:
                 schedule = get_schedule(user)
-                count_of_notes = list_memories(user)
+                memory_count = list_memories(user)
                 return Constants.Status.get_status(
-                    name, language_code, gmt, active, schedule, count_of_notes
+                    name, language_code, gmt, active, schedule, memory_count
                 )
 
         elif ResponseLogic.check_command_type(first_word, "feedback"):
