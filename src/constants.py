@@ -303,18 +303,17 @@ class Constants:
             if language_code == "tr":
                 return (
                     f"{name}, güncel takvimin aşağıda, takvimindeki saat başlarında rastgele bir not alacaksın. örn: 8 -> 8:00"
-                    f"\nUyarı: Eğer bu bottan faydalanmak istiyorsan, takvimini dolup taşırmamaya dikkat et ve gelen mesajlara dikkatini ver, göz atıp geçme."
+                    f"\n*Takvim*: {schedule}"
                     f""
-                    f"\n\n*Takvim*:"
-                    f"\n{schedule}"
+                    f"\n\nUyarı: Eğer bu bottan faydalanmak istiyorsan, takvimini dolup taşırmamaya dikkat et ve gelen mesajlara dikkatini ver, göz atıp geçme."
                 )
             else:
                 return (
                     f"{name}, your current schedule is below, You will get a random note at each of these hours everyday. ie: 8 -> 8:00"
-                    f"\nWarning: If you want to make use of this bot, be careful to not overflow your schedule and give attention to the incoming messages, do not just look and pass."
+                    f"\n*Schedule*: {schedule}"
                     f""
-                    f"\n\n*Schedule*:"
-                    f"\n{schedule}"
+                    f"\n\nWarning: If you want to make use of this bot, be careful to not overflow your schedule and give attention to the incoming messages, do not just look and pass."
+
                 )
 
         @staticmethod
@@ -420,16 +419,18 @@ class Constants:
                     f"\n- Günlük gönderim aktif: *{is_active}*"
                     f"\n- Hatıra Kasandaki not sayısı: {note_count}"
                     f"\n- Takvim: {schedule}"
-                    f"\nUyarı: Eğer bu bottan faydalanmak istiyorsan, takvimini dolup taşırmamaya dikkat et ve gelen mesajlara dikkatini ver, göz atıp geçme."
+                    f""
+                    f"\n\nUyarı: Eğer bu bottan faydalanmak istiyorsan, takvimini dolup taşırmamaya dikkat et ve gelen mesajlara dikkatini ver, göz atıp geçme."
                 )
             else:
                 return (
                     f"Your current status:"
                     f"\n- Gmt: *GMT{gmt}*"
                     f"\n- Daily sending is active: *{active}*"
-                    f"\n- Number of notes in your Mmoery Vault: {note_count}"
+                    f"\n- Number of notes in your Memory Vault: {note_count}"
                     f"\n- Schedule: {schedule}"
-                    f"\nWarning: If you want to make use of this bot, be careful to not overflow your schedule and give attention to the incoming messages, do not just look and pass."
+                    f""
+                    f"\n\nWarning: If you want to make use of this bot, be careful to not overflow your schedule and give attention to the incoming messages, do not just look and pass."
                 )
 
     class Feedback:
