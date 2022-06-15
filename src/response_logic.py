@@ -12,14 +12,32 @@ class ResponseLogic:
         text: str, name: str, chat_id: int, language_code: str
     ) -> str:
 
+        # Edge case check for "add\nSentence"
+        line_split_text = text.split("\n")
+        line_split_first_word = line_split_text[0]
         split_text = text.split(" ")
         first_word = split_text[0]
         user = UserCreate(
             name=name,
             telegram_chat_id=chat_id,
         )
-
-        if ResponseLogic.check_command_type(first_word, "start"):
+        if ResponseLogic.check_command_type(first_word, "add") or ResponseLogic.check_command_type(line_split_first_word, "add"):
+            if ResponseLogic.check_command_type(line_split_first_word, "add"):
+                memory = "\n".join(split_text[1:])
+            else:
+                memory = " ".join(split_text[1:])
+            if str.isspace(memory) or memory == "":
+                return Constants.Add.no_sentence(name, language_code)
+            else:
+                reminder = add_memory(user, memory)
+                if reminder is None:
+                    return Constants.Common.inactive_user(name, language_code)
+                elif reminder is False:
+                    return Constants.Add.already_added(name, language_code)
+                else:
+                    memory = reminder.reminder
+                    return Constants.Add.success(name, language_code, memory)
+        elif ResponseLogic.check_command_type(first_word, "start"):
             await Events.send_a_message_to_user(chat_id, Constants.hello)
             return Constants.Start.start_message(name, language_code)
         elif ResponseLogic.check_command_type(first_word, "help"):
@@ -95,20 +113,6 @@ class ResponseLogic:
 
                 response_message = Constants.List.list_messages(name, memory_count, language_code)
                 return response_message
-
-        elif ResponseLogic.check_command_type(first_word, "add"):
-            memory = " ".join(split_text[1:])
-            if str.isspace(memory) or memory == "":
-                return Constants.Add.no_sentence(name, language_code)
-            else:
-                reminder = add_memory(user, memory)
-                if reminder is None:
-                    return Constants.Common.inactive_user(name, language_code)
-                elif reminder is False:
-                    return Constants.Add.already_added(name, language_code)
-                else:
-                    memory = reminder.reminder
-                    return Constants.Add.success(name, language_code, memory)
 
         elif ResponseLogic.check_command_type(first_word, "delete"):
             if len(split_text) < 2:
