@@ -76,9 +76,10 @@ class ResponseLogic:
 
         elif ResponseLogic.check_command_type(first_word, "list"):
             memories = list_memories(user)
+            memory_count = len(memories)
             if memories is None:
                 return Constants.Common.inactive_user(name, language_code)
-            elif len(memories) == 0:
+            elif memory_count == 0:
                 return Constants.Common.no_memory_found(name, language_code)
             else:
                 background_message_list = []
@@ -92,7 +93,7 @@ class ResponseLogic:
                     )
                 )
 
-                response_message = Constants.List.list_messages(name, language_code)
+                response_message = Constants.List.list_messages(name, memory_count, language_code)
                 return response_message
 
         elif ResponseLogic.check_command_type(first_word, "add"):
@@ -254,8 +255,9 @@ class ResponseLogic:
                 return Constants.Common.inactive_user(name, language_code)
             else:
                 schedule = get_schedule(user)
+                memory_count = len(list_memories(user))
                 return Constants.Status.get_status(
-                    name, language_code, gmt, active, schedule
+                    name, language_code, gmt, active, schedule, memory_count
                 )
 
         elif ResponseLogic.check_command_type(first_word, "feedback"):
