@@ -73,7 +73,7 @@ async def listen_telegram_messages(message: MessageBodyModel):
 @app.post(f"/trigger_send_user_hourly_memories/{Events.TOKEN}")
 async def trigger_send_user_hourly_memories(*, session: Session = Depends(get_session)):
     users = db_read_users(limit=100000, session=session)
-    now = datetime.datetime.now()
+    now = datetime.datetime.now(datetime.timezone.utc)
     print(f"Sending is triggered at hour {now.hour}, GMT:{Events.CURRENT_TIMEZONE}")
     for user in users:
         Events.send_user_hourly_memories(user, now.hour)
