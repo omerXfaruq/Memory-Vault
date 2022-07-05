@@ -18,7 +18,6 @@ class Events:
     PORT = 8000
     HOST_URL = None
     SELF_SIGNED = False
-    CURRENT_TIMEZONE = 0
 
     @classmethod
     async def main_event(cls) -> None:
