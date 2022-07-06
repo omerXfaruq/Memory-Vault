@@ -21,7 +21,9 @@ class ResponseLogic:
             name=name,
             telegram_chat_id=chat_id,
         )
-        if ResponseLogic.check_command_type(first_word, "add") or ResponseLogic.check_command_type(line_split_first_word, "add"):
+        if ResponseLogic.check_command_type(
+            first_word, "add"
+        ) or ResponseLogic.check_command_type(line_split_first_word, "add"):
             if ResponseLogic.check_command_type(line_split_first_word, "add"):
                 memory = "\n".join(split_text[1:])
             else:
@@ -111,7 +113,9 @@ class ResponseLogic:
                     )
                 )
 
-                response_message = Constants.List.list_messages(name, memory_count, language_code)
+                response_message = Constants.List.list_messages(
+                    name, memory_count, language_code
+                )
                 return response_message
 
         elif ResponseLogic.check_command_type(first_word, "delete"):
@@ -322,7 +326,7 @@ class ResponseLogic:
         if (
             input_command == correct_command
             or input_command == f"/{correct_command}"
-            or input_command == f"/{correct_command}@memoryvaultbot"
+            or input_command == f"/{correct_command}@memory_vault_bot"
         ):
             return True
         else:

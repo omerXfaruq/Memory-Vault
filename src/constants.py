@@ -313,7 +313,6 @@ class Constants:
                     f"\n*Schedule*: {schedule}"
                     f""
                     f"\n\nWarning: If you want to make use of this bot, be careful to not overflow your schedule and give attention to the incoming messages, do not just look and pass."
-
                 )
 
         @staticmethod

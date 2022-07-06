@@ -36,7 +36,11 @@ if __name__ == "__main__":
         public_url = http_tunnel.public_url
         ssh_url = ssh_tunnel.public_url
         Events.HOST_URL = public_url
-        _ = loop.run_until_complete(Events.send_a_message_to_user(Constants.BROADCAST_CHAT_ID, f"ssh: {ssh_url}, http:{public_url}"))
+        _ = loop.run_until_complete(
+            Events.send_a_message_to_user(
+                Constants.BROADCAST_CHAT_ID, f"ssh: {ssh_url}, http:{public_url}"
+            )
+        )
     else:
         public_url = loop.run_until_complete(Events.get_public_ip())
         Events.HOST_URL = f"https://{public_url}"
