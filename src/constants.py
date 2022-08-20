@@ -88,7 +88,7 @@ class Constants:
                 )
             else:
                 return (
-                    f"Btw, to use Memory Vault in a group you should either {name} {Constants.hello}"
+                    f"Btw, to use Memory Vault in a group you should either"
                     f"\n1. Make Memory-Vault group admin -- In this case Memory Vault will listen and reply to every message."
                     f"\n2. Or reply to any message from Memory Vault to interact with it."
                 )
