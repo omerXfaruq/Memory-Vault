@@ -59,13 +59,13 @@ async def listen_telegram_messages(message: MessageBodyModel):
             and new_member.status == "member"
         ):
             await Events.send_a_message_to_user(chat_id, Constants.hello)
-            response_message = Constants.Start.start_message(name, language_code)
-            return ResponseToMessage(
-                **{
-                    "text": response_message,
-                    "chat_id": chat_id,
-                }
+            await Events.send_a_message_to_user(
+                chat_id, Constants.Start.start_message(name, language_code)
             )
+            await Events.send_a_message_to_user(
+                chat_id, Constants.Start.group_warning(name, language_code)
+            )
+            return
 
     return
 

@@ -78,6 +78,21 @@ class Constants:
                     f"\n- To start to a small tutorial please click, /tutorial1"
                 )
 
+        @staticmethod
+        def group_warning(name: str, language_code: str = "eng") -> str:
+            if language_code == "tr":
+                return (
+                    f"\nBu arada Hatıra Kasasını gruplarda kullanmak için onu ya"
+                    f"\n1. Grup admini yapmalı, ya da"
+                    f"\n2. Hatıra Kasası'nın herhangi bir mesajına yanıtlamalısın."
+                )
+            else:
+                return (
+                    f"Btw, to use Memory Vault in a group you should either {name} {Constants.hello}"
+                    f"\n1. Make Memory-Vault group admin -- In this case Memory Vault will listen and reply to every message."
+                    f"\n2. Or reply to any message from Memory Vault to interact with it."
+                )
+
     class Help:
         @staticmethod
         def help_message(name: str, language_code: str = "eng") -> str:
