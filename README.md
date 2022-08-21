@@ -3,7 +3,7 @@ Whisper to the future.
 Take your notes and let memory vault remind them to you. 
 
 Think of it like Sticky Notes, but digitalized and much more easy.
-<img src="img/sticky-notes.png" alt="drawing" width="200"/>
+<img src="img/sticky-notes.png" width="200"/>
 
 
 
