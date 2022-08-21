@@ -4,7 +4,7 @@ Take your notes and let memory vault remind them to you.
 
 <img src="img/sticky-notes.png" alt="drawing" width="200"/>
 
-Think of it like Sticky Notes, but digitalized and much more easy.
+Think of it like Sticky Notes, but digitalized and much more easy to use.
 
 
 
