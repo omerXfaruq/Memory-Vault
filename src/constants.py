@@ -72,7 +72,7 @@ class Constants:
                     f"\nMemory Vault stores your notes in the memory vault and sends you random notes every day."
                     f"\n\nKeeping note of beautiful & important stuff that we come across throughout the life, and later remembering them is quite difficult isn't it {Constants.sad}?"
                     f"\nHere is the Memory Vault for the rescue! I solve this problem with a very simple and easy to use method {Constants.sun_glasses}. Because, complex methods makes it harder to keep them in our life."
-                    f"\nHere is the catch, I will definitely send you each note you give to me one day. And you don't need to think over when I will send it."
+                    f"\nHere is the catch, I will definitely send you each note you give me, one day. And you don't need to think over when I will send it."
                     f"\nSincerely thanks to my dear wife Seyyide for the beautiful idea."
                     f"\n\n- To start using the bot please click, /join"
                     f"\n- To start to a small tutorial please click, /tutorial1"
