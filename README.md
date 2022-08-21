@@ -10,6 +10,8 @@ Think of it like Sticky Notes, but digitalized and much more easy to use.
 
 <img src="img/sticky-notes.png" alt="drawing" width="200"/>
 
+(I'm just an engineer, without any design skills :D)
+
 ---
 
 Hello 👋🏻
