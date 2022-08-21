@@ -21,6 +21,8 @@ Here is the Memory Vault for the rescue! Memory Vault solves this problem with a
 Here is the catch, I will definitely send you each memory you give to me one day. And you don't need to think over when I will send it.
 Sincerely thanks to my dear wife Seyyide for the beautiful idea.
 
+## [See The Tutorials](img/)
+
 ## Use Cases
 1. Habit Building 
 <img src="img/ex1.png" alt="drawing" width="500"/>
@@ -30,8 +32,7 @@ Sincerely thanks to my dear wife Seyyide for the beautiful idea.
 <img src="img/ex3.png" alt="drawing" width="500"/>
 4. Learning new names
 <img src="img/ex4.png" alt="drawing" width="500"/>
-
-## [See The Tutorials](img/)
+5. Anything Custom, Memory Vault is very flexible and general solution!
 
 ## [Try it!](https://t.me/Memory_Vault_Bot)
 
