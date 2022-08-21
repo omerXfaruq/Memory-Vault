@@ -10,6 +10,8 @@ Think of it like Sticky Notes, but digitalized and much more easy.
 
 
 
+---
+
 Hello 👋🏻
 
 Memory Vault is a telegram bot that stores your notes and reminds random notes every day.
