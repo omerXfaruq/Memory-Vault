@@ -1,14 +1,14 @@
+<img src="img/memory_vault_pp.png" alt="drawing" width="200"/>
+
 # Memory-Vault
+
 Whisper to the future.
 Take your notes and let memory vault remind them to you. 
 
-<img src="img/sticky-notes.png" alt="drawing" width="200"/>
 
 Think of it like Sticky Notes, but digitalized and much more easy to use.
 
-
-
-
+<img src="img/sticky-notes.png" alt="drawing" width="200"/>
 
 ---
 
@@ -21,9 +21,19 @@ Here is the Memory Vault for the rescue! Memory Vault solves this problem with a
 Here is the catch, I will definitely send you each memory you give to me one day. And you don't need to think over when I will send it.
 Sincerely thanks to my dear wife Seyyide for the beautiful idea.
 
-## [Try it!](https://t.me/Memory_Vault_Bot)
+## Use Cases
+1. Habit Building 
+<img src="img/ex1.png" alt="drawing" width="500"/>
+2. Language Learning
+<img src="img/ex2.png" alt="drawing" width="500"/>
+3. Developing Enterprenurship Vision
+<img src="img/ex3.png" alt="drawing" width="500"/>
+4. Learning new names
+<img src="img/ex4.png" alt="drawing" width="500"/>
 
-<img src="img/memory_vault_pp.png" alt="drawing" width="200"/>
+## [See The Tutorials](img/)
+
+## [Try it!](https://t.me/Memory_Vault_Bot)
 
 ## Functionalities
 
