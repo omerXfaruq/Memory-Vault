@@ -8,7 +8,7 @@ Take your notes and let memory vault remind them to you.
 
 Think of it like Sticky Notes, but digitalized and much more easy to use.
 
-<img src="img/sticky-notes.png" alt="drawing" width="200"/>
+<img src="img/sticky-notes.png" alt="drawing" width="500"/>
 
 (I'm just an engineer, without any design skills :D)
 
