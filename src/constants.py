@@ -83,8 +83,8 @@ class Constants:
             if language_code == "tr":
                 return (
                     f"\nBu arada Hatıra Kasasını gruplarda kullanmak için onu ya"
-                    f"\n- Grup admini yapmalı, ya da"
-                    f"\n- Hatıra Kasası'nın herhangi bir mesajını yanıtlamalısın."
+                    f"\n- Grup admini yapmalı -- Bu durumda Hatıra Kasası gruptaki tüm mesajları dinleyip cevap verecektir"
+                    f"\n- Ya da Hatıra Kasası'nın herhangi bir mesajını yanıtlamalısın."
                 )
             else:
                 return (
