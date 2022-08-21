@@ -29,7 +29,6 @@ class Events:
         while True:
             await asyncio.sleep(cls.get_time_until_next_hour())
             async with AsyncClient() as client:
-                print(cls.HOST_URL)
                 endpoint = f"http://0.0.0.0:{cls.PORT}/trigger_send_user_hourly_memories/{Events.TOKEN}"
                 response = await client.post(url=endpoint)
 
@@ -135,7 +134,7 @@ class Events:
 
     @classmethod
     async def request(cls, url: str, payload: dict, debug: bool = True) -> Response:
-        async with AsyncClient() as client:
+        async with AsyncClient(timeout=30 * 60) as client:
             request = await client.post(url, json=payload)
             if debug:
                 print(request.json())
