@@ -1,29 +1,42 @@
-<img src="img/memory_vault_pp.png" alt="drawing" width="200"/>
+<div align="center">
+  <h1> Memory-Vault</h1> 
 
-# Memory-Vault
+  [<img src="img/memory_vault_pp.png" alt="gradio" width=300>](https://gradio.app)<br>
+  <em>Whisper to future, Digital sticky notes, Learning machine</em>
+</div>
 
-Whisper to the future.
-Take your notes and let memory vault remind them to you. 
 
 
-Think of it like Sticky Notes, but digitalized and much more easy to use.
+Memory Vault is a Telegram bot that stores your notes and occasionally reminds them to you. It is the simplest and easiest learning/remembering machine. Think of it like Sticky Notes, but digital and much more simple. Never forget your notes!
 
 <img src="img/sticky-notes.png" alt="drawing" width="500"/>
+<br>
 
-(I'm just an engineer, without any design skills :D)
+<font size="1"> (I'm just an engineer, without any design skills :D)</font> 
 
----
+<img src="img/0.mv-quickstart.png" alt="drawing" width="500"/>
 
-Hello 👋🏻
+<img src="img/0.mv-quickstart1.png" alt="drawing" width="500"/>
 
-Memory Vault is a telegram bot that stores your notes and reminds random notes every day.
 
-Keeping note of beautiful & important stuff that we come across throughout the life, and later remembering them in the future is quite difficult isn't it 😔?
-Here is the Memory Vault for the rescue! Memory Vault solves this problem with a very simple and easy to use method 😎. Because, complex methods makes it harder to keep them in our life.
-Here is the catch, I will definitely send you each memory you give to me one day. And you don't need to think over when I will send it.
-Sincerely thanks to my dear wife Seyyide for the beautiful idea.
+# Start
+Hello Ömer Faruk 👋🏻
 
-## [See The Tutorials](img/)
+Keeping note of beautiful & important stuff that we come across throughout the life, and later remembering them is quite difficult isn't it 😔? Here is the Memory Vault for the rescue! Just take your notes, and I will occasionally remind them to you 😎
+
+Unfortunately in this era our days&agendas are very busy and it is very hard to follow something consistently. Memory Vault helps us on this front by continuously reminding our notes to us so that you won't ever forget them. You can use it for
+
+1. Habit Building
+2. Language Learning
+3. Learning the way of Entrepreneurship
+4. Remembering names
+5. Notetaking
+6. Or, Anything Custom, Memory Vault is very flexible and general solution! 
+
+
+❤️ Sincerely thanks to my dear wife Seyyide for the beautiful idea.
+
+
 
 ## Use Cases
 1. Habit Building 
@@ -36,53 +49,36 @@ Sincerely thanks to my dear wife Seyyide for the beautiful idea.
 <img src="img/ex4.png" alt="drawing" width="500"/>
 5. Anything Custom, Memory Vault is very flexible and general solution!
 
-## [Try it!](https://t.me/Memory_Vault_Bot)
+## [Try it from here!](https://t.me/Memory_Vault_Bot)
 
-## Functionalities
+## Tutorials
+1. 
+<img src="img/0.start.png" alt="drawing" width="500"/>
 
-```
-Memory Vault will send you random memories from your memory vault, at the hours in your schedule every day.
-- /help or *help* to get help message
-- /join or *join* to activate daily memory sending
-- /leave or *leave* to deactivate daily sending
-- /send or *send* to get a random memory
-- *send number* to get multiple random memories
-- /status or *status* to get your status information
-- /list or *list* to list memories
+2. 
 
-- *add Memory* to add a memory to your memory vault
-Example:
-*add Time never does come back*
+<img src="img/1.tutorials.png" alt="drawing" width="500"/>
 
-- *delete id* to delete a memory. You can learn the memory ids with the command, *list* or /list
-Example:
-*delete 2*
+3.
 
-- *gmt timezone* to set your timezone,  the default timezone is *GMT0*
-Examples:
-GMT+3: *gmt 3*
-GMT0: *gmt 0*
-GMT-5: *gmt -5*
+<img src="img/2.tutorials.png" alt="drawing" width="500"/>
 
-- /support or *support* to learn how to support me
-- *feedback Sentence* to send your thoughts and feedbacks about the bot
+4. 
+<img src="img/3.adds.png" alt="drawing" width="500"/>
 
-*Schedule related commands:*
-I send memories according to the hours in your schedule. Default schedule hours are *8,20*. I will send you a memory at 8:00 and 20:00 everyday.
-You can create your own daily schedule. Furthermore you can add an hour multiple times to receive multiple memories at that hour.
-- /schedule or *schedule* to display your current schedule
-- *schedule reset* to reset your schedule to the default schedule
-- *schedule add hour1 hour2 hour3* to add hours to your schedule
-Example:
-*schedule add 1 3 9 11*
-- *schedule remove hour* to remove an hour from your schedule
-Example:
-*schedule remove 8*
+5.
+<img src="img/4.delete.png" alt="drawing" width="500"/>
 
-- You can *use me in groups* as well, just add me to a group and promote me to admin there. If you don't want to make me an admin, you can reply to my messages in the group to use my commands.
-- Furthermore *you can have multiple memory vaults* by using different groups. For example I would serve you well in a *language learning group*, where you add words you want to remember to your memory vault.
-- Example group: @PrayersFromQuran
-```
+6.
+<img src="img/5.empty-a-vault.png" alt="drawing" width="500"/>
+
+7.
+<img src="img/6.schedule.png" alt="drawing" width="500"/>
+
+8.
+<img src="img/7.help.png" alt="drawing" width="500"/>
+
+
 
 ## Requirements
 
