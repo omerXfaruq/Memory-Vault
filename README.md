@@ -9,6 +9,14 @@
 
 Memory Vault is a Telegram bot that stores your notes and occasionally reminds them to you. It is the simplest and easiest learning/remembering machine. Think of it like Sticky Notes, but digital and much more simple. Never forget your notes!
 
+
+1. Habit Building
+2. Language Learning
+3. Learning the way of Entrepreneurship
+4. Remembering names
+5. Notetaking
+6. Or, Anything Custom, Memory Vault is very flexible and general solution!
+
 <img src="img/sticky-notes.png" alt="drawing" width="500"/>
 <br>
 
@@ -26,12 +34,6 @@ Keeping note of beautiful & important stuff that we come across throughout the l
 
 Unfortunately in this era our days&agendas are very busy and it is very hard to follow something consistently. Memory Vault helps us on this front by continuously reminding our notes to us so that you won't ever forget them. You can use it for
 
-1. Habit Building
-2. Language Learning
-3. Learning the way of Entrepreneurship
-4. Remembering names
-5. Notetaking
-6. Or, Anything Custom, Memory Vault is very flexible and general solution! 
 
 
 ❤️ Sincerely thanks to my dear wife Seyyide for the beautiful idea.
