@@ -1,7 +1,7 @@
 <div align="center">
   <h1> Memory-Vault</h1> 
 
-  [<img src="img/memory_vault_pp.png" alt="gradio" width=300>](https://gradio.app)<br>
+  [<img src="img/memory_vault_pp.png" alt="memory-vault" width=500>](https://gradio.app)<br>
   <em>Whisper to future, Digital sticky notes, Learning machine</em>
 </div>
 
