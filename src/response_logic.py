@@ -40,6 +40,7 @@ class ResponseLogic:
                     memory = reminder.reminder
                     return Constants.Add.success(name, language_code, memory)
         elif ResponseLogic.check_command_type(first_word, "start"):
+            user = join_user(user)
             await Events.send_a_message_to_user(chat_id, Constants.hello)
             return Constants.Start.start_message(name, language_code)
         elif ResponseLogic.check_command_type(first_word, "help"):

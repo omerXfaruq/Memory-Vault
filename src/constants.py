@@ -63,7 +63,6 @@ class Constants:
                     f"\nİşte ben bu sorunu oldukça basit ve kullanması kolay bir yöntemle çözüyorum {Constants.sun_glasses}. Zira karışık çözümleri hayatımıza sokmak zor {Constants.sad}."
                     f"\nBu yöntemdeki güzellik şurada, bana verdiğin her notu elbet bir gün sana yollayacağım. Ne zaman yollayacağımı da düşünmene gerek yok."
                     f"\nBu güzel fikri verdiği için sevgili hanımım Seyyide'ye teşekkür ederim."
-                    f"\n\n- Botu kullanmaya başlamak için buyur tıkla, /join"
                     f"\n- Botu anlatan kısa rehbere geçmek için buyur tıkla, /tutorial1"
                 )
             else:
@@ -80,7 +79,6 @@ class Constants:
                     f"\n"
                     f"\n❤️ Sincerely thanks to my dear wife Seyyide for the beautiful idea."
                     f"\n"
-                    f"\n- To start using the bot please click, /join"
                     f"\n- To start to a small tutorial please click, /tutorial1"
                 )
 
