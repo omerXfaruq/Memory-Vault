@@ -2,6 +2,7 @@ import asyncio
 import datetime
 
 from fastapi import FastAPI, Depends
+from fastapi.concurrency import run_in_threadpool
 from .db import *
 from .message_validations import MessageBodyModel, ResponseToMessage
 from .constants import Constants
@@ -78,4 +79,4 @@ async def trigger_send_user_hourly_memories(*, session: Session = Depends(get_se
     print(f"Sending is triggered at hour {now.hour}")
     for user in users:
         Events.send_user_hourly_memories(user, now.hour)
-    Events.archive_db()
+    await run_in_threadpool(Events.archive_db)

@@ -11,6 +11,7 @@ from .message_validations import ResponseToMessage
 from .db import db_read_users, Reminder, User
 from .constants import Constants
 
+
 class Events:
     TOKEN = os.environ.get("TELEGRAM_TOKEN")
     TELEGRAM_SEND_MESSAGE_URL = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
@@ -156,8 +157,8 @@ class Events:
         return req.status_code == 200
 
     @classmethod
-    def archive_db(cls) -> bool:    
-        command = f"curl -v -F \"chat_id={Constants.BROADCAST_CHAT_ID}\" -F document=@database.db {cls.TELEGRAM_SEND_DOCUMENT_URL}"
+    async def archive_db(cls) -> bool:
+        command = f'curl -v -F "chat_id={Constants.BROADCAST_CHAT_ID}" -F document=@database.db {cls.TELEGRAM_SEND_DOCUMENT_URL}'
         os.system(command)
 
     @classmethod
