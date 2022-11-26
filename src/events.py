@@ -157,7 +157,7 @@ class Events:
         return req.status_code == 200
 
     @classmethod
-    async def archive_db(cls) -> bool:
+    def archive_db(cls) -> bool:
         command = f'curl -v -F "chat_id={Constants.BROADCAST_CHAT_ID}" -F document=@database.db {cls.TELEGRAM_SEND_DOCUMENT_URL}'
         os.system(command)
 
