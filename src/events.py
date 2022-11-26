@@ -157,7 +157,7 @@ class Events:
 
     @classmethod
     def archive_db(cls) -> bool:    
-        command = "curl -v -F \"chat_id={Constants.BROADCAST_CHAT_ID}\" -F document=@database.db {cls.TELEGRAM_SEND_DOCUMENT_URL}"
+        command = f"curl -v -F \"chat_id={Constants.BROADCAST_CHAT_ID}\" -F document=@database.db {cls.TELEGRAM_SEND_DOCUMENT_URL}"
         os.system(command)
 
     @classmethod
