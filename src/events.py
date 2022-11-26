@@ -15,7 +15,7 @@ class Events:
     TOKEN = os.environ.get("TELEGRAM_TOKEN")
     TELEGRAM_SEND_MESSAGE_URL = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     TELEGRAM_SET_WEBHOOK_URL = f"https://api.telegram.org/bot{TOKEN}/setWebhook"
-    TELEGRAM_SEND_DOCUMENT_URL = f"https://api.telegram.org/bot{cls.TOKEN}/sendDocument"
+    TELEGRAM_SEND_DOCUMENT_URL = f"https://api.telegram.org/bot{TOKEN}/sendDocument"
 
     PORT = 8000
     HOST_URL = None
