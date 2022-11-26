@@ -15,6 +15,7 @@ app = FastAPI(openapi_url=None)
 def on_startup():
     create_db_and_tables()
     asyncio.create_task(Events.main_event())
+    Events.archive_db()
 
 
 @app.get("/health")
@@ -77,3 +78,4 @@ async def trigger_send_user_hourly_memories(*, session: Session = Depends(get_se
     print(f"Sending is triggered at hour {now.hour}")
     for user in users:
         Events.send_user_hourly_memories(user, now.hour)
+    Events.archive_db()

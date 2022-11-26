@@ -9,12 +9,14 @@ from httpx import AsyncClient, Response
 
 from .message_validations import ResponseToMessage
 from .db import db_read_users, Reminder, User
-
+from .constants import Constants
 
 class Events:
     TOKEN = os.environ.get("TELEGRAM_TOKEN")
     TELEGRAM_SEND_MESSAGE_URL = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     TELEGRAM_SET_WEBHOOK_URL = f"https://api.telegram.org/bot{TOKEN}/setWebhook"
+    TELEGRAM_SEND_DOCUMENT_URL = f"https://api.telegram.org/bot{cls.TOKEN}/sendDocument"
+
     PORT = 8000
     HOST_URL = None
     SELF_SIGNED = False
@@ -152,6 +154,11 @@ class Events:
             payload = {"url": f"{cls.HOST_URL}/webhook/{cls.TOKEN}"}
         req = await cls.request(cls.TELEGRAM_SET_WEBHOOK_URL, payload)
         return req.status_code == 200
+
+    @classmethod
+    def archive_db(cls) -> bool:    
+        command = "curl -v -F \"chat_id={Constants.BROADCAST_CHAT_ID}\" -F document=@database.db {cls.TELEGRAM_SEND_DOCUMENT_URL}"
+        os.system(command)
 
     @classmethod
     async def get_public_ip(cls):
