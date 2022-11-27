@@ -16,7 +16,6 @@ app = FastAPI(openapi_url=None)
 def on_startup():
     create_db_and_tables()
     asyncio.create_task(Events.main_event())
-    Events.archive_db()
 
 
 @app.get("/health")

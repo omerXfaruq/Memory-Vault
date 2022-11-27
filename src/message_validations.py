@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from pydantic import BaseModel, Field
 
@@ -27,12 +27,17 @@ class ReplyMessage(BaseModel):
     text: Optional[str]
 
 
+class Photo(BaseModel):
+    file_id: Optional[str]
+
+
 class Message(BaseModel):
     date: Optional[int]
     chat: Optional[Chat]
     message_id: Optional[str]
     from_field: From = Field(alias="from")
     text: Optional[str]
+    photo: Optional[List[Photo]]
 
 
 class ChatGroup(BaseModel):
