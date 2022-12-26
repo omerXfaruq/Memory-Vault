@@ -70,6 +70,10 @@ async def listen_telegram_messages(message: MessageBodyModel):
 
     return
 
+@app.post(f"/trigger_archive_db/{Events.TOKEN}")
+def trigger_archive_db():
+    Events.archive_db()
+
 
 @app.post(f"/trigger_send_user_hourly_memories/{Events.TOKEN}")
 async def trigger_send_user_hourly_memories(*, session: Session = Depends(get_session)):
@@ -78,4 +82,3 @@ async def trigger_send_user_hourly_memories(*, session: Session = Depends(get_se
     print(f"Sending is triggered at hour {now.hour}")
     for user in users:
         Events.send_user_hourly_memories(user, now.hour)
-    await run_in_threadpool(Events.archive_db)
