@@ -30,6 +30,7 @@ class Events:
         Runs in a while loop, Triggers Events.send_user_hourly_memories at every hour.
         """
         while True:
+            print(f"Secs until next hour: {cls.get_time_until_next_hour()}")
             await asyncio.sleep(cls.get_time_until_next_hour())
             print(f"New main_event loop, {datetime.datetime.now()}")
             async with AsyncClient() as client:
