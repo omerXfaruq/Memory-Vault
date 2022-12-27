@@ -43,7 +43,6 @@ class Events:
     @classmethod
     def get_time_until_next_hour(cls) -> float:
         # Ref: https://stackoverflow.com/a/52808375/15282482
-        return 10
         delta = datetime.timedelta(hours=1)
         now = datetime.datetime.now()
         next_hour = (now + delta).replace(microsecond=0, second=0, minute=0)
