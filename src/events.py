@@ -31,7 +31,7 @@ class Events:
         """
         while True:
             await asyncio.sleep(cls.get_time_until_next_hour())
-            print(f"New main_event loop, {datetime.now()}")
+            print(f"New main_event loop, {datetime.datetime.now()}")
             async with AsyncClient() as client:
                 endpoint = f"http://0.0.0.0:{cls.PORT}/trigger_send_user_hourly_memories/{Events.TOKEN}"
                 response = await client.post(url=endpoint)
