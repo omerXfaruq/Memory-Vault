@@ -37,10 +37,10 @@ class Events:
             async with AsyncClient() as client:
                 endpoint = f"http://0.0.0.0:{cls.PORT}/trigger_send_user_hourly_memories/{Events.TOKEN}"
                 response = await client.post(url=endpoint)
-                print(f"%%Trigger Hourly {response}")
-                endpoint = f"http://0.0.0.0:{cls.PORT}/trigger_archive_db/{Events.TOKEN}"
-                response = await client.post(url=endpoint)
-                print(f"%%Archive {response}")
+                #print(f"%%Trigger Hourly {response}")
+                #endpoint = f"http://0.0.0.0:{cls.PORT}/trigger_archive_db/{Events.TOKEN}"
+                #response = await client.post(url=endpoint)
+                #print(f"%%Archive {response}")
 
     @classmethod
     def get_time_until_next_hour(cls) -> float:
