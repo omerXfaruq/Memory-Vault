@@ -49,7 +49,7 @@ Memory Vault is a Telegram bot that you can store your notes, and get reminded r
 
 
 
-# Start
+## Start
 Hello Ömer Faruk 👋🏻
 
 Keeping note of beautiful & important stuff that we come across throughout the life, and later remembering them is quite difficult isn't it 😔? Here is the Memory Vault for the rescue! Just take your notes, and I will randomly remind them everyday 😎
@@ -99,6 +99,7 @@ Unfortunately in this era our days&agendas are very busy and it is very hard to 
 8.
 <img src="img/7.help.png" alt="drawing" width="500"/>
 
+## [Try it from here!](https://t.me/Memory_Vault_Bot)
 
 # Software Information
 
