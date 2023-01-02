@@ -59,8 +59,6 @@ Unfortunately in this era our days&agendas are very busy and it is very hard to 
 ❤️ Sincerely thanks to my dear wife Seyyide for the beautiful idea.
 
 
-You can use it for
-
 ## Use Cases
 1. Habit Building 
 <img src="img/ex1.png" alt="drawing" width="500"/>
