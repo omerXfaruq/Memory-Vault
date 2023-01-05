@@ -1,7 +1,7 @@
 import asyncio
 import datetime
 
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, Request
 from fastapi.concurrency import run_in_threadpool
 from .db import *
 from .message_validations import MessageBodyModel, ResponseToMessage
@@ -24,9 +24,9 @@ async def health():
 
 
 @app.post(f"/webhook/{Events.TOKEN}")
-async def listen_telegram_messages(message: MessageBodyModel):
-    print(message.dict())
-
+async def listen_telegram_messages(r: Request, message: MessageBodyModel):
+    print(f"Incoming Message: {message.dict()}")
+    print(f"Incoming Request: {await r.json()}")
     if message.message:
         name = message.message.from_field.first_name
         chat_id = message.message.chat.id
@@ -69,6 +69,7 @@ async def listen_telegram_messages(message: MessageBodyModel):
             return
 
     return
+
 
 @app.post(f"/trigger_archive_db/{Events.TOKEN}")
 def trigger_archive_db():

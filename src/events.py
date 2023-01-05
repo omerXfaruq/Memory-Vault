@@ -10,6 +10,7 @@ from httpx import AsyncClient, Response
 from .message_validations import ResponseToMessage
 from .db import db_read_users, Reminder, User
 from .constants import Constants
+from .packages import Packages
 
 
 class Events:
@@ -37,10 +38,10 @@ class Events:
             async with AsyncClient() as client:
                 endpoint = f"http://0.0.0.0:{cls.PORT}/trigger_send_user_hourly_memories/{Events.TOKEN}"
                 response = await client.post(url=endpoint)
-                #print(f"%%Trigger Hourly {response}")
-                #endpoint = f"http://0.0.0.0:{cls.PORT}/trigger_archive_db/{Events.TOKEN}"
-                #response = await client.post(url=endpoint)
-                #print(f"%%Archive {response}")
+                # print(f"%%Trigger Hourly {response}")
+                # endpoint = f"http://0.0.0.0:{cls.PORT}/trigger_archive_db/{Events.TOKEN}"
+                # response = await client.post(url=endpoint)
+                # print(f"%%Archive {response}")
 
     @classmethod
     def get_time_until_next_hour(cls) -> float:
@@ -99,6 +100,32 @@ class Events:
         return True
 
     @classmethod
+    async def get_package_message(
+        cls,
+        message: str,
+    ) -> str:
+        """
+        Runs the related package if the reminder is a package type.
+
+        Args:
+            message:
+
+        Returns:
+            converted_message
+
+        """
+        words = message.split(" ")
+        if words[0] == "package:":
+            package_id = 0
+            try:
+                package_id = int(words[1])
+            except:
+                return message
+            return await (Packages.functions[package_id]())
+
+        return message
+
+    @classmethod
     async def send_a_message_to_user(
         cls,
         telegram_id: int,
@@ -106,6 +133,7 @@ class Events:
         retry_count: int = 3,
         sleep_time: float = 0.1,
     ) -> bool:
+        message = await cls.get_package_message(message)
         message = ResponseToMessage(
             **{
                 "text": message,
