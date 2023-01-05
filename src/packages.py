@@ -29,7 +29,7 @@ class Packages:
             message = (
                 f"*USD*: {USDTRY} -- % {USD_DEGISIM} \n"
                 f"*XU100*: {XU100} -- % {XU100_DEGISIM} \n"
-                f"*XU100/USD*: {XU100 / USDTRY} -- % {XU100_DEGISIM / USD_DEGISIM} \n"
+                f"*XU100/USD*: {round(XU100 / USDTRY, 2)} -- % {round(XU100_DEGISIM / USD_DEGISIM, 2)} \n"
                 f"*GA*: {GA} -- % {GA_DEGISIM} \n"
             )
             return message
