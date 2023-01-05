@@ -1,3 +1,4 @@
+import datetime
 import random
 import asyncio
 
@@ -125,6 +126,7 @@ class ResponseLogic:
         elif ResponseLogic.check_command_type(first_word, "list"):
             memories = list_memories(user)
             memory_count = len(memories)
+            print(f"{datetime.datetime.now()}: {memory_count} : {memories} : {chat_id}")
             if memories is None:
                 return Constants.Common.inactive_user(name, language_code)
             elif memory_count == 0:
