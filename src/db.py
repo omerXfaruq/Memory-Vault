@@ -241,6 +241,25 @@ def add_memory(
             return db_reminder
 
 
+def add_package(
+    user: UserCreate,
+    package_id: int,
+    session: Session = next(get_session()),
+) -> Optional[Union[Reminder, bool]]:
+    """
+    Add a package id to user's memory-vault
+
+    Args:
+        user:
+        package_id:
+        session:
+
+    Returns: bool
+    """
+    success = add_memory(user, f"package: {package_id}", session)
+    return success is not False
+
+
 def delete_memory(
     user: UserCreate,
     memory_id: int,

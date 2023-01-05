@@ -1,4 +1,5 @@
 from .db import default_schedule, get_user_status
+from .packages import Packages
 
 
 class Constants:
@@ -372,7 +373,7 @@ class Constants:
                 )
             else:
                 return (
-                    f"{name}, I do not know that command. You can support the commands below."
+                    f"{name}, I do not know that command. You can use the commands below."
                     f"\n*schedule*"
                     f"\n*schedule add 8 12*"
                     f"\n*schedule reset*"
@@ -558,4 +559,58 @@ class Constants:
                     f"\n- /list or *list* to list notes"
                     f"\n\n{name} congratulations, you finished the tutorial {Constants.smile}. "
                     f"\nThese were my main commands, to see additional commands like editing daily schedule please use, /help."
+                )
+
+    class Package:
+        @staticmethod
+        def help(name: str, language_code: str = "en") -> str:
+            if language_code == "tr":
+                return (
+                    f"Hatıra kasasına hazır paketler de ekleyebilirsin.\n"
+                    f"Paket eklemek için, package add package-no, kullanabilirsin\n"
+                    f"örn: *package add 0*"
+                )
+            else:
+                return (
+                    f"You can also add preprepared packages to your Memory Vault.\n"
+                    f"To add a package you can use, package add package-no\n"
+                    f"ex: *package add 0*"
+                )
+
+        @staticmethod
+        def incorrect_id(name: str, language_code: str = "en") -> str:
+            if language_code == "tr":
+                return f"{name}, verdiğin paket numarası yanlış. Lütfen doğru bir paket numarası ver, 0 <= x <= {len(Packages.functions) - 1} \nörnek: *package add 0*"
+
+            else:
+                return f"{name}, the package id is incorrect. Please provide a correct id, 0 <= x <= {len(Packages.functions) - 1} \nex: *package add 0*"
+
+        @staticmethod
+        def success(name: str, language_code: str = "en", package_id: int = 0) -> str:
+            if language_code == "tr":
+                return (
+                    f"{name}, {Packages.titles[package_id]} başarıyla kasana eklendi."
+                )
+            else:
+                return f"{name}, {Packages.titles[package_id]} is successfully added to your vault."
+
+        @staticmethod
+        def already_added(name: str, language_code: str = "en") -> str:
+            if language_code == "tr":
+                return f"{name}, verdiğin paket numarası zaten ekli durumda."
+
+            else:
+                return f"{name}, the package id you gave is already added to the Vault."
+
+        @staticmethod
+        def unknown_command(name: str, language_code: str = "en") -> str:
+            if language_code == "tr":
+                return (
+                    f"{name}, bu komutu bilmiyorum.\n\n"
+                    f"{Constants.Package.help(name, language_code)}"
+                )
+            else:
+                return (
+                    f"{name}, I do not know that command.\n\n"
+                    f"{Constants.Package.help(name, language_code)}"
                 )

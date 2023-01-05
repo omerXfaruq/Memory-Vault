@@ -4,6 +4,7 @@ import asyncio
 from .db import *
 from .events import Events
 from .constants import Constants
+from .packages import Packages
 
 
 class ResponseLogic:
@@ -94,6 +95,26 @@ class ResponseLogic:
                         )
                     )
                 return ""
+
+        elif ResponseLogic.check_command_type(first_word, "package"):
+            if len(split_text) == 1:  # package
+                return Constants.Package.help(name, language_code)
+            elif len(split_text) >= 3:
+                if split_text[1] == "add":
+                    package_id = 0
+                    try:
+                        package_id = int(split_text[2])
+                    except:
+                        return Constants.Package.incorrect_id(name, language_code)
+
+                    if package_id >= len(Packages.functions) or package_id < 0:
+                        return Constants.Package.incorrect_id(name, language_code)
+
+                    success = add_package(user, package_id)
+                    if not success:
+                        return Constants.Package.already_added(name, language_code)
+
+                    return Constants.Package.success(name, language_code, package_id)
 
         elif ResponseLogic.check_command_type(first_word, "list"):
             memories = list_memories(user)
