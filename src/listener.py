@@ -32,6 +32,8 @@ async def listen_telegram_messages(r: Request, message: MessageBodyModel):
         chat_id = message.message.chat.id
         text = message.message.text
         language_code = message.message.from_field.language_code
+        print(f"%% {datetime.datetime.now()} Fields: {name} {chat_id} {text} {language_code}")
+
         if not text:  # Edit of message  etc.
             return
         else:
