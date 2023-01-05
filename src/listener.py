@@ -25,8 +25,8 @@ async def health():
 
 @app.post(f"/webhook/{Events.TOKEN}")
 async def listen_telegram_messages(r: Request, message: MessageBodyModel):
-    print(f"Incoming Message: {message.dict()}")
-    print(f"Incoming Request: {await r.json()}")
+    print(f"%% {datetime.datetime.now()} Incoming Message: {message.dict()}")
+    print(f"%% {datetime.datetime.now()} Incoming Request: {await r.json()}")
     if message.message:
         name = message.message.from_field.first_name
         chat_id = message.message.chat.id
