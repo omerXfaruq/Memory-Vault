@@ -61,7 +61,6 @@ async def listen_telegram_messages(r: Request, message: MessageBodyModel):
             and new_member.user.id == Constants.BOT_ID
             and new_member.status == "member"
         ):
-            await Events.send_a_message_to_user(chat_id, Constants.hello)
             await ResponseLogic.create_response("start", name, chat_id, language_code)
             await Events.send_a_message_to_user(
                 chat_id, Constants.Start.group_warning(name, language_code)

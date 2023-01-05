@@ -197,7 +197,7 @@ def list_memories(
         ).first()
         if found_user is None:
             return None
-
+        print(f"{datetime.datetime.now()}, user: found_user")
         return found_user.reminders
     except Exception as ex:
         print(f"{datetime.datetime.now()}, Exception: {ex}")
