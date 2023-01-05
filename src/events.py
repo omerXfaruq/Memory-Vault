@@ -31,17 +31,10 @@ class Events:
         Runs in a while loop, Triggers Events.send_user_hourly_memories at every hour.
         """
         while True:
-            print("%%")
-            print(f"%% Secs until next hour: {cls.get_time_until_next_hour()}")
             await asyncio.sleep(cls.get_time_until_next_hour())
-            print(f"%% New main_event loop, {datetime.datetime.now()}")
             async with AsyncClient() as client:
                 endpoint = f"http://0.0.0.0:{cls.PORT}/trigger_send_user_hourly_memories/{Events.TOKEN}"
                 response = await client.post(url=endpoint)
-                # print(f"%%Trigger Hourly {response}")
-                # endpoint = f"http://0.0.0.0:{cls.PORT}/trigger_archive_db/{Events.TOKEN}"
-                # response = await client.post(url=endpoint)
-                # print(f"%%Archive {response}")
 
     @classmethod
     def get_time_until_next_hour(cls) -> float:
@@ -84,16 +77,12 @@ class Events:
                 cls.send_a_message_to_user(user.telegram_chat_id, reminder.reminder)
             )
             now = datetime.datetime.now()
-            print(
-                f"Created task to, {user.name}, {reminder.reminder}, hour: {hour}, gmt: {user.gmt}, now: {now}"
-            )
 
     @classmethod
     async def send_message_list_at_background(
         cls, telegram_chat_id: int, message_list: List[str]
     ) -> bool:
         for message in message_list:
-            print(f"sending the message: {message}, to chat: {telegram_chat_id} ")
             await Events.send_a_message_to_user(
                 telegram_id=telegram_chat_id, message=message
             )
@@ -142,18 +131,18 @@ class Events:
         )
         await asyncio.sleep(sleep_time)
         for retry in range(retry_count):
-            print(f"Sending the message in send_a_message_to_user, count {retry}")
             # Avoid too many requests error from Telegram
             response = await cls.request(cls.TELEGRAM_SEND_MESSAGE_URL, message.dict())
             if response.status_code == 200:
+                print(f"%% {datetime.datetime.now()}: Sent message {retry}")
                 return True
             elif response.status_code == 429:
                 retry_after = int(response.json()["parameters"]["retry_after"])
-                print(f"Retry After: {retry_after}, message: {message}")
+                print(f"%% {datetime.datetime.now()} Retry After: {retry_after}, message: {message}")
                 await asyncio.sleep(retry_after)
             else:
                 print(
-                    f"Unhandled response code: {response.status_code}, response: {response.json()}"
+                    f"%% {datetime.datetime.now()} Unhandled response code: {response.status_code}, response: {response.json()}"
                 )
         return False
 
@@ -171,7 +160,7 @@ class Events:
         )
 
     @classmethod
-    async def request(cls, url: str, payload: dict, debug: bool = True) -> Response:
+    async def request(cls, url: str, payload: dict, debug: bool = False) -> Response:
         async with AsyncClient(timeout=30 * 60) as client:
             request = await client.post(url, json=payload)
             if debug:
@@ -180,7 +169,6 @@ class Events:
 
     @classmethod
     async def set_telegram_webhook_url(cls) -> bool:
-        print(f"webhook_url:{cls.HOST_URL}")
         if cls.SELF_SIGNED:
             payload = {
                 "url": f"{cls.HOST_URL}/webhook/{cls.TOKEN}",

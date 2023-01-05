@@ -32,7 +32,6 @@ async def listen_telegram_messages(r: Request, message: MessageBodyModel):
         chat_id = message.message.chat.id
         text = message.message.text
         language_code = message.message.from_field.language_code
-        print(f"%% {datetime.datetime.now()} Fields: {name} {chat_id} {text} {language_code}")
 
         if not text:  # Edit of message  etc.
             return
@@ -79,6 +78,5 @@ def trigger_archive_db():
 async def trigger_send_user_hourly_memories(*, session: Session = Depends(get_session)):
     users = db_read_users(limit=100000, session=session)
     now = datetime.datetime.now(datetime.timezone.utc)
-    print(f"Sending is triggered at hour {now.hour}")
     for user in users:
         Events.send_user_hourly_memories(user, now.hour)
