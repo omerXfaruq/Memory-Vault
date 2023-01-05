@@ -127,6 +127,7 @@ class ResponseLogic:
             else:
                 return Constants.Package.incorrect_id(name, language_code)
         elif ResponseLogic.check_command_type(first_word, "list"):
+            print(f"{datetime.datetime.now()}: it is in the list")
             memories = list_memories(user)
             memory_count = len(memories)
             print(f"{datetime.datetime.now()}: {memory_count} : {memories} : {chat_id}")
