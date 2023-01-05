@@ -92,6 +92,10 @@ class ResponseLogic:
                     return Constants.Send.send_count_out_of_bound(name, language_code)
 
                 all_memories = list_memories(user)
+
+                if all_memories is None:
+                    return Constants.Common.inactive_user(name, language_code)
+
                 if len(all_memories) == 0:
                     return Constants.Common.no_memory_found(name, language_code)
 
@@ -129,11 +133,12 @@ class ResponseLogic:
         elif ResponseLogic.check_command_type(first_word, "list"):
             print(f"{datetime.datetime.now()}: it is in the list")
             memories = list_memories(user)
-            memory_count = len(memories)
-            print(f"{datetime.datetime.now()}: {memory_count} : {memories} : {chat_id}")
+
             if memories is None:
                 return Constants.Common.inactive_user(name, language_code)
-            elif memory_count == 0:
+            memory_count = len(memories)
+            print(f"{datetime.datetime.now()}: {memory_count} : {memories} : {chat_id}")
+            if memory_count == 0:
                 return Constants.Common.no_memory_found(name, language_code)
             else:
                 background_message_list = []

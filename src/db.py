@@ -189,6 +189,8 @@ def list_memories(
     Returns:
 
     """
+    print(f"{datetime.datetime.now()}, list-memories")
+    return None
     try:
         found_user = session.exec(
             select(User).where(User.telegram_chat_id == user.telegram_chat_id)
