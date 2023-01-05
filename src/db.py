@@ -3,8 +3,9 @@ from typing import List, Optional, Union, Tuple
 from fastapi import Depends, Query
 from sqlmodel import Field, Relationship, Session, SQLModel, create_engine, select, and_
 from sqlalchemy import UniqueConstraint
+import datetime
 
-default_schedule = "8,20"
+default_schedule = "8"
 
 
 class UserBase(SQLModel):
@@ -188,13 +189,17 @@ def list_memories(
     Returns:
 
     """
-    found_user = session.exec(
-        select(User).where(User.telegram_chat_id == user.telegram_chat_id)
-    ).first()
-    if found_user is None:
-        return None
+    try:
+        found_user = session.exec(
+            select(User).where(User.telegram_chat_id == user.telegram_chat_id)
+        ).first()
+        if found_user is None:
+            return None
 
-    return found_user.reminders
+        return found_user.reminders
+    except Exception as ex:
+        print(f"{datetime.datetime.now()}, Exception: {ex}")
+        return None
 
 
 def add_memory(
