@@ -189,19 +189,13 @@ def list_memories(
     Returns:
 
     """
-    print(f"{datetime.datetime.now()}, list-memories")
-    return None
-    try:
-        found_user = session.exec(
-            select(User).where(User.telegram_chat_id == user.telegram_chat_id)
-        ).first()
-        if found_user is None:
-            return None
-        print(f"{datetime.datetime.now()}, user: found_user")
-        return found_user.reminders
-    except Exception as ex:
-        print(f"{datetime.datetime.now()}, Exception: {ex}")
+    found_user = session.exec(
+        select(User).where(User.telegram_chat_id == user.telegram_chat_id)
+    ).first()
+    if found_user is None:
         return None
+    print(f"{datetime.datetime.now()}, user: found_user")
+    return found_user.reminders
 
 
 def add_memory(
