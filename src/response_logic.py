@@ -71,7 +71,12 @@ class ResponseLogic:
                 elif memory is False:
                     return Constants.Common.no_memory_found(name, language_code)
                 else:
-                    return memory.reminder
+                    asyncio.create_task(
+                        Events.send_a_message_to_user(
+                            user.telegram_chat_id, memory.reminder
+                        )
+                    )
+                    return ""
             else:  # send number
                 try:
                     number_of_sending = int(split_text[1])
@@ -115,7 +120,8 @@ class ResponseLogic:
                         return Constants.Package.already_added(name, language_code)
 
                     return Constants.Package.success(name, language_code, package_id)
-
+            else:
+                return Constants.Package.incorrect_id(name, language_code)
         elif ResponseLogic.check_command_type(first_word, "list"):
             memories = list_memories(user)
             memory_count = len(memories)
