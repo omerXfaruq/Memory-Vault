@@ -19,6 +19,9 @@ class ResponseLogic:
         line_split_first_word = line_split_text[0]
         split_text = text.split(" ")
         first_word = split_text[0]
+
+        print(f"%% {datetime.datetime.now()} fw: {first_word}")
+
         user = UserCreate(
             name=name,
             telegram_chat_id=chat_id,
