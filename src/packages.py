@@ -14,11 +14,17 @@ class Packages:
             request = await client.get(URL)
             js = request.json()
             USDTRY = (float(js["USD"]["satis"]) + float(js["USD"]["alis"])) / 2
+            USDTRY = round(USDTRY, 2)
             USD_DEGISIM = float(js["USD"]["degisim"])
+            USD_DEGISIM = round(USD_DEGISIM, 2)
             XU100 = (float(js["XU100"]["satis"]) + float(js["XU100"]["alis"])) / 2
+            XU100 = round(XU100, 2)
             XU100_DEGISIM = float(js["XU100"]["degisim"])
+            XU100_DEGISIM = round(XU100_DEGISIM, 2)
             GA = (float(js["GA"]["satis"]) + float(js["GA"]["alis"])) / 2
+            GA = round(GA, 2)
             GA_DEGISIM = float(js["GA"]["degisim"])
+            GA_DEGISIM = round(GA_DEGISIM, 2)
 
             message = (
                 f"*USD*: {USDTRY} -- % {USD_DEGISIM} \n"
