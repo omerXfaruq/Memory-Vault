@@ -31,13 +31,19 @@ class Photo(BaseModel):
     file_id: Optional[str]
 
 
+class Document(BaseModel):
+    file_id: Optional[str]
+
+
 class Message(BaseModel):
     date: Optional[int]
     chat: Optional[Chat]
     message_id: Optional[str]
     from_field: From = Field(alias="from")
+    forward_date: Optional[int]
     text: Optional[str]
     photo: Optional[List[Photo]]
+    document: Optional[Document]
 
 
 class ChatGroup(BaseModel):
@@ -74,5 +80,7 @@ class MessageBodyModel(BaseModel):
 class ResponseToMessage(BaseModel):
     method: Optional[str] = "sendMessage"
     chat_id: Optional[int] = 861126057
-    text: Optional[str] = ""
+    text: Optional[str]
+    photo: Optional[str]
+    document: Optional[str]
     parse_mode: Optional[str] = "Markdown"

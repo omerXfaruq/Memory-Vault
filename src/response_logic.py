@@ -20,7 +20,6 @@ class ResponseLogic:
         split_text = text.split(" ")
         first_word = split_text[0]
 
-
         user = UserCreate(
             name=name,
             telegram_chat_id=chat_id,
@@ -140,9 +139,9 @@ class ResponseLogic:
             else:
                 background_message_list = []
                 for message_id, reminder in enumerate(memories):
-                    background_message_list.append(
-                        f"\n{message_id}: {reminder.reminder}"
-                    )
+                    background_message_list.append(f"{message_id}: ")
+                    background_message_list.append(reminder.reminder)
+
                 asyncio.create_task(
                     Events.send_message_list_at_background(
                         telegram_chat_id=chat_id, message_list=background_message_list
