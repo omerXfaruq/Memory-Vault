@@ -10,7 +10,9 @@ class Constants:
 
     BROADCAST_CHAT_ID = -1001786782026
     FEEDBACK_FORWARD_CHAT_ID = -683998033
-    BOT_ID = 5065052385
+    BOT_ID = 5015215848
+
+    # BOT_ID = 5065052385
 
     class Common:
         @staticmethod
@@ -270,25 +272,24 @@ class Constants:
         @staticmethod
         def success(name: str, language_code: str = "en", note: str = "") -> str:
             words = note.split(" ")
-            if words[0] == "photo:" or words[0] == "document:":
+            if words[0] == "message_id:":
                 note_message = ""
             else:
                 note_message = f"*Note*: \n{note}"
-
             if language_code == "tr":
                 return (
                     f"{name}, not kasana eklendi. Merak etme, onu güvende tutacağım {Constants.smile}"
                     f"\n{note_message}"
                     f"\n"
-                    f"\n Eğer son eklediğin notu silmek istiyorsan, bu komutu kullan */deletelast*"
+                    f"\n Eğer son eklediğin notu silmek istiyorsan, bu komutu kullan */deletelastadd*"
                 )
 
             else:
                 return (
-                    f"{name}, note is added to your memory vault. No worries, I will keep it safe {Constants.smile}"
+                    f"{name}, the note is added to your memory vault. No worries, I will keep it safe {Constants.smile}"
                     f"\n{note_message}"
                     f"\n"
-                    f"\nIf you want to delete the last added note, you can use */deletelast*"
+                    f"\nIf you want to delete the last added note, you can use */deletelastadd*"
                 )
 
     class Delete:
@@ -301,18 +302,16 @@ class Constants:
                 return f"{name}, need to give me id of the note, ie: *delete 2*, you can get it by using command, *list* or /list"
 
         @staticmethod
-        def success(name: str, language_code: str = "en", note: str = "") -> str:
+        def success(name: str, language_code: str = "en") -> str:
             if language_code == "tr":
                 return (
                     f"{name}, not kasadan silindi. Unutulan hatıraya elveda {Constants.sad}"
                     f"\n*Silinen Not*:"
-                    f"\n{note}"
                 )
             else:
                 return (
                     f"{name}, your note is deleted from your memory vault. Good bye to the forgotten memory {Constants.sad}"
                     f"\n*Deleted Note*:"
-                    f"\n{note}"
                 )
 
     class Schedule:

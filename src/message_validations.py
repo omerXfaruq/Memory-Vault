@@ -79,6 +79,8 @@ class MessageBodyModel(BaseModel):
 class ResponseToMessage(BaseModel):
     method: Optional[str] = "sendMessage"
     chat_id: Optional[int] = 861126057
+    from_chat_id: Optional[int]
+    message_id: Optional[int]
     text: Optional[str]
     photo: Optional[str]
     document: Optional[str]

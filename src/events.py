@@ -19,6 +19,7 @@ class Events:
     TELEGRAM_SET_WEBHOOK_URL = f"https://api.telegram.org/bot{TOKEN}/setWebhook"
     TELEGRAM_SEND_DOCUMENT_URL = f"https://api.telegram.org/bot{TOKEN}/sendDocument"
     TELEGRAM_SEND_PHOTO_URL = f"https://api.telegram.org/bot{TOKEN}/sendPhoto"
+    TELEGRAM_COPY_MESSAGE_URL = f"https://api.telegram.org/bot{TOKEN}/copyMessage"
 
     PORT = 8000
     HOST_URL = None
@@ -116,32 +117,21 @@ class Events:
         if convert:
             words = message.split(" ")
             if len(words) == 2:
-                my_id = words[1]
+                try:
+                    my_id = int(words[1])
+                    if words[0] == "package:":
+                        message = await (Packages.functions[my_id]())
 
-                if words[0] == "package:":
-                    try:
-                        package_id = int(my_id)
-                        message = await (Packages.functions[package_id]())
-                    except:
-                        pass
-
-                elif words[0] == "photo:":
-                    return cls.TELEGRAM_SEND_PHOTO_URL, ResponseToMessage(
-                        **{
-                            "method": "sendPhoto",
-                            "photo": my_id,
-                            "chat_id": chat_id,
-                        }
-                    )
-
-                elif words[0] == "document:":
-                    return cls.TELEGRAM_SEND_DOCUMENT_URL, ResponseToMessage(
-                        **{
-                            "method": "sendDocument",
-                            "document": my_id,
-                            "chat_id": chat_id,
-                        }
-                    )
+                    elif words[0] == "message_id:":
+                        return cls.TELEGRAM_COPY_MESSAGE_URL, ResponseToMessage(
+                            **{
+                                "message_id": my_id,
+                                "chat_id": chat_id,
+                                "from_chat_id": chat_id,
+                            }
+                        )
+                except:
+                    pass
 
         return cls.TELEGRAM_SEND_MESSAGE_URL, ResponseToMessage(
             **{
@@ -177,7 +167,7 @@ class Events:
                 await asyncio.sleep(retry_after)
             else:
                 print(
-                    f"%% {datetime.datetime.now()} Unhandled response code: {response.status_code}, response: {response.json()}"
+                    f"%% {datetime.datetime.now()} Unhandled response code: {response.status_code}, response: {response.json()}, chat: {chat_id}, message: {message}, url: {url}"
                 )
         return False
 

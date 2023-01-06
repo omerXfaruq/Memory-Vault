@@ -29,6 +29,7 @@ async def listen_telegram_messages(r: Request, message: MessageBodyModel):
     print(f"%% {datetime.datetime.now()} Incoming Request: {await r.json()}")
 
     response_message = None
+    chat_id = 0
 
     if message.message:
         name = message.message.from_field.first_name
@@ -36,34 +37,47 @@ async def listen_telegram_messages(r: Request, message: MessageBodyModel):
         language_code = message.message.from_field.language_code
 
         if message.message.photo:
-            photo_id = message.message.photo[-1].file_id
             response_message = await ResponseLogic.create_response(
-                f"add photo: {photo_id}", name, chat_id, language_code
+                f"add message_id: {message.message.message_id}",
+                name,
+                chat_id,
+                language_code,
             )
         elif message.message.document:
-            document_id = message.message.document.file_id
             response_message = await ResponseLogic.create_response(
-                f"add document: {document_id}", name, chat_id, language_code
+                f"add message_id: {message.message.message_id}",
+                name,
+                chat_id,
+                language_code,
             )
         elif message.message.video:
-            document_id = message.message.video.file_id
             response_message = await ResponseLogic.create_response(
-                f"add document: {document_id}", name, chat_id, language_code
+                f"add message_id: {message.message.message_id}",
+                name,
+                chat_id,
+                language_code,
             )
         elif message.message.video_note:
-            document_id = message.message.video_note.file_id
             response_message = await ResponseLogic.create_response(
-                f"add document: {document_id}", name, chat_id, language_code
+                f"add message_id: {message.message.message_id}",
+                name,
+                chat_id,
+                language_code,
             )
         elif message.message.voice:
-            document_id = message.message.voice.file_id
             response_message = await ResponseLogic.create_response(
-                f"add document: {document_id}", name, chat_id, language_code
+                f"add message_id: {message.message.message_id}",
+                name,
+                chat_id,
+                language_code,
             )
         elif message.message.forward_date:
             if message.message.text:
                 response_message = await ResponseLogic.create_response(
-                    f"add {message.message.text}", name, chat_id, language_code
+                    f"add message_id: {message.message.message_id}",
+                    name,
+                    chat_id,
+                    language_code,
                 )
         elif message.message.text:
             response_message = await ResponseLogic.create_response(
