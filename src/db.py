@@ -3,8 +3,9 @@ from typing import List, Optional, Union, Tuple
 from fastapi import Depends, Query
 from sqlmodel import Field, Relationship, Session, SQLModel, create_engine, select, and_
 from sqlalchemy import UniqueConstraint
+import datetime
 
-default_schedule = "8,20"
+default_schedule = "8"
 
 
 class UserBase(SQLModel):
@@ -193,7 +194,6 @@ def list_memories(
     ).first()
     if found_user is None:
         return None
-
     return found_user.reminders
 
 
@@ -239,6 +239,25 @@ def add_memory(
             session.commit()
             session.refresh(db_reminder)
             return db_reminder
+
+
+def add_package(
+    user: UserCreate,
+    package_id: int,
+    session: Session = next(get_session()),
+) -> Optional[Union[Reminder, bool]]:
+    """
+    Add a package id to user's memory-vault
+
+    Args:
+        user:
+        package_id:
+        session:
+
+    Returns: bool
+    """
+    success = add_memory(user, f"package: {package_id}", session)
+    return success is not False
 
 
 def delete_memory(

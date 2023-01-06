@@ -1,7 +1,7 @@
 import asyncio
 import datetime
 
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, Request
 from fastapi.concurrency import run_in_threadpool
 from .db import *
 from .message_validations import MessageBodyModel, ResponseToMessage
@@ -24,14 +24,15 @@ async def health():
 
 
 @app.post(f"/webhook/{Events.TOKEN}")
-async def listen_telegram_messages(message: MessageBodyModel):
-    print(message.dict())
-
+async def listen_telegram_messages(r: Request, message: MessageBodyModel):
+    print(f"%% {datetime.datetime.now()} Incoming Message: {message.dict()}")
+    print(f"%% {datetime.datetime.now()} Incoming Request: {await r.json()}")
     if message.message:
         name = message.message.from_field.first_name
         chat_id = message.message.chat.id
         text = message.message.text
         language_code = message.message.from_field.language_code
+
         if not text:  # Edit of message  etc.
             return
         else:
@@ -59,9 +60,9 @@ async def listen_telegram_messages(message: MessageBodyModel):
             and new_member.user.id == Constants.BOT_ID
             and new_member.status == "member"
         ):
-            await Events.send_a_message_to_user(chat_id, Constants.hello)
+            start_message = await ResponseLogic.create_response("start", name, chat_id, language_code)
             await Events.send_a_message_to_user(
-                chat_id, Constants.Start.start_message(name, language_code)
+                chat_id, start_message
             )
             await Events.send_a_message_to_user(
                 chat_id, Constants.Start.group_warning(name, language_code)
@@ -69,6 +70,7 @@ async def listen_telegram_messages(message: MessageBodyModel):
             return
 
     return
+
 
 @app.post(f"/trigger_archive_db/{Events.TOKEN}")
 def trigger_archive_db():
@@ -79,6 +81,5 @@ def trigger_archive_db():
 async def trigger_send_user_hourly_memories(*, session: Session = Depends(get_session)):
     users = db_read_users(limit=100000, session=session)
     now = datetime.datetime.now(datetime.timezone.utc)
-    print(f"Sending is triggered at hour {now.hour}")
     for user in users:
         Events.send_user_hourly_memories(user, now.hour)

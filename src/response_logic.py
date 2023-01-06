@@ -1,9 +1,11 @@
+import datetime
 import random
 import asyncio
 
 from .db import *
 from .events import Events
 from .constants import Constants
+from .packages import Packages
 
 
 class ResponseLogic:
@@ -17,6 +19,8 @@ class ResponseLogic:
         line_split_first_word = line_split_text[0]
         split_text = text.split(" ")
         first_word = split_text[0]
+
+
         user = UserCreate(
             name=name,
             telegram_chat_id=chat_id,
@@ -70,7 +74,12 @@ class ResponseLogic:
                 elif memory is False:
                     return Constants.Common.no_memory_found(name, language_code)
                 else:
-                    return memory.reminder
+                    asyncio.create_task(
+                        Events.send_a_message_to_user(
+                            user.telegram_chat_id, memory.reminder
+                        )
+                    )
+                    return ""
             else:  # send number
                 try:
                     number_of_sending = int(split_text[1])
@@ -82,6 +91,10 @@ class ResponseLogic:
                     return Constants.Send.send_count_out_of_bound(name, language_code)
 
                 all_memories = list_memories(user)
+
+                if all_memories is None:
+                    return Constants.Common.inactive_user(name, language_code)
+
                 if len(all_memories) == 0:
                     return Constants.Common.no_memory_found(name, language_code)
 
@@ -95,12 +108,34 @@ class ResponseLogic:
                     )
                 return ""
 
+        elif ResponseLogic.check_command_type(first_word, "package"):
+            if len(split_text) == 1:  # package
+                return Constants.Package.help(name, language_code)
+            elif len(split_text) >= 3:
+                if split_text[1] == "add":
+                    package_id = 0
+                    try:
+                        package_id = int(split_text[2])
+                    except:
+                        return Constants.Package.incorrect_id(name, language_code)
+
+                    if package_id >= len(Packages.functions) or package_id < 0:
+                        return Constants.Package.incorrect_id(name, language_code)
+
+                    success = add_package(user, package_id)
+                    if not success:
+                        return Constants.Package.already_added(name, language_code)
+
+                    return Constants.Package.success(name, language_code, package_id)
+            else:
+                return Constants.Package.incorrect_id(name, language_code)
         elif ResponseLogic.check_command_type(first_word, "list"):
             memories = list_memories(user)
-            memory_count = len(memories)
+
             if memories is None:
                 return Constants.Common.inactive_user(name, language_code)
-            elif memory_count == 0:
+            memory_count = len(memories)
+            if memory_count == 0:
                 return Constants.Common.no_memory_found(name, language_code)
             else:
                 background_message_list = []
