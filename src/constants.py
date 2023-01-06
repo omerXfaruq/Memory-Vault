@@ -269,20 +269,26 @@ class Constants:
 
         @staticmethod
         def success(name: str, language_code: str = "en", note: str = "") -> str:
+            words = note.split(" ")
+            if words[0] == "photo:" or words[0] == "document:":
+                note_message = ""
+            else:
+                note_message = f"*Note*: \n{note}"
+
             if language_code == "tr":
                 return (
                     f"{name}, not kasana eklendi. Merak etme, onu güvende tutacağım {Constants.smile}"
-                    f"\n*Not*: \n{note}"
-                    f""
-                    f"\n\n Eğer son eklediğin notu silmek istiyorsan, bu komutu kullan */deletelast*"
+                    f"\n{note_message}"
+                    f"\n"
+                    f"\n Eğer son eklediğin notu silmek istiyorsan, bu komutu kullan */deletelast*"
                 )
 
             else:
                 return (
                     f"{name}, note is added to your memory vault. No worries, I will keep it safe {Constants.smile}"
-                    f"\n*Note*: \n{note}"
-                    f""
-                    f"\n\nIf you want to delete the last added note, you can use */deletelast*"
+                    f"\n{note_message}"
+                    f"\n"
+                    f"\nIf you want to delete the last added note, you can use */deletelast*"
                 )
 
     class Delete:

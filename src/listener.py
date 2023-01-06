@@ -45,6 +45,21 @@ async def listen_telegram_messages(r: Request, message: MessageBodyModel):
             response_message = await ResponseLogic.create_response(
                 f"add document: {document_id}", name, chat_id, language_code
             )
+        elif message.message.video:
+            document_id = message.message.video.file_id
+            response_message = await ResponseLogic.create_response(
+                f"add document: {document_id}", name, chat_id, language_code
+            )
+        elif message.message.video_note:
+            document_id = message.message.video_note.file_id
+            response_message = await ResponseLogic.create_response(
+                f"add document: {document_id}", name, chat_id, language_code
+            )
+        elif message.message.voice:
+            document_id = message.message.voice.file_id
+            response_message = await ResponseLogic.create_response(
+                f"add document: {document_id}", name, chat_id, language_code
+            )
         elif message.message.forward_date:
             if message.message.text:
                 response_message = await ResponseLogic.create_response(
@@ -77,12 +92,12 @@ async def listen_telegram_messages(r: Request, message: MessageBodyModel):
             await Events.send_a_message_to_user(chat_id, start_message)
             response_message = Constants.Start.group_warning(name, language_code)
 
-        return ResponseToMessage(
-            **{
-                "text": response_message,
-                "chat_id": chat_id,
-            }
-        )
+    return ResponseToMessage(
+        **{
+            "text": response_message,
+            "chat_id": chat_id,
+        }
+    )
 
 
 @app.post(f"/trigger_archive_db/{Events.TOKEN}")

@@ -27,11 +27,7 @@ class ReplyMessage(BaseModel):
     text: Optional[str]
 
 
-class Photo(BaseModel):
-    file_id: Optional[str]
-
-
-class Document(BaseModel):
+class File(BaseModel):
     file_id: Optional[str]
 
 
@@ -42,8 +38,11 @@ class Message(BaseModel):
     from_field: From = Field(alias="from")
     forward_date: Optional[int]
     text: Optional[str]
-    photo: Optional[List[Photo]]
-    document: Optional[Document]
+    photo: Optional[List[File]]
+    document: Optional[File]
+    video: Optional[File]
+    video_note: Optional[File]
+    voice: Optional[File]
 
 
 class ChatGroup(BaseModel):
