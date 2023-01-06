@@ -18,6 +18,8 @@ class Events:
     TELEGRAM_SEND_MESSAGE_URL = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     TELEGRAM_SET_WEBHOOK_URL = f"https://api.telegram.org/bot{TOKEN}/setWebhook"
     TELEGRAM_SEND_DOCUMENT_URL = f"https://api.telegram.org/bot{TOKEN}/sendDocument"
+    TELEGRAM_SEND_PHOTO_URL = f"https://api.telegram.org/bot{TOKEN}/sendPhoto"
+    TELEGRAM_COPY_MESSAGE_URL = f"https://api.telegram.org/bot{TOKEN}/copyMessage"
 
     PORT = 8000
     HOST_URL = None
@@ -84,65 +86,88 @@ class Events:
     ) -> bool:
         for message in message_list:
             await Events.send_a_message_to_user(
-                telegram_id=telegram_chat_id, message=message
+                chat_id=telegram_chat_id, message=message
             )
         return True
 
     @classmethod
-    async def get_package_message(
+    async def create_response_message(
         cls,
         message: str,
-    ) -> str:
+        chat_id: int,
+        convert: bool,
+    ) -> (str, ResponseToMessage):
         """
-        Runs the related package if the reminder is a package type.
+        Creates the response message
+
+        Runs the related package and sends the resulting message if the reminder is a package type.
+        Sends the photo if the message is photo type.
+        Sends the document if the message is document type.
+        Sends the text if the message is text type.
 
         Args:
             message:
+            chat_id:
+            convert: Converts the encoded message to related type of message, if True
 
         Returns:
-            converted_message
+            converted_message:
 
         """
-        words = message.split(" ")
-        if words[0] == "package:":
-            package_id = 0
-            try:
-                package_id = int(words[1])
-            except:
-                return message
-            return await (Packages.functions[package_id]())
+        if convert:
+            words = message.split(" ")
+            if len(words) == 2:
+                try:
+                    my_id = int(words[1])
+                    if words[0] == "package:":
+                        message = await (Packages.functions[my_id]())
 
-        return message
+                    elif words[0] == "message_id:":
+                        return cls.TELEGRAM_COPY_MESSAGE_URL, ResponseToMessage(
+                            **{
+                                "message_id": my_id,
+                                "chat_id": chat_id,
+                                "from_chat_id": chat_id,
+                            }
+                        )
+                except:
+                    pass
+
+        return cls.TELEGRAM_SEND_MESSAGE_URL, ResponseToMessage(
+            **{
+                "text": message,
+                "chat_id": chat_id,
+            }
+        )
 
     @classmethod
     async def send_a_message_to_user(
         cls,
-        telegram_id: int,
+        chat_id: int,
         message: str,
         retry_count: int = 3,
-        sleep_time: float = 0.1,
+        sleep_time: float = 0.01,
+        convert: bool = True,
     ) -> bool:
-        message = await cls.get_package_message(message)
-        message = ResponseToMessage(
-            **{
-                "text": message,
-                "chat_id": telegram_id,
-            }
-        )
+        url, message = await cls.create_response_message(message, chat_id, convert)
+        print(f"%% {datetime.datetime.now()}: Message is: {message}")
+
         await asyncio.sleep(sleep_time)
         for retry in range(retry_count):
             # Avoid too many requests error from Telegram
-            response = await cls.request(cls.TELEGRAM_SEND_MESSAGE_URL, message.dict())
+            response = await cls.request(url, message.dict())
             if response.status_code == 200:
-                print(f"%% {datetime.datetime.now()}: Sent message {retry}")
+                # print(f"%% {datetime.datetime.now()}: Sent message ")
                 return True
             elif response.status_code == 429:
                 retry_after = int(response.json()["parameters"]["retry_after"])
-                print(f"%% {datetime.datetime.now()} Retry After: {retry_after}, message: {message}")
+                print(
+                    f"%% {datetime.datetime.now()} Retry After: {retry_after}, message: {message}"
+                )
                 await asyncio.sleep(retry_after)
             else:
                 print(
-                    f"%% {datetime.datetime.now()} Unhandled response code: {response.status_code}, response: {response.json()}"
+                    f"%% {datetime.datetime.now()} Unhandled response code: {response.status_code}, response: {response.json()}, chat: {chat_id}, message: {message}, url: {url}"
                 )
         return False
 
@@ -151,10 +176,7 @@ class Events:
         users = db_read_users(limit=100000, only_active_users=False)
         await asyncio.gather(
             *(
-                Events.send_a_message_to_user(
-                    user.telegram_chat_id,
-                    message,
-                )
+                Events.send_a_message_to_user(user.telegram_chat_id, message)
                 for user in users
             )
         )
