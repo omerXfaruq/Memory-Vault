@@ -118,19 +118,20 @@ class Events:
             words = message.split(" ")
             if len(words) == 2:
                 try:
-                    my_id = int(words[1])
                     if words[0] == "package:":
-                        message = await (Packages.functions[my_id]())
+                        fn_id = int(words[1])
+                        message = (await (Packages.functions[fn_id]()))
 
                     elif words[0] == "message_id:":
+                        message_id = int(words[1])
                         return cls.TELEGRAM_COPY_MESSAGE_URL, ResponseToMessage(
                             **{
-                                "message_id": my_id,
+                                "message_id": message_id,
                                 "chat_id": chat_id,
                                 "from_chat_id": chat_id,
                             }
                         )
-                except:
+                except Exception as ex:
                     pass
 
         return cls.TELEGRAM_SEND_MESSAGE_URL, ResponseToMessage(

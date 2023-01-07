@@ -25,11 +25,19 @@ class Packages:
             GA = round(GA, 2)
             GA_DEGISIM = float(js["GA"]["degisim"])
             GA_DEGISIM = round(GA_DEGISIM, 2)
+            try:
+                XU100USD = round(XU100 / USDTRY, 2)
+            except:
+                XU100USD = 0
+            try:
+                XU100USD_DEGISIM = round(XU100_DEGISIM / USD_DEGISIM, 2)
+            except:
+                XU100USD_DEGISIM = 0
 
             message = (
                 f"*USD*: {USDTRY} -- % {USD_DEGISIM} \n"
                 f"*XU100*: {XU100} -- % {XU100_DEGISIM} \n"
-                f"*XU100/USD*: {round(XU100 / USDTRY, 2)} -- % {round(XU100_DEGISIM / USD_DEGISIM, 2)} \n"
+                f"*XU100/USD*: {XU100USD} -- % {XU100USD_DEGISIM} \n"
                 f"*GA*: {GA} -- % {GA_DEGISIM} \n"
             )
             return message
