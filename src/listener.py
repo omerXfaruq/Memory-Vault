@@ -10,7 +10,7 @@ from .events import Events
 from .response_logic import ResponseLogic
 
 app = FastAPI(openapi_url=None)
-logging.basicConfig(filename="exceptions.log", encoding="utf-8", level=logging.DEBUG)
+logging.basicConfig(filename="exceptions.log", encoding="utf-8", level=logging.ERROR)
 
 
 @app.on_event("startup")
