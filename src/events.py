@@ -17,8 +17,6 @@ class Events:
     TOKEN = os.environ.get("TELEGRAM_TOKEN")
     TELEGRAM_SEND_MESSAGE_URL = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     TELEGRAM_SET_WEBHOOK_URL = f"https://api.telegram.org/bot{TOKEN}/setWebhook"
-    TELEGRAM_SEND_DOCUMENT_URL = f"https://api.telegram.org/bot{TOKEN}/sendDocument"
-    TELEGRAM_SEND_PHOTO_URL = f"https://api.telegram.org/bot{TOKEN}/sendPhoto"
     TELEGRAM_COPY_MESSAGE_URL = f"https://api.telegram.org/bot{TOKEN}/copyMessage"
 
     PORT = 8000
@@ -120,7 +118,7 @@ class Events:
                 try:
                     if words[0] == "package:":
                         fn_id = int(words[1])
-                        message = (await (Packages.functions[fn_id]()))
+                        message = await (Packages.functions[fn_id]())
 
                     elif words[0] == "message_id:":
                         message_id = int(words[1])
@@ -201,11 +199,6 @@ class Events:
             payload = {"url": f"{cls.HOST_URL}/webhook/{cls.TOKEN}"}
         req = await cls.request(cls.TELEGRAM_SET_WEBHOOK_URL, payload)
         return req.status_code == 200
-
-    @classmethod
-    def archive_db(cls) -> bool:
-        command = f'curl -v -F "chat_id={Constants.BROADCAST_CHAT_ID}" -F document=@database.db {cls.TELEGRAM_SEND_DOCUMENT_URL}'
-        os.system(command)
 
     @classmethod
     async def get_public_ip(cls):

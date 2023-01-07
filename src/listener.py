@@ -1,8 +1,8 @@
 import asyncio
-import datetime
-
-from fastapi import FastAPI, Depends, Request
-from fastapi.concurrency import run_in_threadpool
+import logging
+import time
+from fastapi import FastAPI, Request
+from fastapi.responses import PlainTextResponse
 from .db import *
 from .message_validations import MessageBodyModel, ResponseToMessage
 from .constants import Constants
@@ -10,12 +10,27 @@ from .events import Events
 from .response_logic import ResponseLogic
 
 app = FastAPI(openapi_url=None)
+logging.basicConfig(filename="exceptions.log", encoding="utf-8", level=logging.DEBUG)
 
 
 @app.on_event("startup")
 def on_startup():
     create_db_and_tables()
     asyncio.create_task(Events.main_event())
+
+
+@app.middleware("http")
+async def exception_handler(request: Request, call_next):
+    start_time = time.time()
+    try:
+        response = await call_next(request)
+        process_time = time.time() - start_time
+        response.headers["X-Process-Time"] = str(round(process_time, 4))
+    except Exception as ex:
+        logging.exception(f"$${datetime.datetime.now()}: Exception in Middleware:")
+        logging.exception(ex)
+        return PlainTextResponse(str("An Error Occurred"), status_code=200)
+    return response
 
 
 @app.get("/health")
@@ -112,11 +127,6 @@ async def listen_telegram_messages(r: Request, message: MessageBodyModel):
             "chat_id": chat_id,
         }
     )
-
-
-@app.post(f"/trigger_archive_db/{Events.TOKEN}")
-def trigger_archive_db():
-    Events.archive_db()
 
 
 @app.post(f"/trigger_send_user_hourly_memories/{Events.TOKEN}")
