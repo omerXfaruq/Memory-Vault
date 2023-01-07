@@ -10,9 +10,9 @@ class Constants:
 
     BROADCAST_CHAT_ID = -1001786782026
     FEEDBACK_FORWARD_CHAT_ID = -683998033
-    BOT_ID = 5015215848
+    BOT_ID = 5065052385
 
-    # BOT_ID = 5065052385
+    # BOT_ID = 5015215848 # MemRem
 
     class Common:
         @staticmethod
@@ -425,12 +425,12 @@ class Constants:
     class Status:
         @staticmethod
         def get_status(
-            name: str,
-            language_code: str = "en",
-            gmt: int = 0,
-            active: bool = True,
-            schedule: str = "",
-            note_count: int = 0,
+          name: str,
+          language_code: str = "en",
+          gmt: int = 0,
+          active: bool = True,
+          schedule: str = "",
+          note_count: int = 0,
         ) -> str:
             if language_code == "tr":
                 if active:
