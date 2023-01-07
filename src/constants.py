@@ -425,12 +425,12 @@ class Constants:
     class Status:
         @staticmethod
         def get_status(
-          name: str,
-          language_code: str = "en",
-          gmt: int = 0,
-          active: bool = True,
-          schedule: str = "",
-          note_count: int = 0,
+            name: str,
+            language_code: str = "en",
+            gmt: int = 0,
+            active: bool = True,
+            schedule: str = "",
+            note_count: int = 0,
         ) -> str:
             if language_code == "tr":
                 if active:
