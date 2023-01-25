@@ -142,14 +142,17 @@ class Events:
             else:
                 text = message
 
-        return url, ResponseToMessage(
-            **{
-                "text": text,
-                "message_id": message_id,
-                "chat_id": chat_id,
-                "from_chat_id": from_chat_id,
-                "disable_notification": notify,
-            }
+        return (
+            url,
+            ResponseToMessage(
+                **{
+                    "text": text,
+                    "message_id": message_id,
+                    "chat_id": chat_id,
+                    "from_chat_id": from_chat_id,
+                    "disable_notification": notify,
+                }
+            ),
         )
 
     @classmethod
