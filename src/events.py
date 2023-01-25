@@ -123,6 +123,7 @@ class Events:
         from_chat_id = None
         text = None
         print(f"%% {datetime.datetime.now()}: Message is: {message}")
+        url = cls.TELEGRAM_SEND_MESSAGE_URL
 
         if convert:
             words = message.split(" ")
@@ -134,14 +135,14 @@ class Events:
                 elif words[0] == "message_id:":
                     message_id = int(words[1])
                     from_chat_id = chat_id
-
+                    url = cls.TELEGRAM_COPY_MESSAGE_URL
                 else:
                     text = message
 
             else:
                 text = message
 
-        return cls.TELEGRAM_SEND_MESSAGE_URL, ResponseToMessage(
+        return url, ResponseToMessage(
             **{
                 "text": text,
                 "message_id": message_id,
