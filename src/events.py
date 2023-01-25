@@ -122,6 +122,7 @@ class Events:
         message_id = None
         from_chat_id = None
         text = None
+        print(f"%% {datetime.datetime.now()}: Message is: {message}")
 
         if convert:
             words = message.split(" ")
@@ -136,6 +137,9 @@ class Events:
 
                 else:
                     text = message
+
+            else:
+                text = message
 
         return cls.TELEGRAM_SEND_MESSAGE_URL, ResponseToMessage(
             **{
