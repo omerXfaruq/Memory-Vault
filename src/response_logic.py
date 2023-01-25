@@ -20,7 +20,6 @@ class ResponseLogic:
         split_text = text.split(" ")
         first_word = split_text[0]
 
-
         user = UserCreate(
             name=name,
             telegram_chat_id=chat_id,
@@ -140,12 +139,14 @@ class ResponseLogic:
             else:
                 background_message_list = []
                 for message_id, reminder in enumerate(memories):
-                    background_message_list.append(
-                        f"\n{message_id}: {reminder.reminder}"
-                    )
+                    background_message_list.append(f"*{message_id}*: ")
+                    background_message_list.append(reminder.reminder)
+
                 asyncio.create_task(
                     Events.send_message_list_at_background(
-                        telegram_chat_id=chat_id, message_list=background_message_list
+                        telegram_chat_id=chat_id,
+                        message_list=background_message_list,
+                        notify=False,
                     )
                 )
 
@@ -170,8 +171,12 @@ class ResponseLogic:
                             return Constants.Delete.no_id(name, language_code)
                         else:
                             memory = response
+                            await Events.send_a_message_to_user(
+                                chat_id, Constants.Delete.success(name, language_code)
+                            )
+                            await Events.send_a_message_to_user(chat_id, memory)
 
-                            return Constants.Delete.success(name, language_code, memory)
+                            return ""
 
                 except Exception as ex:
                     return Constants.Delete.no_id(name, language_code)
@@ -322,14 +327,18 @@ class ResponseLogic:
                 else:
                     return Constants.Feedback.fail(name, language_code)
 
-        elif ResponseLogic.check_command_type(first_word, "deletelast"):
-            response = delete_last_memory(user)
-            if response is None:
+        elif ResponseLogic.check_command_type(first_word, "deletelastadd"):
+            memory = delete_last_memory(user)
+            if memory is None:
                 return Constants.Common.inactive_user(name, language_code)
-            elif response is False:
+            elif memory is False:
                 return Constants.Common.no_memory_found(name, language_code)
             else:
-                return Constants.Delete.success(name, language_code, response)
+                await Events.send_a_message_to_user(
+                    chat_id, Constants.Delete.success(name, language_code)
+                )
+                await Events.send_a_message_to_user(chat_id, memory)
+                return ""
 
         elif ResponseLogic.check_command_type(first_word, "support"):
             return Constants.Support.support(name, language_code)

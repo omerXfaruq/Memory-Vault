@@ -17,7 +17,7 @@ class Events:
     TOKEN = os.environ.get("TELEGRAM_TOKEN")
     TELEGRAM_SEND_MESSAGE_URL = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     TELEGRAM_SET_WEBHOOK_URL = f"https://api.telegram.org/bot{TOKEN}/setWebhook"
-    TELEGRAM_SEND_DOCUMENT_URL = f"https://api.telegram.org/bot{TOKEN}/sendDocument"
+    TELEGRAM_COPY_MESSAGE_URL = f"https://api.telegram.org/bot{TOKEN}/copyMessage"
 
     PORT = 8000
     HOST_URL = None
@@ -80,69 +80,106 @@ class Events:
 
     @classmethod
     async def send_message_list_at_background(
-        cls, telegram_chat_id: int, message_list: List[str]
+        cls,
+        telegram_chat_id: int,
+        message_list: List[str],
+        notify: bool = True,
     ) -> bool:
         for message in message_list:
             await Events.send_a_message_to_user(
-                telegram_id=telegram_chat_id, message=message
+                chat_id=telegram_chat_id,
+                message=message,
+                notify=notify,
             )
         return True
 
     @classmethod
-    async def get_package_message(
+    async def create_response_message(
         cls,
         message: str,
-    ) -> str:
+        chat_id: int,
+        convert: bool,
+        notify: bool = True,
+    ) -> (str, ResponseToMessage):
         """
-        Runs the related package if the reminder is a package type.
+        Creates the response message
+
+        Runs the related package and sends the resulting message if the reminder is a package type.
+        Sends the photo if the message is photo type.
+        Sends the document if the message is document type.
+        Sends the text if the message is text type.
 
         Args:
             message:
+            chat_id:
+            convert: Converts the encoded message to related type of message, if True
+            notify: If false, send the message without notifying.
 
         Returns:
-            converted_message
+            converted_message:
 
         """
-        words = message.split(" ")
-        if words[0] == "package:":
-            package_id = 0
-            try:
-                package_id = int(words[1])
-            except:
-                return message
-            return await (Packages.functions[package_id]())
+        message_id = None
+        from_chat_id = None
+        text = None
+        print(f"%% {datetime.datetime.now()}: Message is: {message}")
 
-        return message
+        if convert:
+            words = message.split(" ")
+            if len(words) == 2:
+                if words[0] == "package:":
+                    fn_id = int(words[1])
+                    text = await (Packages.functions[fn_id]())
+
+                elif words[0] == "message_id:":
+                    message_id = int(words[1])
+                    from_chat_id = chat_id
+
+                else:
+                    text = message
+
+            else:
+                text = message
+
+        return cls.TELEGRAM_SEND_MESSAGE_URL, ResponseToMessage(
+            **{
+                "text": text,
+                "message_id": message_id,
+                "chat_id": chat_id,
+                "from_chat_id": from_chat_id,
+                "disable_notification": notify,
+            }
+        )
 
     @classmethod
     async def send_a_message_to_user(
         cls,
-        telegram_id: int,
+        chat_id: int,
         message: str,
         retry_count: int = 3,
-        sleep_time: float = 0.1,
+        sleep_time: float = 0.01,
+        convert: bool = True,
+        notify: bool = True,
     ) -> bool:
-        message = await cls.get_package_message(message)
-        message = ResponseToMessage(
-            **{
-                "text": message,
-                "chat_id": telegram_id,
-            }
-        )
+        url, message = await cls.create_response_message(message, chat_id, convert)
+        print(f"%% {datetime.datetime.now()}: Message is: {message}")
+
         await asyncio.sleep(sleep_time)
         for retry in range(retry_count):
             # Avoid too many requests error from Telegram
-            response = await cls.request(cls.TELEGRAM_SEND_MESSAGE_URL, message.dict())
+            response = await cls.request(url, message.dict())
             if response.status_code == 200:
-                print(f"%% {datetime.datetime.now()}: Sent message {retry}")
+                # print(f"%% {datetime.datetime.now()}: Sent message ")
                 return True
             elif response.status_code == 429:
                 retry_after = int(response.json()["parameters"]["retry_after"])
-                print(f"%% {datetime.datetime.now()} Retry After: {retry_after}, message: {message}")
+                print(
+                    f"%% {datetime.datetime.now()} Retry After: {retry_after}, message: {message}"
+                )
                 await asyncio.sleep(retry_after)
             else:
                 print(
-                    f"%% {datetime.datetime.now()} Unhandled response code: {response.status_code}, response: {response.json()}"
+                    f"%% {datetime.datetime.now()} Unhandled response code: {response.status_code}, response: {response.json()}, chat: {chat_id}, message: {message}, url: {url}"
                 )
         return False
 
@@ -151,10 +188,7 @@ class Events:
         users = db_read_users(limit=100000, only_active_users=False)
         await asyncio.gather(
             *(
-                Events.send_a_message_to_user(
-                    user.telegram_chat_id,
-                    message,
-                )
+                Events.send_a_message_to_user(user.telegram_chat_id, message)
                 for user in users
             )
         )
@@ -178,11 +212,6 @@ class Events:
             payload = {"url": f"{cls.HOST_URL}/webhook/{cls.TOKEN}"}
         req = await cls.request(cls.TELEGRAM_SET_WEBHOOK_URL, payload)
         return req.status_code == 200
-
-    @classmethod
-    def archive_db(cls) -> bool:
-        command = f'curl -v -F "chat_id={Constants.BROADCAST_CHAT_ID}" -F document=@database.db {cls.TELEGRAM_SEND_DOCUMENT_URL}'
-        os.system(command)
 
     @classmethod
     async def get_public_ip(cls):

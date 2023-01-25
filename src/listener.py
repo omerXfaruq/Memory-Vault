@@ -1,8 +1,8 @@
 import asyncio
-import datetime
-
-from fastapi import FastAPI, Depends, Request
-from fastapi.concurrency import run_in_threadpool
+import logging
+import time
+from fastapi import FastAPI, Request
+from fastapi.responses import PlainTextResponse
 from .db import *
 from .message_validations import MessageBodyModel, ResponseToMessage
 from .constants import Constants
@@ -10,12 +10,27 @@ from .events import Events
 from .response_logic import ResponseLogic
 
 app = FastAPI(openapi_url=None)
+logging.basicConfig(filename="exceptions.log", encoding="utf-8", level=logging.ERROR)
 
 
 @app.on_event("startup")
 def on_startup():
     create_db_and_tables()
     asyncio.create_task(Events.main_event())
+
+
+@app.middleware("http")
+async def exception_handler(request: Request, call_next):
+    start_time = time.time()
+    try:
+        response = await call_next(request)
+        process_time = time.time() - start_time
+        response.headers["X-Process-Time"] = str(round(process_time, 4))
+    except Exception as ex:
+        logging.exception(f"$${datetime.datetime.now()}: Exception in Middleware:")
+        logging.exception(ex)
+        return PlainTextResponse(str("An Error Occurred"), status_code=200)
+    return response
 
 
 @app.get("/health")
@@ -27,26 +42,66 @@ async def health():
 async def listen_telegram_messages(r: Request, message: MessageBodyModel):
     print(f"%% {datetime.datetime.now()} Incoming Message: {message.dict()}")
     print(f"%% {datetime.datetime.now()} Incoming Request: {await r.json()}")
+
+    response_message = None
+    chat_id = 0
+
     if message.message:
         name = message.message.from_field.first_name
         chat_id = message.message.chat.id
-        text = message.message.text
         language_code = message.message.from_field.language_code
 
-        if not text:  # Edit of message  etc.
-            return
-        else:
+        if message.message.photo:
             response_message = await ResponseLogic.create_response(
-                text, name, chat_id, language_code
+                f"add message_id: {message.message.message_id}",
+                name,
+                chat_id,
+                language_code,
             )
-            return ResponseToMessage(
-                **{
-                    "text": response_message,
-                    "chat_id": chat_id,
-                }
+        elif message.message.document:
+            response_message = await ResponseLogic.create_response(
+                f"add message_id: {message.message.message_id}",
+                name,
+                chat_id,
+                language_code,
             )
+        elif message.message.video:
+            response_message = await ResponseLogic.create_response(
+                f"add message_id: {message.message.message_id}",
+                name,
+                chat_id,
+                language_code,
+            )
+        elif message.message.video_note:
+            response_message = await ResponseLogic.create_response(
+                f"add message_id: {message.message.message_id}",
+                name,
+                chat_id,
+                language_code,
+            )
+        elif message.message.voice:
+            response_message = await ResponseLogic.create_response(
+                f"add message_id: {message.message.message_id}",
+                name,
+                chat_id,
+                language_code,
+            )
+        elif message.message.forward_date:
+            if message.message.text:
+                response_message = await ResponseLogic.create_response(
+                    f"add message_id: {message.message.message_id}",
+                    name,
+                    chat_id,
+                    language_code,
+                )
+        elif message.message.text:
+            response_message = await ResponseLogic.create_response(
+                message.message.text, name, chat_id, language_code
+            )
+        else:
+            return
 
-    if not message.message:  # Bot is added to a group
+    elif not message.message:  # Bot is added to a group
         if not message.my_chat_member:
             return
 
@@ -60,21 +115,18 @@ async def listen_telegram_messages(r: Request, message: MessageBodyModel):
             and new_member.user.id == Constants.BOT_ID
             and new_member.status == "member"
         ):
-            start_message = await ResponseLogic.create_response("start", name, chat_id, language_code)
-            await Events.send_a_message_to_user(
-                chat_id, start_message
+            start_message = await ResponseLogic.create_response(
+                "start", name, chat_id, language_code
             )
-            await Events.send_a_message_to_user(
-                chat_id, Constants.Start.group_warning(name, language_code)
-            )
-            return
+            await Events.send_a_message_to_user(chat_id, start_message)
+            response_message = Constants.Start.group_warning(name, language_code)
 
-    return
-
-
-@app.post(f"/trigger_archive_db/{Events.TOKEN}")
-def trigger_archive_db():
-    Events.archive_db()
+    return ResponseToMessage(
+        **{
+            "text": response_message,
+            "chat_id": chat_id,
+        }
+    )
 
 
 @app.post(f"/trigger_send_user_hourly_memories/{Events.TOKEN}")
