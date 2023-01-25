@@ -80,11 +80,16 @@ class Events:
 
     @classmethod
     async def send_message_list_at_background(
-        cls, telegram_chat_id: int, message_list: List[str]
+        cls,
+        telegram_chat_id: int,
+        message_list: List[str],
+        notify: bool = True,
     ) -> bool:
         for message in message_list:
             await Events.send_a_message_to_user(
-                chat_id=telegram_chat_id, message=message
+                chat_id=telegram_chat_id,
+                message=message,
+                notify=notify,
             )
         return True
 
@@ -94,6 +99,7 @@ class Events:
         message: str,
         chat_id: int,
         convert: bool,
+        notify: bool = True,
     ) -> (str, ResponseToMessage):
         """
         Creates the response message
@@ -107,32 +113,37 @@ class Events:
             message:
             chat_id:
             convert: Converts the encoded message to related type of message, if True
+            notify: If false, send the message without notifying.
 
         Returns:
             converted_message:
 
         """
+        message_id = None
+        from_chat_id = None
+        text = None
+
         if convert:
             words = message.split(" ")
             if len(words) == 2:
                 if words[0] == "package:":
                     fn_id = int(words[1])
-                    message = await (Packages.functions[fn_id]())
+                    text = await (Packages.functions[fn_id]())
 
                 elif words[0] == "message_id:":
                     message_id = int(words[1])
-                    return cls.TELEGRAM_COPY_MESSAGE_URL, ResponseToMessage(
-                        **{
-                            "message_id": message_id,
-                            "chat_id": chat_id,
-                            "from_chat_id": chat_id,
-                        }
-                    )
+                    from_chat_id = chat_id
+
+                else:
+                    text = message
 
         return cls.TELEGRAM_SEND_MESSAGE_URL, ResponseToMessage(
             **{
-                "text": message,
+                "text": text,
+                "message_id": message_id,
                 "chat_id": chat_id,
+                "from_chat_id": from_chat_id,
+                "disable_notification": notify,
             }
         )
 
@@ -144,6 +155,7 @@ class Events:
         retry_count: int = 3,
         sleep_time: float = 0.01,
         convert: bool = True,
+        notify: bool = True,
     ) -> bool:
         url, message = await cls.create_response_message(message, chat_id, convert)
         print(f"%% {datetime.datetime.now()}: Message is: {message}")

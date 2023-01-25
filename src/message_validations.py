@@ -85,3 +85,4 @@ class ResponseToMessage(BaseModel):
     photo: Optional[str]
     document: Optional[str]
     parse_mode: Optional[str] = "Markdown"
+    disable_notification: Optional[bool]

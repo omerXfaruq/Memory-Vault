@@ -144,7 +144,9 @@ class ResponseLogic:
 
                 asyncio.create_task(
                     Events.send_message_list_at_background(
-                        telegram_chat_id=chat_id, message_list=background_message_list
+                        telegram_chat_id=chat_id,
+                        message_list=background_message_list,
+                        notify=False,
                     )
                 )
 
