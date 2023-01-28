@@ -281,7 +281,7 @@ class Constants:
                     f"{name}, not kasana eklendi. Merak etme, onu güvende tutacağım {Constants.smile}"
                     f"\n{note_message}"
                     f"\n"
-                    f"\n Eğer son eklediğin notu silmek istiyorsan, bu komutu kullan */deletelastadd*"
+                    f"\n Eğer son eklediğin notu silmek istiyorsan, bu komutu kullan /undo"
                 )
 
             else:
@@ -289,7 +289,7 @@ class Constants:
                     f"{name}, the note is added to your memory vault. No worries, I will keep it safe {Constants.smile}"
                     f"\n{note_message}"
                     f"\n"
-                    f"\nIf you want to delete the last added note, you can use */deletelastadd*"
+                    f"\nIf you want to delete the last added note, you can use /undo"
                 )
 
     class Delete:

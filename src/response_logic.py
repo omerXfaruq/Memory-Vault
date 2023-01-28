@@ -338,7 +338,7 @@ class ResponseLogic:
                     chat_id, Constants.Delete.success(name, language_code)
                 )
                 await Events.send_a_message_to_user(chat_id, memory)
-                return ''
+                return ""
 
         elif ResponseLogic.check_command_type(first_word, "support"):
             return Constants.Support.support(name, language_code)
