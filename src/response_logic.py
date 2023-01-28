@@ -327,7 +327,7 @@ class ResponseLogic:
                 else:
                     return Constants.Feedback.fail(name, language_code)
 
-        elif ResponseLogic.check_command_type(first_word, "deletelastadd"):
+        elif ResponseLogic.check_command_type(first_word, "undo"):
             memory = delete_last_memory(user)
             if memory is None:
                 return Constants.Common.inactive_user(name, language_code)
@@ -338,7 +338,7 @@ class ResponseLogic:
                     chat_id, Constants.Delete.success(name, language_code)
                 )
                 await Events.send_a_message_to_user(chat_id, memory)
-                return ""
+                return ''
 
         elif ResponseLogic.check_command_type(first_word, "support"):
             return Constants.Support.support(name, language_code)
