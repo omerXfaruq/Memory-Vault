@@ -28,7 +28,7 @@ class ResponseLogic:
             first_word, "add"
         ) or ResponseLogic.check_command_type(line_split_first_word, "add"):
             if ResponseLogic.check_command_type(line_split_first_word, "add"):
-                memory = "\n".join(split_text[1:])
+                memory = "\n".join(line_split_text[1:])
             else:
                 memory = " ".join(split_text[1:])
             if str.isspace(memory) or memory == "":
