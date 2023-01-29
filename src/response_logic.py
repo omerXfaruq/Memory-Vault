@@ -6,13 +6,19 @@ from .db import *
 from .events import Events
 from .constants import Constants
 from .packages import Packages
+from .message_validations import Message
 
 
 class ResponseLogic:
     @staticmethod
     async def create_response(
-        text: str, name: str, chat_id: int, language_code: str
+        message: Message | None,
+        name: str,
+        chat_id: int,
+        language_code: str,
+        text: str = "",
     ) -> str:
+        text = message.text or text if message else text
 
         # Edge case check for "add\nSentence"
         line_split_text = text.split("\n")
@@ -28,7 +34,7 @@ class ResponseLogic:
             first_word, "add"
         ) or ResponseLogic.check_command_type(line_split_first_word, "add"):
             if ResponseLogic.check_command_type(line_split_first_word, "add"):
-                memory = "\n".join(split_text[1:])
+                memory = "\n".join(line_split_text[1:])
             else:
                 memory = " ".join(split_text[1:])
             if str.isspace(memory) or memory == "":
@@ -42,10 +48,12 @@ class ResponseLogic:
                 else:
                     memory = reminder.reminder
                     return Constants.Add.success(name, language_code, memory)
+
         elif ResponseLogic.check_command_type(first_word, "start"):
             user = join_user(user)
             await Events.send_a_message_to_user(chat_id, Constants.hello)
             return Constants.Start.start_message(name, language_code)
+
         elif ResponseLogic.check_command_type(first_word, "help"):
             message = Constants.Help.help_message(name, language_code)
             return message
@@ -66,45 +74,28 @@ class ResponseLogic:
                 return Constants.Leave.already_left(name, language_code)
 
         elif ResponseLogic.check_command_type(first_word, "send"):
-            if len(split_text) == 1:  # send
-                memory = select_random_memory(user)
-                if memory is None:
-                    return Constants.Common.inactive_user(name, language_code)
-                elif memory is False:
-                    return Constants.Common.no_memory_found(name, language_code)
-                else:
-                    asyncio.create_task(
-                        Events.send_a_message_to_user(
-                            user.telegram_chat_id, memory.reminder
-                        )
-                    )
-                    return ""
-            else:  # send number
+            send_count = 1  # send
+            if len(split_text) == 2:
                 try:
-                    number_of_sending = int(split_text[1])
-                    if not (1 <= number_of_sending < 50):
+                    send_count = int(split_text[1])
+                    if not (1 <= send_count < 50):
                         return Constants.Send.send_count_out_of_bound(
                             name, language_code
                         )
                 except:
                     return Constants.Send.send_count_out_of_bound(name, language_code)
 
-                all_memories = list_memories(user)
-
-                if all_memories is None:
-                    return Constants.Common.inactive_user(name, language_code)
-
-                if len(all_memories) == 0:
-                    return Constants.Common.no_memory_found(name, language_code)
-
-                send_count = min(len(all_memories), number_of_sending)
-                selected_memories = random.sample(all_memories, send_count)
-                for memory in selected_memories:  # Send the memories in background
-                    asyncio.create_task(
-                        Events.send_a_message_to_user(
-                            user.telegram_chat_id, memory.reminder
-                        )
+            memories = select_random_memories(user, count=send_count)
+            if memories is None:
+                return Constants.Common.inactive_user(name, language_code)
+            elif memories is []:
+                return Constants.Common.no_memory_found(name, language_code)
+            else:
+                asyncio.create_task(
+                    Events.send_message_list_at_background(
+                        user.telegram_chat_id, [memory.reminder for memory in memories]
                     )
+                )
                 return ""
 
         elif ResponseLogic.check_command_type(first_word, "package"):
@@ -128,6 +119,7 @@ class ResponseLogic:
                     return Constants.Package.success(name, language_code, package_id)
             else:
                 return Constants.Package.incorrect_id(name, language_code)
+
         elif ResponseLogic.check_command_type(first_word, "list"):
             memories = list_memories(user)
 
@@ -155,31 +147,19 @@ class ResponseLogic:
                 )
                 return response_message
 
-        elif ResponseLogic.check_command_type(first_word, "delete"):
-            if len(split_text) < 2:
-                return Constants.Delete.no_id(name, language_code)
+        elif ResponseLogic.check_command_type(first_word, "del"):
+            resp = delete_last_sent_memory(user)
+            if resp is None:
+                return Constants.Common.inactive_user(name, language_code)
+            elif resp is False:
+                return Constants.Delete.no_message(name, language_code)
             else:
-                try:
-                    memory_id = int(split_text[1])
-                    if memory_id < 0:
-                        return Constants.Delete.no_id(name, language_code)
-                    else:
-                        response = delete_memory(user, memory_id)
-                        if response is None:
-                            return Constants.Common.inactive_user(name, language_code)
-                        elif response is False:
-                            return Constants.Delete.no_id(name, language_code)
-                        else:
-                            memory = response
-                            await Events.send_a_message_to_user(
-                                chat_id, Constants.Delete.success(name, language_code)
-                            )
-                            await Events.send_a_message_to_user(chat_id, memory)
-
-                            return ""
-
-                except Exception as ex:
-                    return Constants.Delete.no_id(name, language_code)
+                memory = resp
+                await Events.send_a_message_to_user(
+                    chat_id, Constants.Delete.success(name, language_code)
+                )
+                await Events.send_a_message_to_user(chat_id, memory)
+                return ""
 
         elif ResponseLogic.check_command_type(first_word, "schedule"):
             if len(split_text) == 1:
@@ -189,6 +169,7 @@ class ResponseLogic:
                 elif schedule == "":
                     return Constants.Schedule.empty_schedule(name, language_code)
                 else:
+                    schedule = ResponseLogic.readable_schedule(schedule)
                     return Constants.Schedule.success(name, language_code, schedule)
 
             elif len(split_text) > 1:
@@ -197,6 +178,7 @@ class ResponseLogic:
                     if new_schedule is None:
                         return Constants.Common.inactive_user(name, language_code)
                     else:
+                        new_schedule = ResponseLogic.readable_schedule(new_schedule)
                         return Constants.Schedule.success(
                             name, language_code, new_schedule
                         )
@@ -230,6 +212,7 @@ class ResponseLogic:
                         if new_schedule is None:
                             return Constants.Common.inactive_user(name, language_code)
                         else:
+                            new_schedule = ResponseLogic.readable_schedule(new_schedule)
                             return Constants.Schedule.success(
                                 name, language_code, new_schedule
                             )
@@ -266,6 +249,9 @@ class ResponseLogic:
                                     name, language_code
                                 )
                             else:
+                                new_schedule = ResponseLogic.readable_schedule(
+                                    new_schedule
+                                )
                                 return Constants.Schedule.success(
                                     name, language_code, new_schedule
                                 )
@@ -304,6 +290,7 @@ class ResponseLogic:
                 return Constants.Common.inactive_user(name, language_code)
             else:
                 schedule = get_schedule(user)
+                schedule = ResponseLogic.readable_schedule(schedule)
                 memory_count = len(list_memories(user))
                 return Constants.Status.get_status(
                     name, language_code, gmt, active, schedule, memory_count
@@ -327,7 +314,7 @@ class ResponseLogic:
                 else:
                     return Constants.Feedback.fail(name, language_code)
 
-        elif ResponseLogic.check_command_type(first_word, "deletelastadd"):
+        elif ResponseLogic.check_command_type(first_word, "undo"):
             memory = delete_last_memory(user)
             if memory is None:
                 return Constants.Common.inactive_user(name, language_code)
@@ -353,7 +340,31 @@ class ResponseLogic:
             return Constants.Tutorial.tutorial_3(name, language_code)
 
         else:
-            return Constants.Common.unknown_command(name, language_code)
+            reminder = add_memory(
+                user,
+                f"message_id: {message.message_id}",
+            )
+            if reminder is None:
+                return Constants.Common.inactive_user(name, language_code)
+            elif reminder is False:
+                return Constants.Add.already_added(name, language_code)
+            else:
+                memory = reminder.reminder
+                await Events.send_a_message_to_user(chat_id, memory)
+                return Constants.Add.success(name, language_code, memory)
+
+    @staticmethod
+    def readable_schedule(schedule: str) -> str:
+        readable_schedule = ""
+        schedule_list = schedule.split(",")
+        hour_counts = [0] * 24
+        for hour in schedule_list:
+            hour = int(hour)
+            hour_counts[hour] += 1
+        for hour, count in enumerate(hour_counts):
+            if count != 0:
+                readable_schedule += f"{hour}:00 - {hour_counts[hour]}\n"
+        return readable_schedule
 
     @staticmethod
     def check_command_type(input_command: str, correct_command: str) -> bool:

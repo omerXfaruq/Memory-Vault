@@ -43,66 +43,32 @@ async def listen_telegram_messages(r: Request, message: MessageBodyModel):
     print(f"%% {datetime.datetime.now()} Incoming Message: {message.dict()}")
     print(f"%% {datetime.datetime.now()} Incoming Request: {await r.json()}")
 
-    response_message = None
+    response_message = ""
     chat_id = 0
 
     if message.message:
-        name = message.message.from_field.first_name
-        chat_id = message.message.chat.id
-        language_code = message.message.from_field.language_code
-
-        if message.message.photo:
-            response_message = await ResponseLogic.create_response(
-                f"add message_id: {message.message.message_id}",
-                name,
-                chat_id,
-                language_code,
-            )
-        elif message.message.document:
-            response_message = await ResponseLogic.create_response(
-                f"add message_id: {message.message.message_id}",
-                name,
-                chat_id,
-                language_code,
-            )
-        elif message.message.video:
-            response_message = await ResponseLogic.create_response(
-                f"add message_id: {message.message.message_id}",
-                name,
-                chat_id,
-                language_code,
-            )
-        elif message.message.video_note:
-            response_message = await ResponseLogic.create_response(
-                f"add message_id: {message.message.message_id}",
-                name,
-                chat_id,
-                language_code,
-            )
-        elif message.message.voice:
-            response_message = await ResponseLogic.create_response(
-                f"add message_id: {message.message.message_id}",
-                name,
-                chat_id,
-                language_code,
-            )
-        elif message.message.forward_date:
-            if message.message.text:
+        if message.message.left_chat_member:
+            if message.message.left_chat_member.id == Constants.BOT_ID:
                 response_message = await ResponseLogic.create_response(
-                    f"add message_id: {message.message.message_id}",
-                    name,
+                    None,
+                    "",
                     chat_id,
-                    language_code,
+                    "en",
+                    text="/leave",
                 )
-        elif message.message.text:
-            response_message = await ResponseLogic.create_response(
-                message.message.text, name, chat_id, language_code
-            )
+        elif message.message.new_chat_member:
+            pass
         else:
-            return
+            name = message.message.from_field.first_name
+            chat_id = message.message.chat.id
+            language_code = message.message.from_field.language_code
 
-    elif not message.message:  # Bot is added to a group
-        if not message.my_chat_member:
+            response_message = await ResponseLogic.create_response(
+                message.message, name, chat_id, language_code
+            )
+
+    elif message.message is None:  # Bot is added to a group
+        if message.my_chat_member is None:
             return
 
         chat_id = message.my_chat_member.chat.id
@@ -116,7 +82,7 @@ async def listen_telegram_messages(r: Request, message: MessageBodyModel):
             and new_member.status == "member"
         ):
             start_message = await ResponseLogic.create_response(
-                "start", name, chat_id, language_code
+                None, name, chat_id, language_code, text="/start"
             )
             await Events.send_a_message_to_user(chat_id, start_message)
             response_message = Constants.Start.group_warning(name, language_code)

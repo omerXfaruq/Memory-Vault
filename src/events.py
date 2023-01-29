@@ -8,7 +8,7 @@ import asyncio
 from httpx import AsyncClient, Response
 
 from .message_validations import ResponseToMessage
-from .db import db_read_users, Reminder, User
+from .db import db_read_users, Reminder, User, select_random_memories
 from .constants import Constants
 from .packages import Packages
 
@@ -44,6 +44,21 @@ class Events:
         next_hour = (now + delta).replace(microsecond=0, second=0, minute=0)
         return (next_hour - now).total_seconds()
 
+    @staticmethod
+    def get_memory_count(hours: str, now: int) -> int:
+        scheduled_hours = hours.split(",")
+        number_of_messages_at_this_hour = 0
+
+        for str_hour in scheduled_hours:
+            if (
+                int(str_hour) > now
+            ):  # Scheduled_hours are sorted, next items will be > hour as well.
+                break
+            if int(str_hour) == now:
+                number_of_messages_at_this_hour += 1
+
+        return number_of_messages_at_this_hour
+
     @classmethod
     def send_user_hourly_memories(
         cls,
@@ -51,32 +66,16 @@ class Events:
         hour: int,
     ) -> None:
         """
-        Sends memories to user if the current_hour is in his schedule.
+        Sends memories to user if the current_hour is in the schedule.
         """
         hour = (hour + user.gmt) % 24
-        if user.scheduled_hours == "":
-            return
-        scheduled_hours = user.scheduled_hours.split(",")
-        number_of_messages_at_this_hour = 0
-
-        for str_hour in scheduled_hours:
-            if (
-                int(str_hour) > hour
-            ):  # Scheduled_hours are sorted, next items will be > hour as well.
-                break
-            if int(str_hour) == hour:
-                number_of_messages_at_this_hour += 1
-        number_of_messages_at_this_hour = min(
-            len(user.reminders), number_of_messages_at_this_hour
-        )
-        selected_reminders = random.sample(
-            user.reminders, number_of_messages_at_this_hour
-        )
-        for reminder in selected_reminders:  # Send the memory in background
-            asyncio.create_task(
-                cls.send_a_message_to_user(user.telegram_chat_id, reminder.reminder)
+        memory_count = cls.get_memory_count(user.scheduled_hours, hour)
+        memories = select_random_memories(user, memory_count)
+        asyncio.create_task(
+            cls.send_message_list_at_background(
+                user.telegram_chat_id, [memory.reminder for memory in memories]
             )
-            now = datetime.datetime.now()
+        )
 
     @classmethod
     async def send_message_list_at_background(
@@ -90,6 +89,25 @@ class Events:
                 chat_id=telegram_chat_id,
                 message=message,
                 notify=notify,
+            )
+        return True
+
+    @classmethod
+    async def send_message_list_concurrently(
+        cls,
+        telegram_chat_id: int,
+        message_list: List[str],
+        notify: bool = True,
+    ) -> bool:
+
+        for rank, message in enumerate(message_list):
+            asyncio.create_task(
+                Events.send_a_message_to_user(
+                    chat_id=telegram_chat_id,
+                    message=message,
+                    notify=notify,
+                    sleep_time=0.01 * rank,
+                )
             )
         return True
 
@@ -150,7 +168,7 @@ class Events:
                     "message_id": message_id,
                     "chat_id": chat_id,
                     "from_chat_id": from_chat_id,
-                    "disable_notification": notify,
+                    "disable_notification": not notify,
                 }
             ),
         )
@@ -161,21 +179,22 @@ class Events:
         chat_id: int,
         message: str,
         retry_count: int = 3,
-        sleep_time: float = 0.01,
+        sleep_time: float = 0.00,
         convert: bool = True,
         notify: bool = True,
     ) -> bool:
-        url, message = await cls.create_response_message(message, chat_id, convert)
+        url, message = await cls.create_response_message(
+            message, chat_id, convert, notify
+        )
         print(f"%% {datetime.datetime.now()}: Message is: {message}")
 
         await asyncio.sleep(sleep_time)
         for retry in range(retry_count):
-            # Avoid too many requests error from Telegram
             response = await cls.request(url, message.dict())
             if response.status_code == 200:
-                # print(f"%% {datetime.datetime.now()}: Sent message ")
                 return True
             elif response.status_code == 429:
+                # Avoid too many requests error from Telegram
                 retry_after = int(response.json()["parameters"]["retry_after"])
                 print(
                     f"%% {datetime.datetime.now()} Retry After: {retry_after}, message: {message}"
@@ -185,6 +204,7 @@ class Events:
                 print(
                     f"%% {datetime.datetime.now()} Unhandled response code: {response.status_code}, response: {response.json()}, chat: {chat_id}, message: {message}, url: {url}"
                 )
+                break
         return False
 
     @classmethod
