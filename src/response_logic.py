@@ -66,45 +66,28 @@ class ResponseLogic:
                 return Constants.Leave.already_left(name, language_code)
 
         elif ResponseLogic.check_command_type(first_word, "send"):
-            if len(split_text) == 1:  # send
-                memory = select_random_memory(user)
-                if memory is None:
-                    return Constants.Common.inactive_user(name, language_code)
-                elif memory is False:
-                    return Constants.Common.no_memory_found(name, language_code)
-                else:
-                    asyncio.create_task(
-                        Events.send_a_message_to_user(
-                            user.telegram_chat_id, memory.reminder
-                        )
-                    )
-                    return ""
-            else:  # send number
+            send_count = 1  # send
+            if len(split_text) == 2:
                 try:
-                    number_of_sending = int(split_text[1])
-                    if not (1 <= number_of_sending < 50):
+                    send_count = int(split_text[1])
+                    if not (1 <= send_count < 50):
                         return Constants.Send.send_count_out_of_bound(
                             name, language_code
                         )
                 except:
                     return Constants.Send.send_count_out_of_bound(name, language_code)
 
-                all_memories = list_memories(user)
-
-                if all_memories is None:
-                    return Constants.Common.inactive_user(name, language_code)
-
-                if len(all_memories) == 0:
-                    return Constants.Common.no_memory_found(name, language_code)
-
-                send_count = min(len(all_memories), number_of_sending)
-                selected_memories = random.sample(all_memories, send_count)
-                for memory in selected_memories:  # Send the memories in background
-                    asyncio.create_task(
-                        Events.send_a_message_to_user(
-                            user.telegram_chat_id, memory.reminder
-                        )
+            memories = select_random_memories(user, count=send_count)
+            if memories is None:
+                return Constants.Common.inactive_user(name, language_code)
+            elif memories is []:
+                return Constants.Common.no_memory_found(name, language_code)
+            else:
+                asyncio.create_task(
+                    Events.send_message_list_at_background(
+                        user.telegram_chat_id, [memory.reminder for memory in memories]
                     )
+                )
                 return ""
 
         elif ResponseLogic.check_command_type(first_word, "package"):
@@ -189,6 +172,7 @@ class ResponseLogic:
                 elif schedule == "":
                     return Constants.Schedule.empty_schedule(name, language_code)
                 else:
+                    schedule = ResponseLogic.readable_schedule(schedule)
                     return Constants.Schedule.success(name, language_code, schedule)
 
             elif len(split_text) > 1:
@@ -197,6 +181,7 @@ class ResponseLogic:
                     if new_schedule is None:
                         return Constants.Common.inactive_user(name, language_code)
                     else:
+                        new_schedule = ResponseLogic.readable_schedule(new_schedule)
                         return Constants.Schedule.success(
                             name, language_code, new_schedule
                         )
@@ -230,6 +215,7 @@ class ResponseLogic:
                         if new_schedule is None:
                             return Constants.Common.inactive_user(name, language_code)
                         else:
+                            new_schedule = ResponseLogic.readable_schedule(new_schedule)
                             return Constants.Schedule.success(
                                 name, language_code, new_schedule
                             )
@@ -266,6 +252,9 @@ class ResponseLogic:
                                     name, language_code
                                 )
                             else:
+                                new_schedule = ResponseLogic.readable_schedule(
+                                    new_schedule
+                                )
                                 return Constants.Schedule.success(
                                     name, language_code, new_schedule
                                 )
@@ -304,6 +293,7 @@ class ResponseLogic:
                 return Constants.Common.inactive_user(name, language_code)
             else:
                 schedule = get_schedule(user)
+                schedule = ResponseLogic.readable_schedule(schedule)
                 memory_count = len(list_memories(user))
                 return Constants.Status.get_status(
                     name, language_code, gmt, active, schedule, memory_count
@@ -354,6 +344,19 @@ class ResponseLogic:
 
         else:
             return Constants.Common.unknown_command(name, language_code)
+
+    @staticmethod
+    def readable_schedule(schedule: str) -> str:
+        readable_schedule = ""
+        schedule_list = schedule.split(",")
+        hour_counts = [0] * 24
+        for hour in schedule_list:
+            hour = int(hour)
+            hour_counts[hour] += 1
+        for hour, count in enumerate(hour_counts):
+            if count != 0:
+                readable_schedule += f"{hour}:00 - {hour_counts[hour]}\n"
+        return readable_schedule
 
     @staticmethod
     def check_command_type(input_command: str, correct_command: str) -> bool:

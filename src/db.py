@@ -2,7 +2,7 @@ import random
 from typing import List, Optional, Union, Tuple
 from fastapi import Depends, Query
 from sqlmodel import Field, Relationship, Session, SQLModel, create_engine, select, and_
-from sqlalchemy import UniqueConstraint
+from sqlalchemy import UniqueConstraint, func
 import datetime
 
 default_schedule = "8"
@@ -15,6 +15,7 @@ class UserBase(SQLModel):
     gmt: Optional[int] = 0
     active: Optional[bool] = True
     scheduled_hours: Optional[str] = default_schedule
+    last_sent_reminder_id: Optional[int] = -1
 
 
 class User(UserBase, table=True):
@@ -128,7 +129,7 @@ def leave_user(
 def get_user_status(
     telegram_chat_id: int,
     session: Session = next(get_session()),
-) -> Optional[Tuple[int, bool]]:
+) -> Tuple[Optional[int], Optional[bool]]:
     """
     Get status of the user.
 
@@ -148,31 +149,44 @@ def get_user_status(
         return found_user.gmt, found_user.active
 
 
-def select_random_memory(
-    user: UserCreate,
+def select_random_memories(
+    user: Union[User, UserCreate],
+    count: int = 1,
     session: Session = next(get_session()),
-) -> Optional[Union[Reminder, bool]]:
+) -> Optional[Union[List[Reminder], bool]]:
     """
-    Select random memory from user's memory-vault.
+    Select random memories from user's memory-vault.
 
     Args:
         user:
+        count:
         session:
 
     Returns:
 
     """
+    if count == 0:
+        return []
+
     found_user = session.exec(
         select(User).where(User.telegram_chat_id == user.telegram_chat_id)
     ).first()
     if found_user is None:
         return None
-    if len(found_user.reminders) > 0:
-        memory_list = found_user.reminders
-        random_memory = random.choice(memory_list)
-        return random_memory
-    else:
-        return False
+
+    memories = session.exec(
+        select(Reminder)
+        .where(Reminder.user_id == found_user.id)
+        .order_by(func.random())
+        .limit(count)
+    ).all()
+
+    if memories:
+        found_user.last_sent_reminder_id = memories[-1].id
+        session.add(found_user)
+        session.commit()
+
+    return memories
 
 
 def list_memories(

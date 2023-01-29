@@ -318,24 +318,30 @@ class Constants:
         @staticmethod
         def empty_schedule(name: str, language_code: str = "en") -> str:
             if language_code == "tr":
-                return f"{name}, takvimin boş, takvimine saatleri eklemek için bu komutu kullanabilirsin: *schedule add hour1 hour2 hour3*, örn: *schedule add 8 12*"
+                return f"{name}, takvimin boş, takvimine saatleri eklemek için bu komutu kullanabilirsin: *schedule add hour1 hour2 hour3*, örn: *schedule add 8 12 13*"
 
             else:
-                return f"{name}, your schedule is empty, you can add hours to your schedule via, *schedule add hour1 hour2 hour3*, ie: *schedule add 8 12*"
+                return f"{name}, your schedule is empty, you can add hours to your schedule via, *schedule add hour1 hour2 hour3*, ie: *schedule add 8 12 13*"
 
         @staticmethod
         def success(name: str, language_code: str = "en", schedule: str = "") -> str:
+
             if language_code == "tr":
+
                 return (
-                    f"{name}, güncel takvimin aşağıda, takvimindeki saat başlarında rastgele bir not alacaksın. örn: 8 -> 8:00"
-                    f"\n*Takvim*: {schedule}"
+                    f"{name}, güncel takvimin aşağıda, takvimine göre rastgele not alacaksın."
+                    f"\n"
+                    f"\n*Saat - Not Sayısı*: "
+                    f"\n{schedule}"
                     f""
                     f"\n\nUyarı: Eğer bu bottan faydalanmak istiyorsan, takvimini dolup taşırmamaya dikkat et ve gelen mesajlara dikkatini ver, göz atıp geçme."
                 )
             else:
                 return (
-                    f"{name}, your current schedule is below, You will get a random note at each of these hours everyday. ie: 8 -> 8:00"
-                    f"\n*Schedule*: {schedule}"
+                    f"{name}, your current schedule is below, You will get random notes according to your schedule"
+                    f"\n"
+                    f"\n*Hour - Note Count*: "
+                    f"\n{schedule}"
                     f""
                     f"\n\nWarning: If you want to make use of this bot, be careful to not overflow your schedule and give attention to the incoming messages, do not just look and pass."
                 )
@@ -442,7 +448,8 @@ class Constants:
                     f"\n- Gmt: *GMT{gmt}*"
                     f"\n- Günlük gönderim aktif: *{is_active}*"
                     f"\n- Hatıra Kasandaki not sayısı: {note_count}"
-                    f"\n- Takvim: {schedule}"
+                    f"\n- Takvim: (saat - not adeti)"
+                    f"\n{schedule}"
                     f""
                     f"\n\nUyarı: Eğer bu bottan faydalanmak istiyorsan, takvimini dolup taşırmamaya dikkat et ve gelen mesajlara dikkatini ver, göz atıp geçme."
                 )
@@ -452,7 +459,8 @@ class Constants:
                     f"\n- Gmt: *GMT{gmt}*"
                     f"\n- Daily sending is active: *{active}*"
                     f"\n- Number of notes in your Memory Vault: {note_count}"
-                    f"\n- Schedule: {schedule}"
+                    f"\n- Schedule: (hour - note count)"
+                    f"\n{schedule}"
                     f""
                     f"\n\nWarning: If you want to make use of this bot, be careful to not overflow your schedule and give attention to the incoming messages, do not just look and pass."
                 )
