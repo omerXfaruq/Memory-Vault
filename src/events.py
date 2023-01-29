@@ -204,6 +204,7 @@ class Events:
                 print(
                     f"%% {datetime.datetime.now()} Unhandled response code: {response.status_code}, response: {response.json()}, chat: {chat_id}, message: {message}, url: {url}"
                 )
+                break
         return False
 
     @classmethod

@@ -6,13 +6,19 @@ from .db import *
 from .events import Events
 from .constants import Constants
 from .packages import Packages
+from .message_validations import Message
 
 
 class ResponseLogic:
     @staticmethod
     async def create_response(
-        text: str, name: str, chat_id: int, language_code: str
+        message: Message | None,
+        name: str,
+        chat_id: int,
+        language_code: str,
+        text: str = "",
     ) -> str:
+        text = message.text or text if message else text
 
         # Edge case check for "add\nSentence"
         line_split_text = text.split("\n")
@@ -42,10 +48,12 @@ class ResponseLogic:
                 else:
                     memory = reminder.reminder
                     return Constants.Add.success(name, language_code, memory)
+
         elif ResponseLogic.check_command_type(first_word, "start"):
             user = join_user(user)
             await Events.send_a_message_to_user(chat_id, Constants.hello)
             return Constants.Start.start_message(name, language_code)
+
         elif ResponseLogic.check_command_type(first_word, "help"):
             message = Constants.Help.help_message(name, language_code)
             return message
@@ -332,7 +340,18 @@ class ResponseLogic:
             return Constants.Tutorial.tutorial_3(name, language_code)
 
         else:
-            return Constants.Common.unknown_command(name, language_code)
+            reminder = add_memory(
+                user,
+                f"message_id: {message.message_id}",
+            )
+            if reminder is None:
+                return Constants.Common.inactive_user(name, language_code)
+            elif reminder is False:
+                return Constants.Add.already_added(name, language_code)
+            else:
+                memory = reminder.reminder
+                await Events.send_a_message_to_user(chat_id, memory)
+                return Constants.Add.success(name, language_code, memory)
 
     @staticmethod
     def readable_schedule(schedule: str) -> str:
