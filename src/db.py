@@ -274,6 +274,41 @@ def add_package(
     return success is not False
 
 
+def delete_last_sent_memory(
+    user: UserCreate,
+    session: Session = next(get_session()),
+) -> Union[bool, str, None]:
+    """
+    Delete the last sent memory from the user's memory-vault.
+
+    Args:
+        user:
+        session:
+
+    Returns: bool
+
+    """
+
+    found_user = session.exec(
+        select(User).where(User.telegram_chat_id == user.telegram_chat_id)
+    ).first()
+    if found_user is None:
+        return None
+    if found_user.last_sent_reminder_id == -1:
+        return False
+
+    reminder = session.exec(
+        select(Reminder).where(Reminder.id == found_user.last_sent_reminder_id)
+    ).first()
+    memory = reminder.reminder
+    session.delete(reminder)
+    found_user.last_sent_reminder_id = -1
+    session.add(found_user)
+    session.commit()
+
+    return memory
+
+
 def delete_memory(
     user: UserCreate,
     memory_id: int,

@@ -294,24 +294,24 @@ class Constants:
 
     class Delete:
         @staticmethod
-        def no_id(name: str, language_code: str = "en") -> str:
+        def no_message(name: str, language_code: str = "en") -> str:
             if language_code == "tr":
-                return f"{name}, bana notun id'sini vermen gerekiyor, örn: *delete 2*, bu komut ile id'leri öğrenebilirsin *list* veya /list"
+                return f"{name} henüz bir not göndermedim, not göndermemi istiyorsan bu komutu kullan /send"
 
             else:
-                return f"{name}, need to give me id of the note, ie: *delete 2*, you can get it by using command, *list* or /list"
+                return f"{name}, I haven't sent you a note yet, use this command if you want to get a note, /send"
 
         @staticmethod
         def success(name: str, language_code: str = "en") -> str:
             if language_code == "tr":
                 return (
                     f"{name}, not kasadan silindi. Unutulan hatıraya elveda {Constants.sad}"
-                    f"\n*Silinen Not*:"
+                    f"\n\n*Silinen Not*:"
                 )
             else:
                 return (
                     f"{name}, your note is deleted from your memory vault. Good bye to the forgotten memory {Constants.sad}"
-                    f"\n*Deleted Note*:"
+                    f"\n\n*Deleted Note*:"
                 )
 
     class Schedule:

@@ -111,6 +111,7 @@ class ResponseLogic:
                     return Constants.Package.success(name, language_code, package_id)
             else:
                 return Constants.Package.incorrect_id(name, language_code)
+
         elif ResponseLogic.check_command_type(first_word, "list"):
             memories = list_memories(user)
 
@@ -138,31 +139,19 @@ class ResponseLogic:
                 )
                 return response_message
 
-        elif ResponseLogic.check_command_type(first_word, "delete"):
-            if len(split_text) < 2:
-                return Constants.Delete.no_id(name, language_code)
+        elif ResponseLogic.check_command_type(first_word, "del"):
+            resp = delete_last_sent_memory(user)
+            if resp is None:
+                return Constants.Common.inactive_user(name, language_code)
+            elif resp is False:
+                return Constants.Delete.no_message(name, language_code)
             else:
-                try:
-                    memory_id = int(split_text[1])
-                    if memory_id < 0:
-                        return Constants.Delete.no_id(name, language_code)
-                    else:
-                        response = delete_memory(user, memory_id)
-                        if response is None:
-                            return Constants.Common.inactive_user(name, language_code)
-                        elif response is False:
-                            return Constants.Delete.no_id(name, language_code)
-                        else:
-                            memory = response
-                            await Events.send_a_message_to_user(
-                                chat_id, Constants.Delete.success(name, language_code)
-                            )
-                            await Events.send_a_message_to_user(chat_id, memory)
-
-                            return ""
-
-                except Exception as ex:
-                    return Constants.Delete.no_id(name, language_code)
+                memory = resp
+                await Events.send_a_message_to_user(
+                    chat_id, Constants.Delete.success(name, language_code)
+                )
+                await Events.send_a_message_to_user(chat_id, memory)
+                return ""
 
         elif ResponseLogic.check_command_type(first_word, "schedule"):
             if len(split_text) == 1:
