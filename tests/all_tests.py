@@ -90,7 +90,6 @@ def test_add_and_remove_users(session):
     db_create_user(user, session)
     add_memory(user, "hey", session)
     add_memory(user, "heyyo", session)
-    delete_memory(user, 0, session)
     add_memory(user, "hey", session)
     assert list_memories(user, session) == [
         Reminder(user_id=1, reminder="heyyo", id=2),

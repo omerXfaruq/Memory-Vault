@@ -309,38 +309,6 @@ def delete_last_sent_memory(
     return memory
 
 
-def delete_memory(
-    user: UserCreate,
-    memory_id: int,
-    session: Session = next(get_session()),
-) -> Union[bool, str, None]:
-    """
-    Delete a memory from user's memory-vault.
-
-    Args:
-        user:
-        memory_id:
-        session:
-
-    Returns: bool
-
-    """
-
-    found_user = session.exec(
-        select(User).where(User.telegram_chat_id == user.telegram_chat_id)
-    ).first()
-    if found_user is None:
-        return None
-    if len(found_user.reminders) > memory_id:
-        reminder = found_user.reminders[memory_id]
-        memory = reminder.reminder
-        session.delete(reminder)
-        session.commit()
-        return memory
-    else:
-        return False
-
-
 def delete_last_memory(
     user: UserCreate,
     session: Session = next(get_session()),
@@ -365,6 +333,8 @@ def delete_last_memory(
         reminder = found_user.reminders.pop()
         memory = reminder.reminder
         session.delete(reminder)
+        found_user.last_sent_reminder_id = -1
+        session.add(found_user)
         session.commit()
         return memory
     else:
