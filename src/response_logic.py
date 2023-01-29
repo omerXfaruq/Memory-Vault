@@ -88,7 +88,7 @@ class ResponseLogic:
             memories = select_random_memories(user, count=send_count)
             if memories is None:
                 return Constants.Common.inactive_user(name, language_code)
-            elif memories is []:
+            elif not memories:
                 return Constants.Common.no_memory_found(name, language_code)
             else:
                 asyncio.create_task(
