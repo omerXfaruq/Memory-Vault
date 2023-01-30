@@ -531,7 +531,7 @@ class Constants:
                 )
             else:
                 return (
-                    f"To add a note, just send any message, text, media, forward, etc."
+                    f"To add a note, just send any message, text, media, forward, etc. I will remind you a random note everyday"
                     f"\n\nFor the next tutorial step please use, /tutorial3"
                 )
 
