@@ -120,7 +120,7 @@ class Constants:
                     f"\n- /send to get a random note"
                     f"\n- *send number* to get multiple random notes"
                     f"\n\n{name} congratulations, you finished the tutorial {Constants.smile}. "
-                    f"\nThese were my main commands, to see additional commands like editing daily schedule please use, /helpbig."
+                    f"\nThese were my main commands, to see additional please use, /helpbig."
                 )
 
         @staticmethod
@@ -144,16 +144,9 @@ class Constants:
                     f"\n\n*Schedule(takvim) hakkındaki komutlar:*"
                     f"\nHer gün takvimindeki saat başlarında sana notlar yollarım. Varsayılan takvim saatleri *{default_schedule}*'dır. Yani her gün 8:00 ve 20:00'de sana bir adet not yollayacağım."
                     f"\nSchedule komutlarıyla kendi günlük takvimini oluşturabilirsin. Ayrıca bir saati birden fazla kez ekleyerek o saatte birden çok not alabilirsin."
-                    f"\n- /schedule veya *schedule* ile şuanki takvimini yollarım"
-                    f"\n- *schedule reset* ile takvimini varsayılan takvime({default_schedule}) çekerim"
-                    f"\n- *schedule add saat1 saat2 saat3* ile saatleri takvimine eklerim"
-                    f"\nÖrnek:"
-                    f"\n*schedule add 1 3 9 11*"
-                    f"\n- *schedule remove saat* ile bir saati takviminden tamamen kaldırabilirsin"
-                    f"\nÖrnek:"
-                    f"\n*schedule remove 8*"
-                    f"\n\n*Grup Kullanımı*"
-                    f"\n - Beni *gruplarda da kullanabilirsin*, gruba ekleyip yönetici yapman yeterli. Yönetici yapmak istemiyorsan da grupta benim mesajlarıma yanıtla yaparak da komutları kullanabilirsin."
+                    f"\n- /schedule ile daha fazla bilgi alabilirsin."
+                    f"\n"
+                    f"\n*Grup Kullanımı*"
                     f"\n- *Birden fazla Hatıra Kasasına* sahip olmak için beni farklı gruplarda kullanabilirsin. Mesela bir kelime öğrenme grubu kurabilirsin."
                     f"\n- Örnek grup: Kuran'ı Kerim'den Dualar(@PrayersFromQuran)"
                 )
@@ -174,19 +167,12 @@ class Constants:
                     f"\n\n- /support or *support* to learn how to support me"
                     f"\n- *feedback Sentence* to send your thoughts and feedbacks about the bot"
                     f"\n\n*Schedule related commands:*"
-                    f"\nI send notes according to the hours in your schedule. Default schedule hours are *{default_schedule}*. I will send you a note at 8:00 and 20:00 everyday."
-                    f"\nYou can create your own daily schedule. Furthermore you can add an hour multiple times to receive multiple notes at that hour."
-                    f"\n- /schedule or *schedule* to display your current schedule"
-                    f"\n- *schedule reset* to reset your schedule to the default schedule"
-                    f"\n- *schedule add hour1 hour2 hour3* to add hours to your schedule"
-                    f"\nExample:"
-                    f"\n*schedule add 1 3 9 11*"
-                    f"\n- *schedule remove hour* to remove an hour from your schedule"
-                    f"\nExample:"
-                    f"\n*schedule remove 8*"
-                    f"\n\n*Group Usage*"
-                    f"\n - You can *use me in groups* as well, just add me to a group and promote me to admin there. If you don't want to make me an admin, you can reply to my messages in the group to use my commands."
-                    f"\n- Furthermore *you can have multiple memory vaults* by using different groups. For example I would serve you well in a *language learning group*, where you add words you want to remember to your memory vault."
+                    f"\nI send notes according to the hours in your schedule. Default schedule hours are *{default_schedule}*."
+                    f"\n- /schedule to see more details."
+                    f"\n"
+                    f"\n*Group Usage*"
+                    f"\n - You can *use me in groups* as well, "
+                    f"\n- *You can have multiple memory vaults* by using different groups. Just promote me to admin. For example I would serve you well in a *language learning group*, where you add words you want to remember to your memory vault."
                     f"\n- Example group: @PrayersFromQuran"
                 )
 
@@ -380,6 +366,8 @@ class Constants:
             if language_code == "tr":
                 return (
                     f"Takvimini güncellemek için bu komutları kullanabilirsin."
+                    f"\n/status ile takvimini görebilirsin"
+                    f"\n"
                     f"\n*schedule add 8 12 20*"
                     f"\n*schedule reset*"
                     f"\n*schedule remove 8*"
@@ -387,6 +375,8 @@ class Constants:
             else:
                 return (
                     f"To configure your schedule you can use these commands."
+                    f"\n/status to see your schedule"
+                    f"\n"
                     f"\n*schedule add 8 12 20*"
                     f"\n*schedule reset*"
                     f"\n*schedule remove 8*"
