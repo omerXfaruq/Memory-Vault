@@ -16,8 +16,6 @@ class Constants:
     if str(os.environ.get("DEV")) == "true":
         BOT_ID = DEV_BOT_ID
 
-    # BOT_ID = 5015215848 # MemRem
-
     class Common:
         @staticmethod
         def inactive_user(name: str, language_code: str = "en") -> str:
@@ -98,7 +96,35 @@ class Constants:
 
     class Help:
         @staticmethod
-        def help_message(name: str, language_code: str = "eng") -> str:
+        def small_help_message(name: str, language_code: str = "eng") -> str:
+            if language_code == "tr":
+                return (
+                    f"\n- /leave ile günlük hatırlatmayı durdurabilirsin"
+                    f"\n- /del ile en son yollanan notu silebilirsin"
+                    f"\n- /status ile status bilgini alabilirsin"
+                    f"\n- /list ile tüm notlarını görebilirsin"
+                    f"\n- /schedule ile tüm takvimini güncelleyebilirsin"
+                    f"\n- /send ile rastgele bir not alabilirsin"
+                    f"\n- *send number* ile çok sayıda not alabilirsin"
+                    f"\n\n{name} tebrikler rehberi bitirdin {Constants.smile}. "
+                    f"\nTemel komutlarım bunlardı, günlük takvimi ayarlama vb. diğer komutları görmek için, /helpbig."
+                )
+
+            else:
+                return (
+                    f"\n- /leave to deactivate daily reminders"
+                    f"\n- /del to delete the last sent note"
+                    f"\n- /status to get your status information"
+                    f"\n- /list to list notes"
+                    f"\n- /schedule to customize your schedule"
+                    f"\n- /send to get a random note"
+                    f"\n- *send number* to get multiple random notes"
+                    f"\n\n{name} congratulations, you finished the tutorial {Constants.smile}. "
+                    f"\nThese were my main commands, to see additional please use, /helpbig."
+                )
+
+        @staticmethod
+        def big_help_message(name: str, language_code: str = "eng") -> str:
             if language_code == "tr":
                 return (
                     f"\n\nHafıza Kasası sana her gün, takvimindeki saatlerde kasandan rastgele notlar gönderir."
@@ -109,32 +135,18 @@ class Constants:
                     f"\n- *send number* ile çok sayıda not yollarım"
                     f"\n- /status veya *status* ile status bilgini yollarım"
                     f"\n- /list veya *list* ile tüm notlarını gönderirim"
-                    f"\n\n- *add Note* ile kasana bir not ekleyebilirsin"
-                    f"\nÖrnek:"
-                    f"\n*add Vakit hiç bir zaman geri gelmez*"
-                    f"\n\n- *delete id* ile bir notu silebilirsin. Not id'lerini bu komutlarla öğrenebilirsin, *list* veya /list"
-                    f"\nÖrnek:"
-                    f"\n*delete 2*"
                     f"\n\n- *gmt zaman-dilimi* ile zaman dilimi belirleyebilirsin, varsayılan zaman dilimi *GMT0*'dır"
                     f"\nÖrnek:"
                     f"\nGMT+3: *gmt 3*"
-                    f"\nGMT0: *gmt 0*"
                     f"\nGMT-5: *gmt -5*"
                     f"\n\n- /support veya *support* ile beni nasıl destekleyebileceğini öğrenebilirsin"
                     f"\n- *feedback Cümle* ile bot hakkındaki düşüncelerini veya ƒeedback'lerini yollayabilirsin"
                     f"\n\n*Schedule(takvim) hakkındaki komutlar:*"
                     f"\nHer gün takvimindeki saat başlarında sana notlar yollarım. Varsayılan takvim saatleri *{default_schedule}*'dır. Yani her gün 8:00 ve 20:00'de sana bir adet not yollayacağım."
                     f"\nSchedule komutlarıyla kendi günlük takvimini oluşturabilirsin. Ayrıca bir saati birden fazla kez ekleyerek o saatte birden çok not alabilirsin."
-                    f"\n- /schedule veya *schedule* ile şuanki takvimini yollarım"
-                    f"\n- *schedule reset* ile takvimini varsayılan takvime({default_schedule}) çekerim"
-                    f"\n- *schedule add saat1 saat2 saat3* ile saatleri takvimine eklerim"
-                    f"\nÖrnek:"
-                    f"\n*schedule add 1 3 9 11*"
-                    f"\n- *schedule remove saat* ile bir saati takviminden tamamen kaldırabilirsin"
-                    f"\nÖrnek:"
-                    f"\n*schedule remove 8*"
-                    f"\n\n*Grup Kullanımı*"
-                    f"\n - Beni *gruplarda da kullanabilirsin*, gruba ekleyip yönetici yapman yeterli. Yönetici yapmak istemiyorsan da grupta benim mesajlarıma yanıtla yaparak da komutları kullanabilirsin."
+                    f"\n- /schedule ile daha fazla bilgi alabilirsin."
+                    f"\n"
+                    f"\n*Grup Kullanımı*"
                     f"\n- *Birden fazla Hatıra Kasasına* sahip olmak için beni farklı gruplarda kullanabilirsin. Mesela bir kelime öğrenme grubu kurabilirsin."
                     f"\n- Örnek grup: Kuran'ı Kerim'den Dualar(@PrayersFromQuran)"
                 )
@@ -148,33 +160,19 @@ class Constants:
                     f"\n- *send number* to get multiple random notes"
                     f"\n- /status or *status* to get your status information"
                     f"\n- /list or *list* to list notes"
-                    f"\n\n- *add Note* to add a note to your memory vault"
-                    f"\nExample:"
-                    f"\n*add Time never does come back*"
-                    f"\n\n- *delete id* to delete a note. You can learn the note ids with the command, *list* or /list"
-                    f"\nExample:"
-                    f"\n*delete 2*"
                     f"\n\n- *gmt timezone* to set your timezone,  the default timezone is *GMT0*"
                     f"\nExamples:"
                     f"\nGMT+3: *gmt 3*"
-                    f"\nGMT0: *gmt 0*"
                     f"\nGMT-5: *gmt -5*"
                     f"\n\n- /support or *support* to learn how to support me"
                     f"\n- *feedback Sentence* to send your thoughts and feedbacks about the bot"
                     f"\n\n*Schedule related commands:*"
-                    f"\nI send notes according to the hours in your schedule. Default schedule hours are *{default_schedule}*. I will send you a note at 8:00 and 20:00 everyday."
-                    f"\nYou can create your own daily schedule. Furthermore you can add an hour multiple times to receive multiple notes at that hour."
-                    f"\n- /schedule or *schedule* to display your current schedule"
-                    f"\n- *schedule reset* to reset your schedule to the default schedule"
-                    f"\n- *schedule add hour1 hour2 hour3* to add hours to your schedule"
-                    f"\nExample:"
-                    f"\n*schedule add 1 3 9 11*"
-                    f"\n- *schedule remove hour* to remove an hour from your schedule"
-                    f"\nExample:"
-                    f"\n*schedule remove 8*"
-                    f"\n\n*Group Usage*"
-                    f"\n - You can *use me in groups* as well, just add me to a group and promote me to admin there. If you don't want to make me an admin, you can reply to my messages in the group to use my commands."
-                    f"\n- Furthermore *you can have multiple memory vaults* by using different groups. For example I would serve you well in a *language learning group*, where you add words you want to remember to your memory vault."
+                    f"\nI send notes according to the hours in your schedule. Default schedule hours are *{default_schedule}*."
+                    f"\n- /schedule to see more details."
+                    f"\n"
+                    f"\n*Group Usage*"
+                    f"\n - You can *use me in groups* as well, "
+                    f"\n- *You can have multiple memory vaults* by using different groups. Just promote me to admin. For example I would serve you well in a *language learning group*, where you add words you want to remember to your memory vault."
                     f"\n- Example group: @PrayersFromQuran"
                 )
 
@@ -184,15 +182,13 @@ class Constants:
             if language_code == "tr":
                 return (
                     f"Hoşgeldin, sefa geldin {name}! Günlük not yollamayı açtın. Takvimindeki saatlere göre sana hatıra kasandan her gün notlar yollayacağım."
-                    f"Varsayılan takvimindeki saatleri {default_schedule}'dır. (8 -> 8:00, 20 -> 20:00). Daha detaylı bilgi için, *help* veya /help."
-                    f"\nYeni bir kullanıcı isen lütfen bu komuta tıklayarak rehbere başla, /tutorial1 {Constants.smile}"
+                    f"\nTakvimini görmek için, /status, daha fazla bilgi almak için, /help."
                 )
             else:
                 return (
                     f"Welcome onboard {name}! "
                     f"\nYou activated daily note sending. I will send you random notes from your memory vault according to your schedule."
-                    f"The default hours in the schedule are {default_schedule}(8 -> 8:00, 20 -> 20:00). You can get more detailed information by writing, *help* or /help."
-                    f"\nIf you are a new user, please start the tutorial by clicking, /tutorial1 {Constants.smile}"
+                    f"\nTo see your schedule, /status, to get more information, /help"
                 )
 
         @staticmethod
@@ -267,15 +263,9 @@ class Constants:
 
         @staticmethod
         def success(name: str, language_code: str = "en", note: str = "") -> str:
-            words = note.split(" ")
-            if words[0] == "message_id:":
-                note_message = ""
-            else:
-                note_message = f"*Note*: \n{note}"
             if language_code == "tr":
                 return (
                     f"{name}, not kasana eklendi. Merak etme, onu güvende tutacağım {Constants.smile}"
-
                     f"\n"
                     f"\n Eğer son eklediğin notu silmek istiyorsan, bu komutu kullan /undo"
                 )
@@ -301,12 +291,16 @@ class Constants:
             if language_code == "tr":
                 return (
                     f"{name}, not kasadan silindi. Unutulan hatıraya elveda {Constants.sad}"
-                    f"\n\n*Silinen Not*:"
+                    f"\nKomutlar hk. bilgi almak için /help"
+                    f"\n"
+                    f"\n*Silinen Not*:"
                 )
             else:
                 return (
                     f"{name}, your note is deleted from your memory vault. Good bye to the forgotten memory {Constants.sad}"
-                    f"\n\n*Deleted Note*:"
+                    f"\nTo learn more about commands, /help"
+                    f"\n"
+                    f"\n*Deleted Note*:"
                 )
 
     class Schedule:
@@ -371,17 +365,19 @@ class Constants:
         def unknown_command(name: str, language_code: str = "en") -> str:
             if language_code == "tr":
                 return (
-                    f"{name}, bu komutu bilmiyorum. Aşağıdaki komutları kullanabilirsin."
-                    f"\n*schedule*"
-                    f"\n*schedule add 8 12*"
+                    f"Takvimini güncellemek için bu komutları kullanabilirsin."
+                    f"\n/status ile takvimini görebilirsin"
+                    f"\n"
+                    f"\n*schedule add 8 12 20*"
                     f"\n*schedule reset*"
                     f"\n*schedule remove 8*"
                 )
             else:
                 return (
-                    f"{name}, I do not know that command. You can use the commands below."
-                    f"\n*schedule*"
-                    f"\n*schedule add 8 12*"
+                    f"To configure your schedule you can use these commands."
+                    f"\n/status to see your schedule"
+                    f"\n"
+                    f"\n*schedule add 8 12 20*"
                     f"\n*schedule reset*"
                     f"\n*schedule remove 8*"
                 )
@@ -511,7 +507,7 @@ class Constants:
         def tutorial_1(name: str, language_code: str = "en"):
             if language_code == "tr":
                 return (
-                    f"*gmt zaman-dilimi* ile zaman dilimi belirleyebilirsin, varsayılan zaman dilimi *GMT0*'dır. Bu arada Türkiye GMT+3 zaman diliminde."
+                    f"*gmt zaman-dilimi* ile zaman dilimi belirleyebilirsin, varsayılan zaman dilimi *GMT0*'dır, Türkiye ise GMT+3 zaman diliminde."
                     f"\nÖrnek:"
                     f"\nGMT+3: *gmt 3*"
                     f"\nGMT0: *gmt 0*"
@@ -532,42 +528,18 @@ class Constants:
         def tutorial_2(name: str, language_code: str = "en"):
             if language_code == "tr":
                 return (
-                    f"Hatıra Kasana bir not eklemek için *add Cümle* komutunu kullanabilirsin."
-                    f"\nÖrnek:"
-                    f"\n*add Zaman çok kıymetlidir, her daim eriyen bir dondurmaya benzer.*"
+                    f"Kasana not eklemek herhangi bir mesaj yolla, yazı, media veya iletme yollayabilirsin. İleride sana her gün rastgele bir not hatırlatacağım."
                     f"\n\nBir sonraki rehber adımına geçmek için, /tutorial3"
                 )
             else:
                 return (
-                    f"To add a note to your Memory Vault, please use the command, *add Sentence*."
-                    f"\nExample:"
-                    f"\n*add Time never does come back*"
+                    f"To add a note to your Vault, just send any message, text, media, forward, etc. Later, I will remind you a random note everyday."
                     f"\n\nFor the next tutorial step please use, /tutorial3"
                 )
 
         @staticmethod
         def tutorial_3(name: str, language_code: str = "en"):
-            if language_code == "tr":
-                return (
-                    f"\n- /leave veya *leave* ile günlük hatırlatmayı durdurabilirsin"
-                    f"\n- /send veya *send* ile rastgele bir not yollarım"
-                    f"\n- *send number* ile çok sayıda not yollarım"
-                    f"\n- /status veya *status* ile status bilgini yollarım"
-                    f"\n- /list veya *list* ile tüm notlarını gönderirim"
-                    f"\n\n{name} tebrikler rehberi bitirdin {Constants.smile}. "
-                    f"\nTemel komutlarım bunlardı, günlük takvimi ayarlama vb. diğer komutları görmek için, /help."
-                )
-
-            else:
-                return (
-                    f"\n- /leave or *leave* to deactivate daily reminders"
-                    f"\n- /send or *send* to get a random note"
-                    f"\n- *send number* to get multiple random notes"
-                    f"\n- /status or *status* to get your status information"
-                    f"\n- /list or *list* to list notes"
-                    f"\n\n{name} congratulations, you finished the tutorial {Constants.smile}. "
-                    f"\nThese were my main commands, to see additional commands like editing daily schedule please use, /help."
-                )
+            return Constants.Help.small_help_message(name, language_code)
 
     class Package:
         @staticmethod
