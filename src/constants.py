@@ -526,12 +526,12 @@ class Constants:
         def tutorial_2(name: str, language_code: str = "en"):
             if language_code == "tr":
                 return (
-                    f"Kasana not eklemek herhangi bir mesaj yolla, yazı, media veya iletme yollayabilirsin. Sana her gün rastgele bir not hatırlatacağım."
+                    f"Kasana not eklemek herhangi bir mesaj yolla, yazı, media veya iletme yollayabilirsin. İleride sana her gün rastgele bir not hatırlatacağım."
                     f"\n\nBir sonraki rehber adımına geçmek için, /tutorial3"
                 )
             else:
                 return (
-                    f"To add a note to your Vault, just send any message, text, media, forward, etc. I will remind you a random note everyday."
+                    f"To add a note to your Vault, just send any message, text, media, forward, etc. Later, I will remind you a random note everyday."
                     f"\n\nFor the next tutorial step please use, /tutorial3"
                 )
 
