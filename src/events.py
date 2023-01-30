@@ -172,7 +172,7 @@ class Events:
                 }
             ),
         )
-
+        
     @classmethod
     async def send_a_message_to_user(
         cls,

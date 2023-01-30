@@ -66,6 +66,27 @@ async def listen_telegram_messages(r: Request, message: MessageBodyModel):
             response_message = await ResponseLogic.create_response(
                 message.message, name, chat_id, language_code
             )
+        elif message.message.voice:
+            response_message = await ResponseLogic.create_response(
+                f"add message_id: {message.message.message_id}",
+                name,
+                chat_id,
+                language_code,
+            )
+        elif message.message.forward_date:
+            if message.message.text:
+                response_message = await ResponseLogic.create_response(
+                    f"add message_id: {message.message.message_id}",
+                    name,
+                    chat_id,
+                    language_code,
+                )
+        elif message.message.text:
+            response_message = await ResponseLogic.create_response(
+                message.message.text, name, chat_id, language_code
+            )
+        else:
+            return
 
     elif message.message is None:  # Bot is added to a group
         if message.my_chat_member is None:

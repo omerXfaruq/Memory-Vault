@@ -16,6 +16,8 @@ class Constants:
     if str(os.environ.get("DEV")) == "true":
         BOT_ID = DEV_BOT_ID
 
+    # BOT_ID = 5015215848 # MemRem
+
     class Common:
         @staticmethod
         def inactive_user(name: str, language_code: str = "en") -> str:
@@ -265,9 +267,15 @@ class Constants:
 
         @staticmethod
         def success(name: str, language_code: str = "en", note: str = "") -> str:
+            words = note.split(" ")
+            if words[0] == "message_id:":
+                note_message = ""
+            else:
+                note_message = f"*Note*: \n{note}"
             if language_code == "tr":
                 return (
                     f"{name}, not kasana eklendi. Merak etme, onu güvende tutacağım {Constants.smile}"
+
                     f"\n"
                     f"\n Eğer son eklediğin notu silmek istiyorsan, bu komutu kullan /undo"
                 )
