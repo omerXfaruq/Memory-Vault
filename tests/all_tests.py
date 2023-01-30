@@ -14,7 +14,10 @@ pytest_plugins = ("pytest_asyncio",)
 @pytest.fixture(name="session")
 def session_fixture():
     engine = create_engine(
-        "sqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool
+        "sqlite://",
+        echo=True,
+        connect_args={"check_same_thread": False},
+        poolclass=StaticPool,
     )
     SQLModel.metadata.create_all(engine)
     with Session(engine) as session:
@@ -87,7 +90,6 @@ def test_add_and_remove_users(session):
     db_create_user(user, session)
     add_memory(user, "hey", session)
     add_memory(user, "heyyo", session)
-    delete_memory(user, 0, session)
     add_memory(user, "hey", session)
     assert list_memories(user, session) == [
         Reminder(user_id=1, reminder="heyyo", id=2),
@@ -143,6 +145,26 @@ def test_db_read_users(session):
     assert 1 == len(user_list)
     assert user_list[0] == user
     print(user_list)
+
+
+def test_read_random_user(session):
+    user = UserCreate(
+        name="lloll",
+        telegram_chat_id=100100010001,
+    )
+    user = db_create_user(user, session=session)
+    user2 = UserCreate(
+        name="22lloll",
+        telegram_chat_id=12200100010001,
+    )
+    user2.active = False
+    user2 = db_create_user(user2, session=session)
+
+    from sqlalchemy import func
+
+    random_user = session.exec(select(User).order_by(func.random()).limit(2)).all()
+    print(random_user)
+    assert False
 
 
 def test_print_start_message():

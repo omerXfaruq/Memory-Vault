@@ -1,5 +1,6 @@
 from .db import default_schedule, get_user_status
 from .packages import Packages
+import os
 
 
 class Constants:
@@ -11,6 +12,9 @@ class Constants:
     BROADCAST_CHAT_ID = -1001786782026
     FEEDBACK_FORWARD_CHAT_ID = -683998033
     BOT_ID = 5065052385
+    DEV_BOT_ID = 5015215848
+    if str(os.environ.get("DEV")) == "true":
+        BOT_ID = DEV_BOT_ID
 
     # BOT_ID = 5015215848 # MemRem
 
@@ -88,17 +92,9 @@ class Constants:
         @staticmethod
         def group_warning(name: str, language_code: str = "eng") -> str:
             if language_code == "tr":
-                return (
-                    f"\nBu arada Hatıra Kasasını gruplarda kullanmak için onu ya"
-                    f"\n- Grup admini yapmalı -- Bu durumda Hatıra Kasası gruptaki tüm mesajları dinleyip cevap verecektir"
-                    f"\n- Ya da Hatıra Kasası'nın herhangi bir mesajını yanıtlamalısın."
-                )
+                return f"\n*Uyarı*: Hatıra Kasasını gruplarda kullanmak için onu ya admin yapmalısın."
             else:
-                return (
-                    f"Btw, to use Memory Vault in a group you should either"
-                    f"\n- Make Memory-Vault group admin -- In this case Memory Vault will listen and reply to every message."
-                    f"\n- Or reply to any message from Memory Vault to interact."
-                )
+                return f"*Warning*: To use Memory Vault in groups you need to make it an admin."
 
     class Help:
         @staticmethod
@@ -279,63 +275,68 @@ class Constants:
             if language_code == "tr":
                 return (
                     f"{name}, not kasana eklendi. Merak etme, onu güvende tutacağım {Constants.smile}"
-                    f"\n{note_message}"
+
                     f"\n"
-                    f"\n Eğer son eklediğin notu silmek istiyorsan, bu komutu kullan */deletelastadd*"
+                    f"\n Eğer son eklediğin notu silmek istiyorsan, bu komutu kullan /undo"
                 )
 
             else:
                 return (
                     f"{name}, the note is added to your memory vault. No worries, I will keep it safe {Constants.smile}"
-                    f"\n{note_message}"
                     f"\n"
-                    f"\nIf you want to delete the last added note, you can use */deletelastadd*"
+                    f"\nIf you want to delete the last added note, you can use /undo"
                 )
 
     class Delete:
         @staticmethod
-        def no_id(name: str, language_code: str = "en") -> str:
+        def no_message(name: str, language_code: str = "en") -> str:
             if language_code == "tr":
-                return f"{name}, bana notun id'sini vermen gerekiyor, örn: *delete 2*, bu komut ile id'leri öğrenebilirsin *list* veya /list"
+                return f"{name} henüz bir not göndermedim, not göndermemi istiyorsan bu komutu kullan /send"
 
             else:
-                return f"{name}, need to give me id of the note, ie: *delete 2*, you can get it by using command, *list* or /list"
+                return f"{name}, I haven't sent you a note yet, use this command if you want to get a note, /send"
 
         @staticmethod
         def success(name: str, language_code: str = "en") -> str:
             if language_code == "tr":
                 return (
                     f"{name}, not kasadan silindi. Unutulan hatıraya elveda {Constants.sad}"
-                    f"\n*Silinen Not*:"
+                    f"\n\n*Silinen Not*:"
                 )
             else:
                 return (
                     f"{name}, your note is deleted from your memory vault. Good bye to the forgotten memory {Constants.sad}"
-                    f"\n*Deleted Note*:"
+                    f"\n\n*Deleted Note*:"
                 )
 
     class Schedule:
         @staticmethod
         def empty_schedule(name: str, language_code: str = "en") -> str:
             if language_code == "tr":
-                return f"{name}, takvimin boş, takvimine saatleri eklemek için bu komutu kullanabilirsin: *schedule add hour1 hour2 hour3*, örn: *schedule add 8 12*"
+                return f"{name}, takvimin boş, takvimine saatleri eklemek için bu komutu kullanabilirsin: *schedule add hour1 hour2 hour3*, örn: *schedule add 8 12 13*"
 
             else:
-                return f"{name}, your schedule is empty, you can add hours to your schedule via, *schedule add hour1 hour2 hour3*, ie: *schedule add 8 12*"
+                return f"{name}, your schedule is empty, you can add hours to your schedule via, *schedule add hour1 hour2 hour3*, ie: *schedule add 8 12 13*"
 
         @staticmethod
         def success(name: str, language_code: str = "en", schedule: str = "") -> str:
+
             if language_code == "tr":
+
                 return (
-                    f"{name}, güncel takvimin aşağıda, takvimindeki saat başlarında rastgele bir not alacaksın. örn: 8 -> 8:00"
-                    f"\n*Takvim*: {schedule}"
+                    f"{name}, güncel takvimin aşağıda, takvimine göre rastgele not alacaksın."
+                    f"\n"
+                    f"\n*Saat - Not Sayısı*: "
+                    f"\n{schedule}"
                     f""
                     f"\n\nUyarı: Eğer bu bottan faydalanmak istiyorsan, takvimini dolup taşırmamaya dikkat et ve gelen mesajlara dikkatini ver, göz atıp geçme."
                 )
             else:
                 return (
-                    f"{name}, your current schedule is below, You will get a random note at each of these hours everyday. ie: 8 -> 8:00"
-                    f"\n*Schedule*: {schedule}"
+                    f"{name}, your current schedule is below, You will get random notes according to your schedule"
+                    f"\n"
+                    f"\n*Hour - Note Count*: "
+                    f"\n{schedule}"
                     f""
                     f"\n\nWarning: If you want to make use of this bot, be careful to not overflow your schedule and give attention to the incoming messages, do not just look and pass."
                 )
@@ -442,7 +443,8 @@ class Constants:
                     f"\n- Gmt: *GMT{gmt}*"
                     f"\n- Günlük gönderim aktif: *{is_active}*"
                     f"\n- Hatıra Kasandaki not sayısı: {note_count}"
-                    f"\n- Takvim: {schedule}"
+                    f"\n- Takvim: (saat - not adeti)"
+                    f"\n{schedule}"
                     f""
                     f"\n\nUyarı: Eğer bu bottan faydalanmak istiyorsan, takvimini dolup taşırmamaya dikkat et ve gelen mesajlara dikkatini ver, göz atıp geçme."
                 )
@@ -452,7 +454,8 @@ class Constants:
                     f"\n- Gmt: *GMT{gmt}*"
                     f"\n- Daily sending is active: *{active}*"
                     f"\n- Number of notes in your Memory Vault: {note_count}"
-                    f"\n- Schedule: {schedule}"
+                    f"\n- Schedule: (hour - note count)"
+                    f"\n{schedule}"
                     f""
                     f"\n\nWarning: If you want to make use of this bot, be careful to not overflow your schedule and give attention to the incoming messages, do not just look and pass."
                 )
