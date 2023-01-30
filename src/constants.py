@@ -182,15 +182,13 @@ class Constants:
             if language_code == "tr":
                 return (
                     f"Hoşgeldin, sefa geldin {name}! Günlük not yollamayı açtın. Takvimindeki saatlere göre sana hatıra kasandan her gün notlar yollayacağım."
-                    f"Varsayılan takvimindeki saatleri {default_schedule}'dır. (8 -> 8:00, 20 -> 20:00). Daha detaylı bilgi için, *help* veya /help."
-                    f"\nYeni bir kullanıcı isen lütfen bu komuta tıklayarak rehbere başla, /tutorial1 {Constants.smile}"
+                    f"\nTakvimini görmek için, /status, daha fazla bilgi almak için, /help."
                 )
             else:
                 return (
                     f"Welcome onboard {name}! "
                     f"\nYou activated daily note sending. I will send you random notes from your memory vault according to your schedule."
-                    f"The default hours in the schedule are {default_schedule}(8 -> 8:00, 20 -> 20:00). You can get more detailed information by writing, *help* or /help."
-                    f"\nIf you are a new user, please start the tutorial by clicking, /tutorial1 {Constants.smile}"
+                    f"\nTo see your schedule, /status, to get more information, /help"
                 )
 
         @staticmethod
@@ -293,12 +291,16 @@ class Constants:
             if language_code == "tr":
                 return (
                     f"{name}, not kasadan silindi. Unutulan hatıraya elveda {Constants.sad}"
-                    f"\n\n*Silinen Not*:"
+                    f"\nKomutlar hk. bilgi almak için /help"
+                    f"\n"
+                    f"\n*Silinen Not*:"
                 )
             else:
                 return (
                     f"{name}, your note is deleted from your memory vault. Good bye to the forgotten memory {Constants.sad}"
-                    f"\n\n*Deleted Note*:"
+                    f"\nTo learn more about commands, /help"
+                    f"\n"
+                    f"\n*Deleted Note*:"
                 )
 
     class Schedule:
@@ -503,7 +505,7 @@ class Constants:
         def tutorial_1(name: str, language_code: str = "en"):
             if language_code == "tr":
                 return (
-                    f"*gmt zaman-dilimi* ile zaman dilimi belirleyebilirsin, varsayılan zaman dilimi *GMT0*'dır. Bu arada Türkiye GMT+3 zaman diliminde."
+                    f"*gmt zaman-dilimi* ile zaman dilimi belirleyebilirsin, varsayılan zaman dilimi *GMT0*'dır, Türkiye ise GMT+3 zaman diliminde."
                     f"\nÖrnek:"
                     f"\nGMT+3: *gmt 3*"
                     f"\nGMT0: *gmt 0*"
@@ -524,16 +526,12 @@ class Constants:
         def tutorial_2(name: str, language_code: str = "en"):
             if language_code == "tr":
                 return (
-                    f"Hatıra Kasana bir not eklemek için *add Cümle* komutunu kullanabilirsin."
-                    f"\nÖrnek:"
-                    f"\n*add Zaman çok kıymetlidir, her daim eriyen bir dondurmaya benzer.*"
+                    f"Hatıra Kasana not eklemek herhangi bir mesaj yolla, yazı, media veya iletme yollayabilirsin."
                     f"\n\nBir sonraki rehber adımına geçmek için, /tutorial3"
                 )
             else:
                 return (
-                    f"To add a note to your Memory Vault, please use the command, *add Sentence*."
-                    f"\nExample:"
-                    f"\n*add Time never does come back*"
+                    f"To add a note, just send any message, text, media, forward, etc."
                     f"\n\nFor the next tutorial step please use, /tutorial3"
                 )
 
@@ -542,21 +540,23 @@ class Constants:
             if language_code == "tr":
                 return (
                     f"\n- /leave veya *leave* ile günlük hatırlatmayı durdurabilirsin"
-                    f"\n- /send veya *send* ile rastgele bir not yollarım"
-                    f"\n- *send number* ile çok sayıda not yollarım"
+                    f"\n- /del -- en son yollanan notu kasadan siler"
                     f"\n- /status veya *status* ile status bilgini yollarım"
                     f"\n- /list veya *list* ile tüm notlarını gönderirim"
+                    f"\n- /send veya *send* ile rastgele bir not yollarım"
+                    f"\n- *send number* ile çok sayıda not yollarım"
                     f"\n\n{name} tebrikler rehberi bitirdin {Constants.smile}. "
                     f"\nTemel komutlarım bunlardı, günlük takvimi ayarlama vb. diğer komutları görmek için, /help."
                 )
 
             else:
                 return (
-                    f"\n- /leave or *leave* to deactivate daily reminders"
-                    f"\n- /send or *send* to get a random note"
-                    f"\n- *send number* to get multiple random notes"
+                    f"\n- /leave to deactivate daily reminders"
+                    f"\n- /del to delete the last sent note"
                     f"\n- /status or *status* to get your status information"
                     f"\n- /list or *list* to list notes"
+                    f"\n- /send or *send* to get a random note"
+                    f"\n- *send number* to get multiple random notes"
                     f"\n\n{name} congratulations, you finished the tutorial {Constants.smile}. "
                     f"\nThese were my main commands, to see additional commands like editing daily schedule please use, /help."
                 )
