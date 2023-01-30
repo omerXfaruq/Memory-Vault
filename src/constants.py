@@ -96,7 +96,35 @@ class Constants:
 
     class Help:
         @staticmethod
-        def help_message(name: str, language_code: str = "eng") -> str:
+        def small_help_message(name: str, language_code: str = "eng") -> str:
+            if language_code == "tr":
+                return (
+                    f"\n- /leave ile günlük hatırlatmayı durdurabilirsin"
+                    f"\n- /del ile en son yollanan notu silebilirsin"
+                    f"\n- /status ile status bilgini alabilirsin"
+                    f"\n- /list ile tüm notlarını görebilirsin"
+                    f"\n- /schedule ile tüm takvimini güncelleyebilirsin"
+                    f"\n- /send ile rastgele bir not alabilirsin"
+                    f"\n- *send number* ile çok sayıda not alabilirsin"
+                    f"\n\n{name} tebrikler rehberi bitirdin {Constants.smile}. "
+                    f"\nTemel komutlarım bunlardı, günlük takvimi ayarlama vb. diğer komutları görmek için, /helpbig."
+                )
+
+            else:
+                return (
+                    f"\n- /leave to deactivate daily reminders"
+                    f"\n- /del to delete the last sent note"
+                    f"\n- /status to get your status information"
+                    f"\n- /list to list notes"
+                    f"\n- /schedule to customize your schedule"
+                    f"\n- /send to get a random note"
+                    f"\n- *send number* to get multiple random notes"
+                    f"\n\n{name} congratulations, you finished the tutorial {Constants.smile}. "
+                    f"\nThese were my main commands, to see additional commands like editing daily schedule please use, /helpbig."
+                )
+
+        @staticmethod
+        def big_help_message(name: str, language_code: str = "eng") -> str:
             if language_code == "tr":
                 return (
                     f"\n\nHafıza Kasası sana her gün, takvimindeki saatlerde kasandan rastgele notlar gönderir."
@@ -107,16 +135,9 @@ class Constants:
                     f"\n- *send number* ile çok sayıda not yollarım"
                     f"\n- /status veya *status* ile status bilgini yollarım"
                     f"\n- /list veya *list* ile tüm notlarını gönderirim"
-                    f"\n\n- *add Note* ile kasana bir not ekleyebilirsin"
-                    f"\nÖrnek:"
-                    f"\n*add Vakit hiç bir zaman geri gelmez*"
-                    f"\n\n- *delete id* ile bir notu silebilirsin. Not id'lerini bu komutlarla öğrenebilirsin, *list* veya /list"
-                    f"\nÖrnek:"
-                    f"\n*delete 2*"
                     f"\n\n- *gmt zaman-dilimi* ile zaman dilimi belirleyebilirsin, varsayılan zaman dilimi *GMT0*'dır"
                     f"\nÖrnek:"
                     f"\nGMT+3: *gmt 3*"
-                    f"\nGMT0: *gmt 0*"
                     f"\nGMT-5: *gmt -5*"
                     f"\n\n- /support veya *support* ile beni nasıl destekleyebileceğini öğrenebilirsin"
                     f"\n- *feedback Cümle* ile bot hakkındaki düşüncelerini veya ƒeedback'lerini yollayabilirsin"
@@ -146,16 +167,9 @@ class Constants:
                     f"\n- *send number* to get multiple random notes"
                     f"\n- /status or *status* to get your status information"
                     f"\n- /list or *list* to list notes"
-                    f"\n\n- *add Note* to add a note to your memory vault"
-                    f"\nExample:"
-                    f"\n*add Time never does come back*"
-                    f"\n\n- *delete id* to delete a note. You can learn the note ids with the command, *list* or /list"
-                    f"\nExample:"
-                    f"\n*delete 2*"
                     f"\n\n- *gmt timezone* to set your timezone,  the default timezone is *GMT0*"
                     f"\nExamples:"
                     f"\nGMT+3: *gmt 3*"
-                    f"\nGMT0: *gmt 0*"
                     f"\nGMT-5: *gmt -5*"
                     f"\n\n- /support or *support* to learn how to support me"
                     f"\n- *feedback Sentence* to send your thoughts and feedbacks about the bot"
@@ -365,17 +379,15 @@ class Constants:
         def unknown_command(name: str, language_code: str = "en") -> str:
             if language_code == "tr":
                 return (
-                    f"{name}, bu komutu bilmiyorum. Aşağıdaki komutları kullanabilirsin."
-                    f"\n*schedule*"
-                    f"\n*schedule add 8 12*"
+                    f"Takvimini güncellemek için bu komutları kullanabilirsin."
+                    f"\n*schedule add 8 12 20*"
                     f"\n*schedule reset*"
                     f"\n*schedule remove 8*"
                 )
             else:
                 return (
-                    f"{name}, I do not know that command. You can use the commands below."
-                    f"\n*schedule*"
-                    f"\n*schedule add 8 12*"
+                    f"To configure your schedule you can use these commands."
+                    f"\n*schedule add 8 12 20*"
                     f"\n*schedule reset*"
                     f"\n*schedule remove 8*"
                 )
@@ -537,29 +549,7 @@ class Constants:
 
         @staticmethod
         def tutorial_3(name: str, language_code: str = "en"):
-            if language_code == "tr":
-                return (
-                    f"\n- /leave veya *leave* ile günlük hatırlatmayı durdurabilirsin"
-                    f"\n- /del -- en son yollanan notu kasadan siler"
-                    f"\n- /status veya *status* ile status bilgini yollarım"
-                    f"\n- /list veya *list* ile tüm notlarını gönderirim"
-                    f"\n- /send veya *send* ile rastgele bir not yollarım"
-                    f"\n- *send number* ile çok sayıda not yollarım"
-                    f"\n\n{name} tebrikler rehberi bitirdin {Constants.smile}. "
-                    f"\nTemel komutlarım bunlardı, günlük takvimi ayarlama vb. diğer komutları görmek için, /help."
-                )
-
-            else:
-                return (
-                    f"\n- /leave to deactivate daily reminders"
-                    f"\n- /del to delete the last sent note"
-                    f"\n- /status or *status* to get your status information"
-                    f"\n- /list or *list* to list notes"
-                    f"\n- /send or *send* to get a random note"
-                    f"\n- *send number* to get multiple random notes"
-                    f"\n\n{name} congratulations, you finished the tutorial {Constants.smile}. "
-                    f"\nThese were my main commands, to see additional commands like editing daily schedule please use, /help."
-                )
+            return Constants.Help.small_help_message(name, language_code)
 
     class Package:
         @staticmethod
