@@ -46,6 +46,8 @@ class Events:
 
     @staticmethod
     def get_memory_count(hours: str, now: int) -> int:
+        if hours == '':
+            return 0
         scheduled_hours = hours.split(",")
         number_of_messages_at_this_hour = 0
 
