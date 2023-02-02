@@ -49,6 +49,7 @@ class Message(BaseModel):
     voice: Optional[File]
     new_chat_member: Optional[NewChatMember]
     left_chat_member: Optional[NewChatMember]
+    group_chat_created: Optional[bool]
 
 
 class ChatGroup(BaseModel):

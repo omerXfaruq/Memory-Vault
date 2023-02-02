@@ -54,7 +54,6 @@ class ResponseLogic:
             await Events.send_a_message_to_user(chat_id, Constants.hello)
             return Constants.Start.start_message(name, language_code)
 
-
         elif ResponseLogic.check_command_type(first_word, "help"):
             message = Constants.Help.small_help_message(name, language_code)
             return message

@@ -56,7 +56,7 @@ async def listen_telegram_messages(r: Request, message: MessageBodyModel):
                     "en",
                     text="/leave",
                 )
-        elif message.message.new_chat_member:
+        elif message.message.new_chat_member or message.message.group_chat_created:
             pass
         else:
             name = message.message.from_field.first_name
