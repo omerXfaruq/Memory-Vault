@@ -15,13 +15,14 @@ from .packages import Packages
 
 class Events:
     TOKEN = os.environ.get("TELEGRAM_TOKEN")
-    TELEGRAM_SEND_MESSAGE_URL = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
-    TELEGRAM_SET_WEBHOOK_URL = f"https://api.telegram.org/bot{TOKEN}/setWebhook"
-    TELEGRAM_COPY_MESSAGE_URL = f"https://api.telegram.org/bot{TOKEN}/copyMessage"
-
     PORT = 8000
     HOST_URL = None
     SELF_SIGNED = False
+
+    TELEGRAM_SEND_MESSAGE_URL = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+    TELEGRAM_SET_WEBHOOK_URL = f"https://api.telegram.org/bot{TOKEN}/setWebhook"
+    TELEGRAM_COPY_MESSAGE_URL = f"https://api.telegram.org/bot{TOKEN}/copyMessage"
+    TRIGGER_URL = f"http://0.0.0.0:{PORT}/trigger_send_user_hourly_memories/{TOKEN}"
 
     @classmethod
     async def main_event(cls) -> None:
@@ -30,11 +31,10 @@ class Events:
 
         Runs in a while loop, Triggers Events.send_user_hourly_memories at every hour.
         """
+
         while True:
             await asyncio.sleep(cls.get_time_until_next_hour())
-            async with AsyncClient() as client:
-                endpoint = f"http://0.0.0.0:{cls.PORT}/trigger_send_user_hourly_memories/{Events.TOKEN}"
-                response = await client.post(url=endpoint)
+            asyncio.create_task(cls.request(url=cls.TRIGGER_URL))
 
     @classmethod
     def get_time_until_next_hour(cls) -> float:
@@ -73,6 +73,7 @@ class Events:
         hour = (hour + user.gmt) % 24
         memory_count = cls.get_memory_count(user.scheduled_hours, hour)
         memories = select_random_memories(user, memory_count)
+
         asyncio.create_task(
             cls.send_message_list_at_background(
                 user.telegram_chat_id, [memory.reminder for memory in memories]
@@ -220,7 +221,9 @@ class Events:
         )
 
     @classmethod
-    async def request(cls, url: str, payload: dict, debug: bool = False) -> Response:
+    async def request(
+        cls, url: str, payload: dict = {}, debug: bool = False
+    ) -> Response:
         async with AsyncClient(timeout=30 * 60) as client:
             request = await client.post(url, json=payload)
             if debug:
