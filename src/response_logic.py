@@ -285,8 +285,8 @@ class ResponseLogic:
             if not chat_id == Constants.BROADCAST_CHAT_ID:
                 return Constants.Broadcast.no_right(name, language_code)
             else:
-                Events.pull()
-                return "git pull is running"
+                return Events.pull()
+
 
         elif ResponseLogic.check_command_type(first_word, "status"):
             gmt, active = get_user_status(chat_id)

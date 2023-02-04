@@ -257,5 +257,7 @@ class Events:
         return data["ip"]
 
     @classmethod
-    def pull(cls):
-        print(f"%% {datetime.datetime.now()} git pull result: {os.system('git pull')}")
+    def pull(cls) -> str:
+        print(f"%% {datetime.datetime.now()} git pull output:")
+        result = os.system('git pull')
+        return f"git pull result: {result}"
