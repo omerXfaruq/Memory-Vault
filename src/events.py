@@ -255,10 +255,3 @@ class Events:
         data = response.json()
 
         return data["ip"]
-
-    @classmethod
-    def pull(cls) -> str:
-        print(f"%% {datetime.datetime.now()} git pull output:")
-        print(f"%% {datetime.datetime.now()} git pull finished")
-        path = os.getcwd()
-        return f"git pull result: {path}"

@@ -281,12 +281,6 @@ class ResponseLogic:
                     await Events.broadcast_message(normalized_text)
                     return Constants.Broadcast.success(name, language_code)
 
-        elif ResponseLogic.check_command_type(first_word, "pull"):
-            if not chat_id == Constants.BROADCAST_CHAT_ID:
-                return Constants.Broadcast.no_right(name, language_code)
-            else:
-                return Events.pull()
-
         elif ResponseLogic.check_command_type(first_word, "status"):
             gmt, active = get_user_status(chat_id)
             if gmt is None:
