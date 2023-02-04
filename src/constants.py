@@ -99,7 +99,7 @@ class Constants:
         def small_help_message(name: str, language_code: str = "eng") -> str:
             if language_code == "tr":
                 return (
-                    f"\n- /leave ile günlük mesaj gönderimini durdurabilirsin"
+                    f"\n- /leave ile günlük not hatırlatmasını durdurabilirsin"
                     f"\n- /del ile en son yollanan notu silebilirsin"
                     f"\n- /status ile status bilgini alabilirsin"
                     f"\n- /list ile tüm notlarını görebilirsin"
@@ -110,7 +110,7 @@ class Constants:
 
             else:
                 return (
-                    f"\n- /leave to deactivate daily reminders"
+                    f"\n- /leave to deactivate daily note reminders"
                     f"\n- /del to delete the last sent note"
                     f"\n- /status to get your status information"
                     f"\n- /list to list notes"
