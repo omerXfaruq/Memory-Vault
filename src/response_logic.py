@@ -287,7 +287,6 @@ class ResponseLogic:
             else:
                 return Events.pull()
 
-
         elif ResponseLogic.check_command_type(first_word, "status"):
             gmt, active = get_user_status(chat_id)
             if gmt is None:
@@ -354,8 +353,11 @@ class ResponseLogic:
                 return Constants.Add.already_added(name, language_code)
             else:
                 memory = reminder.reminder
+                await Events.send_a_message_to_user(
+                    chat_id, Constants.Add.success(name, language_code, memory)
+                )
                 await Events.send_a_message_to_user(chat_id, memory)
-                return Constants.Add.success(name, language_code, memory)
+                return ""
 
     @staticmethod
     def readable_schedule(schedule: str) -> str:
