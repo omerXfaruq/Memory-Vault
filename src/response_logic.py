@@ -97,7 +97,9 @@ class ResponseLogic:
             else:
                 asyncio.create_task(
                     Events.send_message_list_at_background(
-                        user.telegram_chat_id, [memory.reminder for memory in memories]
+                        user.telegram_chat_id,
+                        [memory.reminder for memory in memories],
+                        notify=False,
                     )
                 )
                 return ""

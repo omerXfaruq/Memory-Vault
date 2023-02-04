@@ -9,7 +9,6 @@ from httpx import AsyncClient, Response
 
 from .message_validations import ResponseToMessage
 from .db import db_read_users, Reminder, User, select_random_memories
-from .constants import Constants
 from .packages import Packages
 
 
@@ -34,7 +33,7 @@ class Events:
 
         while True:
             await asyncio.sleep(cls.get_time_until_next_hour())
-            asyncio.create_task(cls.request(url=cls.TRIGGER_URL))
+            asyncio.create_task(cls.request(url=cls.TRIGGER_URL, payload={}))
 
     @classmethod
     def get_time_until_next_hour(cls) -> float:
@@ -76,7 +75,9 @@ class Events:
 
         asyncio.create_task(
             cls.send_message_list_at_background(
-                user.telegram_chat_id, [memory.reminder for memory in memories]
+                user.telegram_chat_id,
+                [memory.reminder for memory in memories],
+                notify=True,
             )
         )
 
@@ -85,7 +86,7 @@ class Events:
         cls,
         telegram_chat_id: int,
         message_list: List[str],
-        notify: bool = True,
+        notify: bool = False,
     ) -> bool:
         for message in message_list:
             await Events.send_a_message_to_user(
@@ -100,7 +101,7 @@ class Events:
         cls,
         telegram_chat_id: int,
         message_list: List[str],
-        notify: bool = True,
+        notify: bool = False,
     ) -> bool:
 
         for rank, message in enumerate(message_list):
@@ -120,7 +121,7 @@ class Events:
         message: str,
         chat_id: int,
         convert: bool,
-        notify: bool = True,
+        notify: bool = False,
     ) -> (str, ResponseToMessage):
         """
         Creates the response message
@@ -166,13 +167,11 @@ class Events:
         return (
             url,
             ResponseToMessage(
-                **{
-                    "text": text,
-                    "message_id": message_id,
-                    "chat_id": chat_id,
-                    "from_chat_id": from_chat_id,
-                    "disable_notification": not notify,
-                }
+                text=text,
+                message_id=message_id,
+                chat_id=chat_id,
+                from_chat_id=from_chat_id,
+                disable_notification=not notify,
             ),
         )
 
@@ -184,7 +183,7 @@ class Events:
         retry_count: int = 3,
         sleep_time: float = 0.00,
         convert: bool = True,
-        notify: bool = True,
+        notify: bool = False,
     ) -> bool:
         url, message = await cls.create_response_message(
             message, chat_id, convert, notify
@@ -221,9 +220,7 @@ class Events:
         )
 
     @classmethod
-    async def request(
-        cls, url: str, payload: dict = {}, debug: bool = False
-    ) -> Response:
+    async def request(cls, url: str, payload: dict, debug: bool = False) -> Response:
         async with AsyncClient(timeout=30 * 60) as client:
             request = await client.post(url, json=payload)
             if debug:

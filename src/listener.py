@@ -88,10 +88,7 @@ async def listen_telegram_messages(r: Request, message: MessageBodyModel):
             response_message = Constants.Start.group_warning(name, language_code)
 
     return ResponseToMessage(
-        **{
-            "text": response_message,
-            "chat_id": chat_id,
-        }
+        text=response_message, chat_id=chat_id, disable_notification=True
     )
 
 
