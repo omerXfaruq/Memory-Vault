@@ -104,9 +104,7 @@ class Constants:
                     f"\n- /status ile status bilgini alabilirsin"
                     f"\n- /list ile tüm notlarını görebilirsin"
                     f"\n- /schedule ile tüm takvimini güncelleyebilirsin"
-                    f"\n- /send ile rastgele bir not alabilirsin"
-                    f"\n- *send number* ile çok sayıda not alabilirsin"
-                    f"\n\n{name} tebrikler rehberi bitirdin {Constants.smile}. "
+                    f"\n"
                     f"\nTemel komutlarım bunlardı, günlük takvimi ayarlama vb. diğer komutları görmek için, /helpbig."
                 )
 
@@ -116,10 +114,10 @@ class Constants:
                     f"\n- /del to delete the last sent note"
                     f"\n- /status to get your status information"
                     f"\n- /list to list notes"
-                    f"\n- /schedule to customize your schedule"
+                    f"\n- /schedule to customize your schedule and frequency"
                     f"\n- /send to get a random note"
                     f"\n- *send number* to get multiple random notes"
-                    f"\n\n{name} congratulations, you finished the tutorial {Constants.smile}. "
+                    f"\n"
                     f"\nThese were my main commands, to see additional please use, /helpbig."
                 )
 
@@ -127,24 +125,18 @@ class Constants:
         def big_help_message(name: str, language_code: str = "eng") -> str:
             if language_code == "tr":
                 return (
-                    f"\n\nHafıza Kasası sana her gün, takvimindeki saatlerde kasandan rastgele notlar gönderir."
-                    f"\n- /help veya *help* yardım mesajını alabilirsin"
+                    f"\nHafıza Kasası sana her gün, takvimindeki saatlerde kasandan rastgele notlar gönderir."
                     f"\n- /join veya *join* ile günlük gönderimi aktifleştirebilirsin"
-                    f"\n- /leave veya *leave* ile günlük hatırlatmayı durdurabilirsin"
                     f"\n- /send veya *send* ile rastgele bir not yollarım"
                     f"\n- *send number* ile çok sayıda not yollarım"
-                    f"\n- /status veya *status* ile status bilgini yollarım"
-                    f"\n- /list veya *list* ile tüm notlarını gönderirim"
-                    f"\n\n- *gmt zaman-dilimi* ile zaman dilimi belirleyebilirsin, varsayılan zaman dilimi *GMT0*'dır"
+                    f"\n"
+                    f"\n- *gmt zaman-dilimi* ile zaman dilimi belirleyebilirsin, varsayılan zaman dilimi *GMT0*'dır"
                     f"\nÖrnek:"
                     f"\nGMT+3: *gmt 3*"
                     f"\nGMT-5: *gmt -5*"
-                    f"\n\n- /support veya *support* ile beni nasıl destekleyebileceğini öğrenebilirsin"
+                    f"\n"
+                    f"\n- /support veya *support* ile beni nasıl destekleyebileceğini öğrenebilirsin"
                     f"\n- *feedback Cümle* ile bot hakkındaki düşüncelerini veya ƒeedback'lerini yollayabilirsin"
-                    f"\n\n*Schedule(takvim) hakkındaki komutlar:*"
-                    f"\nHer gün takvimindeki saat başlarında sana notlar yollarım. Varsayılan takvim saatleri *{default_schedule}*'dır. Yani her gün 8:00 ve 20:00'de sana bir adet not yollayacağım."
-                    f"\nSchedule komutlarıyla kendi günlük takvimini oluşturabilirsin. Ayrıca bir saati birden fazla kez ekleyerek o saatte birden çok not alabilirsin."
-                    f"\n- /schedule ile daha fazla bilgi alabilirsin."
                     f"\n"
                     f"\n*Grup Kullanımı*"
                     f"\n- *Birden fazla Hatıra Kasasına* sahip olmak için beni farklı gruplarda kullanabilirsin. Mesela bir kelime öğrenme grubu kurabilirsin."
@@ -152,27 +144,21 @@ class Constants:
                 )
             else:
                 return (
-                    f"\n\nMemory Vault will send you random notes from your memory vault, at the hours in your schedule every day."
-                    f"\n- /help or *help* to get help message"
+                    f"\nMemory Vault will send you random notes from your memory vault, at the hours in your schedule every day."
                     f"\n- /join or *join* to activate daily note sending"
-                    f"\n- /leave or *leave* to deactivate daily reminders"
                     f"\n- /send or *send* to get a random note"
                     f"\n- *send number* to get multiple random notes"
-                    f"\n- /status or *status* to get your status information"
-                    f"\n- /list or *list* to list notes"
-                    f"\n\n- *gmt timezone* to set your timezone,  the default timezone is *GMT0*"
+                    f"\n"
+                    f"\n- *gmt timezone* to set your timezone,  the default timezone is *GMT0*"
                     f"\nExamples:"
                     f"\nGMT+3: *gmt 3*"
                     f"\nGMT-5: *gmt -5*"
-                    f"\n\n- /support or *support* to learn how to support me"
+                    f"\n"
+                    f"\n- /support or *support* to learn how to support me"
                     f"\n- *feedback Sentence* to send your thoughts and feedbacks about the bot"
-                    f"\n\n*Schedule related commands:*"
-                    f"\nI send notes according to the hours in your schedule. Default schedule hours are *{default_schedule}*."
-                    f"\n- /schedule to see more details."
                     f"\n"
                     f"\n*Group Usage*"
-                    f"\n - You can *use me in groups* as well, "
-                    f"\n- *You can have multiple memory vaults* by using different groups. Just promote me to admin. For example I would serve you well in a *language learning group*, where you add words you want to remember to your memory vault."
+                    f"\n- *You can have multiple memory vaults* by using different groups, as an example, can create a *language learning group*"
                     f"\n- Example group: @PrayersFromQuran"
                 )
 
@@ -366,20 +352,21 @@ class Constants:
             if language_code == "tr":
                 return (
                     f"Takvimini güncellemek için bu komutları kullanabilirsin."
-                    f"\n/status ile takvimini görebilirsin"
+                    f"\n- /status ile takvimini görebilirsin"
                     f"\n"
-                    f"\n*schedule add 8 12 20*"
-                    f"\n*schedule reset*"
-                    f"\n*schedule remove 8*"
+                    f"\n- *schedule add 8 12 12 20* ile takvimine saatler ekleyebilir"
+                    f"\n- *schedule reset* ile takvimini sıfırlayabilir"
+                    f"\n- *schedule remove 8* ile takviminden saat çıkarabilirsin."
                 )
             else:
                 return (
-                    f"To configure your schedule you can use these commands."
-                    f"\n/status to see your schedule"
+                    f"To configure your schedule you can use these commands:"
                     f"\n"
-                    f"\n*schedule add 8 12 20*"
-                    f"\n*schedule reset*"
-                    f"\n*schedule remove 8*"
+                    f"\n- /status to see your current schedule"
+                    f"\n"
+                    f"\n- *schedule add 8 12 12 20*"
+                    f"\n- *schedule reset*"
+                    f"\n- *schedule remove 8*"
                 )
 
     class Gmt:
@@ -437,7 +424,7 @@ class Constants:
                 return (
                     f"Mevcut durumun:"
                     f"\n- Gmt: *GMT{gmt}*"
-                    f"\n- Günlük gönderim aktif: *{is_active}*"
+                    f"\n- Günlük gönderim: *{is_active}*"
                     f"\n- Hatıra Kasandaki not sayısı: {note_count}"
                     f"\n- Takvim: (saat - not adeti)"
                     f"\n{schedule}"
@@ -449,7 +436,7 @@ class Constants:
                     f"Your current status:"
                     f"\n- Gmt: *GMT{gmt}*"
                     f"\n- Daily sending is active: *{active}*"
-                    f"\n- Number of notes in your Memory Vault: {note_count}"
+                    f"\n- Number of notes in the Vault: {note_count}"
                     f"\n- Schedule: (hour - note count)"
                     f"\n{schedule}"
                     f""

@@ -20,7 +20,7 @@ class ResponseLogic:
     ) -> str:
         text = message.text or text if message else text
 
-        # Edge case check for "add\nSentence"
+        # Edge case check for "/add\nSentence"
         line_split_text = text.split("\n")
         line_split_first_word = line_split_text[0]
         split_text = text.split(" ")
@@ -31,9 +31,9 @@ class ResponseLogic:
             telegram_chat_id=chat_id,
         )
         if ResponseLogic.check_command_type(
-            first_word, "add"
-        ) or ResponseLogic.check_command_type(line_split_first_word, "add"):
-            if ResponseLogic.check_command_type(line_split_first_word, "add"):
+            first_word, "/add"
+        ) or ResponseLogic.check_command_type(line_split_first_word, "/add"):
+            if ResponseLogic.check_command_type(line_split_first_word, "/add"):
                 memory = "\n".join(line_split_text[1:])
             else:
                 memory = " ".join(split_text[1:])
@@ -167,14 +167,7 @@ class ResponseLogic:
 
         elif ResponseLogic.check_command_type(first_word, "schedule"):
             if len(split_text) == 1:
-                schedule = get_schedule(user)
-                if schedule is None:
-                    return Constants.Common.inactive_user(name, language_code)
-                elif schedule == "":
-                    return Constants.Schedule.empty_schedule(name, language_code)
-                else:
-                    schedule = ResponseLogic.readable_schedule(schedule)
-                    return Constants.Schedule.success(name, language_code, schedule)
+                return Constants.Schedule.unknown_command(name, language_code)
 
             elif len(split_text) > 1:
                 if split_text[1] == "reset":
@@ -359,6 +352,8 @@ class ResponseLogic:
 
     @staticmethod
     def readable_schedule(schedule: str) -> str:
+        if schedule == "":
+            return f"   Empty, see /schedule"
         readable_schedule = ""
         schedule_list = schedule.split(",")
         hour_counts = [0] * 24
@@ -367,7 +362,7 @@ class ResponseLogic:
             hour_counts[hour] += 1
         for hour, count in enumerate(hour_counts):
             if count != 0:
-                readable_schedule += f"{hour}:00 - {hour_counts[hour]}\n"
+                readable_schedule += f"    {hour}:00 - {hour_counts[hour]}\n"
         return readable_schedule
 
     @staticmethod
