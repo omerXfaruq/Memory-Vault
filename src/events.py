@@ -258,4 +258,4 @@ class Events:
 
     @classmethod
     def pull(cls):
-        os.system("git pull")
+        print(f"%% {datetime.datetime.now()} git pull result: {os.system('git pull')}")
