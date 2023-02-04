@@ -255,3 +255,7 @@ class Events:
         data = response.json()
 
         return data["ip"]
+
+    @classmethod
+    def pull(cls):
+        os.system("git pull")
