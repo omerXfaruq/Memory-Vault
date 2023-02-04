@@ -259,7 +259,6 @@ class Events:
     @classmethod
     def pull(cls) -> str:
         print(f"%% {datetime.datetime.now()} git pull output:")
-        result = os.system('pwd')
-        result = os.system('git pull')
         print(f"%% {datetime.datetime.now()} git pull finished")
-        return f"git pull result: {result}"
+        path = os.getcwd()
+        return f"git pull result: {path}"
