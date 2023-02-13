@@ -181,7 +181,6 @@ class Events:
         chat_id: int,
         message: str,
         retry_count: int = 3,
-        sleep_time: float = 0.00,
         convert: bool = True,
         notify: bool = False,
     ) -> bool:
@@ -190,7 +189,6 @@ class Events:
         )
         print(f"%% {datetime.datetime.now()}: Message is: {message}")
 
-        await asyncio.sleep(sleep_time)
         for retry in range(retry_count):
             response = await cls.request(url, message.dict())
             if response.status_code == 200:

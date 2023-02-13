@@ -20,9 +20,6 @@ class ResponseLogic:
     ) -> str:
         text = message.text or text if message else text
 
-        # Edge case check for "/add\nSentence"
-        line_split_text = text.split("\n")
-        line_split_first_word = line_split_text[0]
         split_text = text.split(" ")
         first_word = split_text[0]
 
@@ -30,26 +27,8 @@ class ResponseLogic:
             name=name,
             telegram_chat_id=chat_id,
         )
-        if ResponseLogic.check_command_type(
-            first_word, "/add"
-        ) or ResponseLogic.check_command_type(line_split_first_word, "/add"):
-            if ResponseLogic.check_command_type(line_split_first_word, "/add"):
-                memory = "\n".join(line_split_text[1:])
-            else:
-                memory = " ".join(split_text[1:])
-            if str.isspace(memory) or memory == "":
-                return Constants.Add.no_sentence(name, language_code)
-            else:
-                reminder = add_memory(user, memory)
-                if reminder is None:
-                    return Constants.Common.inactive_user(name, language_code)
-                elif reminder is False:
-                    return Constants.Add.already_added(name, language_code)
-                else:
-                    memory = reminder.reminder
-                    return Constants.Add.success(name, language_code, memory)
 
-        elif ResponseLogic.check_command_type(first_word, "start"):
+        if ResponseLogic.check_command_type(first_word, "start"):
             user = join_user(user)
             await Events.send_a_message_to_user(chat_id, Constants.hello)
             return Constants.Start.start_message(name, language_code)
@@ -284,15 +263,20 @@ class ResponseLogic:
                     return Constants.Broadcast.success(name, language_code)
 
         elif ResponseLogic.check_command_type(first_word, "status"):
-            gmt, active = get_user_status(chat_id)
-            if gmt is None:
+            user = get_user_status(chat_id)
+            if user.gmt is None:
                 return Constants.Common.inactive_user(name, language_code)
             else:
-                schedule = get_schedule(user)
-                schedule = ResponseLogic.readable_schedule(schedule)
-                memory_count = len(list_memories(user))
+                schedule = ResponseLogic.readable_schedule(user.scheduled_hours)
+                memory_count = count_memories(user)
                 return Constants.Status.get_status(
-                    name, language_code, gmt, active, schedule, memory_count
+                    name,
+                    language_code,
+                    user.gmt,
+                    user.active,
+                    schedule,
+                    user.auto_add_active,
+                    memory_count,
                 )
 
         elif ResponseLogic.check_command_type(first_word, "feedback"):
@@ -326,6 +310,17 @@ class ResponseLogic:
                 await Events.send_a_message_to_user(chat_id, memory)
                 return ""
 
+        elif ResponseLogic.check_command_type(first_word, "mode"):
+            auto_add_active = toggle_mode(user)
+            if auto_add_active is None:
+                return Constants.Common.inactive_user(name, language_code)
+            elif auto_add_active:
+                return Constants.Mode.active_auto(name, language_code)
+            else:
+                return Constants.Mode.inactive_auto(name, language_code)
+
+            # update model and db
+
         elif ResponseLogic.check_command_type(first_word, "support"):
             return Constants.Support.support(name, language_code)
 
@@ -339,21 +334,38 @@ class ResponseLogic:
             return Constants.Tutorial.tutorial_3(name, language_code)
 
         else:
-            reminder = add_memory(
-                user,
-                f"message_id: {message.message_id}",
-            )
-            if reminder is None:
-                return Constants.Common.inactive_user(name, language_code)
-            elif reminder is False:
-                return Constants.Add.already_added(name, language_code)
-            else:
-                memory = reminder.reminder
-                await Events.send_a_message_to_user(
-                    chat_id, Constants.Add.success(name, language_code, memory)
+            f_user = get_user_status(user.telegram_chat_id)
+            if f_user.auto_add_active:
+                return await ResponseLogic.add_note(
+                    user, message.message_id, name, language_code
                 )
-                await Events.send_a_message_to_user(chat_id, memory)
+
+            elif ResponseLogic.check_command_type(first_word, "add"):
+                return await ResponseLogic.add_note(
+                    user, f"{int(message.message_id) - 1}", name, language_code
+                )
+
+            else:
                 return ""
+
+    @staticmethod
+    async def add_note(user: UserCreate, message_id: str, name, language_code):
+        reminder = add_memory(
+            user,
+            f"message_id: {message_id}",
+        )
+        if reminder is None:
+            return Constants.Common.inactive_user(name, language_code)
+        elif reminder is False:
+            return Constants.Add.already_added(name, language_code)
+        else:
+            memory = reminder.reminder
+            await Events.send_a_message_to_user(
+                user.telegram_chat_id,
+                Constants.Add.success(name, language_code, memory),
+            )
+            await Events.send_a_message_to_user(user.telegram_chat_id, memory)
+            return ""
 
     @staticmethod
     def readable_schedule(schedule: str) -> str:

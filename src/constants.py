@@ -104,6 +104,7 @@ class Constants:
                     f"\n- /status ile status bilgini alabilirsin"
                     f"\n- /list ile tüm notlarını görebilirsin"
                     f"\n- /schedule ile tüm takvimini güncelleyebilirsin"
+                    f"\n- /mode ile kolay ekleme özelliğini kapatıp açabilirsin"
                     f"\n"
                     f"\nTemel komutlarım bunlardı, günlük takvimi ayarlama vb. diğer komutları görmek için, /helpbig."
                 )
@@ -115,8 +116,7 @@ class Constants:
                     f"\n- /status to get your status information"
                     f"\n- /list to list notes"
                     f"\n- /schedule to customize your schedule and frequency"
-                    f"\n- /send to get a random note"
-                    f"\n- *send number* to get multiple random notes"
+                    f"\n- /mode to toggle easy note addition"
                     f"\n"
                     f"\nThese were my main commands, to see additional please use, /helpbig."
                 )
@@ -204,6 +204,33 @@ class Constants:
                 return f"{name}, hesabın zaten atıl durumda."
             else:
                 return f"{name}, Your account is already inactive."
+
+    class Mode:
+        @staticmethod
+        def inactive_auto(name: str, language_code: str = "en") -> str:
+            if language_code == "tr":
+                return (
+                    f"{name}, kolay not ekleme özelliğini kapattın. Bundan sonra not eklemek için mesajını gönderdikten sonra bu komutu kullanmalısın, /add"
+                    f"\nBu özelliği tekrar açmak için, /mode"
+                )
+            else:
+                return (
+                    f"{name}, you disabled easy note addition. From now on, to add your notes, use this command after sending your message, /add"
+                    f"\nTo activate this feature again, /mode"
+                )
+
+        @staticmethod
+        def active_auto(name: str, language_code: str = "en") -> str:
+            if language_code == "tr":
+                return (
+                    f"{name}, kolay not ekleme özelliğini açtın. Bundan sonra yolladığın notları direk Kasana ekleyeceğim."
+                    f"\nBu özelliği kapatmak için, /mode"
+                )
+            else:
+                return (
+                    f"{name}, you activated easy note addition system. I will add the notes that you send me automatically."
+                    f"\nTo deactivate this feature, /mode"
+                )
 
     class Send:
         @staticmethod
@@ -414,33 +441,38 @@ class Constants:
             gmt: int = 0,
             active: bool = True,
             schedule: str = "",
+            auto_add: bool = True,
             note_count: int = 0,
         ) -> str:
             if language_code == "tr":
-                if active:
-                    is_active = "aktif"
-                else:
-                    is_active = "pasif"
+                daily_is_active = "aktif" if active else "pasif"
+                auto_add_is_active = "aktif" if auto_add else "pasif"
+
                 return (
                     f"Mevcut durumun:"
                     f"\n- Gmt: *GMT{gmt}*"
-                    f"\n- Günlük gönderim: *{is_active}*"
+                    f"\n- Günlük gönderim: *{daily_is_active}*"
+                    f"\n- Kolay not ekleme: *{auto_add_is_active}*"
                     f"\n- Hatıra Kasandaki not sayısı: {note_count}"
-                    f"\n- Takvim: (saat - not adeti)"
+                    f"\n- Takvim: (saat - hatırlatma sayısı)"
                     f"\n{schedule}"
-                    f""
-                    f"\n\nUyarı: Eğer bu bottan faydalanmak istiyorsan, takvimini dolup taşırmamaya dikkat et ve gelen mesajlara dikkatini ver, göz atıp geçme."
+                    f"\n"
+                    f"\nUyarı: Eğer bu bottan faydalanmak istiyorsan, takvimini dolup taşırmamaya dikkat et ve gelen mesajlara dikkatini ver, göz atıp geçme."
                 )
             else:
+                daily_is_active = "active" if active else "inactive"
+                auto_add_is_active = "active" if auto_add else "inactive"
+
                 return (
                     f"Your current status:"
                     f"\n- Gmt: *GMT{gmt}*"
-                    f"\n- Daily sending is active: *{active}*"
+                    f"\n- Daily sending: *{daily_is_active}*"
+                    f"\n- Easy note addition: *{auto_add_is_active}*"
                     f"\n- Number of notes in the Vault: {note_count}"
-                    f"\n- Schedule: (hour - note count)"
+                    f"\n- Schedule: (hour - reminder count)"
                     f"\n{schedule}"
-                    f""
-                    f"\n\nWarning: If you want to make use of this bot, be careful to not overflow your schedule and give attention to the incoming messages, do not just look and pass."
+                    f"\n"
+                    f"\nWarning: If you want to make use of this bot, be careful to not overflow your schedule and give attention to the incoming messages, do not just look and pass."
                 )
 
     class Feedback:
@@ -526,7 +558,18 @@ class Constants:
 
         @staticmethod
         def tutorial_3(name: str, language_code: str = "en"):
-            return Constants.Help.small_help_message(name, language_code)
+            if language_code == "tr":
+                return (
+                    f"Constants.Help.small_help_message(name, language_code)"
+                    f"\n"
+                    f"\nTebrikler {name}! Rehberi tamamladın, seninle çıkacağamız yolculuk için çok heyecanlıyım 🤗"
+                )
+            else:
+                return (
+                    f"Constants.Help.small_help_message(name, language_code)"
+                    f"\n"
+                    f"\nCongratulatıons {name}! You completed the tutorials, let's have great journey together 🤗"
+                )
 
     class Package:
         @staticmethod
