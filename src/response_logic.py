@@ -276,6 +276,7 @@ class ResponseLogic:
                     user.active,
                     schedule,
                     user.auto_add_active,
+                    user.is_silent,
                     memory_count,
                 )
 
@@ -319,6 +320,15 @@ class ResponseLogic:
             else:
                 return Constants.Mode.inactive_auto(name, language_code)
 
+        elif ResponseLogic.check_command_type(first_word, "silent"):
+            is_silent = toggle_silent(user)
+            if is_silent is None:
+                return Constants.Common.inactive_user(name, language_code)
+            elif is_silent:
+                return Constants.Silent.is_silent(name, language_code)
+            else:
+                return Constants.Silent.not_silent(name, language_code)
+
             # update model and db
 
         elif ResponseLogic.check_command_type(first_word, "support"):
@@ -334,8 +344,8 @@ class ResponseLogic:
             return Constants.Tutorial.tutorial_3(name, language_code)
 
         else:
-            f_user = get_user_status(user.telegram_chat_id)
-            if f_user.auto_add_active:
+            user = get_user_status(user.telegram_chat_id)
+            if user.auto_add_active:
                 return await ResponseLogic.add_note(
                     user, message.message_id, name, language_code
                 )
@@ -349,23 +359,26 @@ class ResponseLogic:
                 return ""
 
     @staticmethod
-    async def add_note(user: UserCreate, message_id: str, name, language_code):
+    async def add_note(user: User, message_id: str, name, language_code):
         reminder = add_memory(
             user,
             f"message_id: {message_id}",
         )
         if reminder is None:
             return Constants.Common.inactive_user(name, language_code)
-        elif reminder is False:
-            return Constants.Add.already_added(name, language_code)
         else:
             memory = reminder.reminder
-            await Events.send_a_message_to_user(
-                user.telegram_chat_id,
-                Constants.Add.success(name, language_code, memory),
-            )
-            await Events.send_a_message_to_user(user.telegram_chat_id, memory)
-            return ""
+
+            if user.is_silent:
+                return Constants.Add.silent_success()
+
+            else:
+                await Events.send_a_message_to_user(
+                    user.telegram_chat_id,
+                    Constants.Add.success(name, language_code, memory),
+                )
+                await Events.send_a_message_to_user(user.telegram_chat_id, memory)
+                return ""
 
     @staticmethod
     def readable_schedule(schedule: str) -> str:

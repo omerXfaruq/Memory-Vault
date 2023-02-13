@@ -17,6 +17,7 @@ class UserBase(SQLModel):
     scheduled_hours: Optional[str] = default_schedule
     last_sent_reminder_id: Optional[int] = -1
     auto_add_active: Optional[bool] = True
+    is_silent: Optional[bool] = False
 
 
 class User(UserBase, table=True):
@@ -144,6 +145,23 @@ def toggle_mode(
         return found_user.auto_add_active
 
 
+def toggle_silent(
+    user: UserCreate,
+    session: Session = next(get_session()),
+) -> Optional[bool]:
+    found_user = session.exec(
+        select(User).where(User.telegram_chat_id == user.telegram_chat_id)
+    ).first()
+    if found_user is None:
+        return None
+    else:
+        found_user.is_silent = not found_user.is_silent
+        session.add(found_user)
+        session.commit()
+        session.refresh(found_user)
+        return found_user.is_silent
+
+
 def get_user_status(
     telegram_chat_id: int,
     session: Session = next(get_session()),
@@ -250,7 +268,7 @@ def list_memories(
 
 
 def add_memory(
-    user: UserCreate,
+    user: User,
     memory: str,
     session: Session = next(get_session()),
 ) -> Optional[Union[Reminder, bool]]:
@@ -265,32 +283,16 @@ def add_memory(
     Returns: Reminder
 
     """
-    found_user = session.exec(
-        select(User).where(User.telegram_chat_id == user.telegram_chat_id)
-    ).first()
+    reminder = ReminderCreate(
+        reminder=memory,
+        user_id=user.id,
+    )
 
-    if found_user is None:
-        return None
-
-    else:
-        found_memory = session.exec(
-            select(Reminder).where(
-                and_(Reminder.user == found_user, Reminder.reminder == memory)
-            )
-        ).first()
-        if found_memory is not None:
-            return False
-        else:
-            reminder = ReminderCreate(
-                reminder=memory,
-                user_id=found_user.id,
-            )
-
-            db_reminder = Reminder.from_orm(reminder)
-            session.add(db_reminder)
-            session.commit()
-            session.refresh(db_reminder)
-            return db_reminder
+    db_reminder = Reminder.from_orm(reminder)
+    session.add(db_reminder)
+    session.commit()
+    session.refresh(db_reminder)
+    return db_reminder
 
 
 def add_package(
