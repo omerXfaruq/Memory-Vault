@@ -222,7 +222,7 @@ def count_memories(
 
     """
     mem_count = session.scalar(
-        select(func.count(Reminder.id).where(Reminder.user_id == user.id))
+        select(func.count(Reminder.id)).where(Reminder.user_id == user.id)
     )
     return mem_count
 

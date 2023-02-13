@@ -215,7 +215,7 @@ class Constants:
                 )
             else:
                 return (
-                    f"{name}, you closed easy note addition feature. From now on, to add your notes, use this command after you send your message, /add"
+                    f"{name}, you disabled easy note addition. From now on, to add your notes, use this command after sending your message, /add"
                     f"\nTo activate this feature again, /mode"
                 )
 
@@ -223,12 +223,12 @@ class Constants:
         def active_auto(name: str, language_code: str = "en") -> str:
             if language_code == "tr":
                 return (
-                    f"{name}, kolay not ekleme özelliğini açtın. Bundan sonra yolladığın notları direk Hafıza Kasana ekleyeceğim."
+                    f"{name}, kolay not ekleme özelliğini açtın. Bundan sonra yolladığın notları direk Kasana ekleyeceğim."
                     f"\nBu özelliği kapatmak için, /mode"
                 )
             else:
                 return (
-                    f"{name}, you activated easy note addition system. I will add the notes you send automatically to your Memory Vault."
+                    f"{name}, you activated easy note addition system. I will add the notes that you send me automatically."
                     f"\nTo deactivate this feature, /mode"
                 )
 
@@ -454,22 +454,22 @@ class Constants:
                     f"\n- Günlük gönderim: *{daily_is_active}*"
                     f"\n- Kolay not ekleme: *{auto_add_is_active}*"
                     f"\n- Hatıra Kasandaki not sayısı: {note_count}"
-                    f"\n- Takvim: (saat - not adeti)"
+                    f"\n- Takvim: (saat - hatırlatma sayısı)"
                     f"\n{schedule}"
                     f"\n"
                     f"\nUyarı: Eğer bu bottan faydalanmak istiyorsan, takvimini dolup taşırmamaya dikkat et ve gelen mesajlara dikkatini ver, göz atıp geçme."
                 )
             else:
-                daily_is_active = "active" if active else "passive"
-                auto_add_is_active = "active" if auto_add else "passive"
+                daily_is_active = "active" if active else "inactive"
+                auto_add_is_active = "active" if auto_add else "inactive"
 
                 return (
                     f"Your current status:"
                     f"\n- Gmt: *GMT{gmt}*"
                     f"\n- Daily sending: *{daily_is_active}*"
-                    f"\n- Easy add: *{auto_add_is_active}*"
+                    f"\n- Easy note addition: *{auto_add_is_active}*"
                     f"\n- Number of notes in the Vault: {note_count}"
-                    f"\n- Schedule: (hour - note count)"
+                    f"\n- Schedule: (hour - reminder count)"
                     f"\n{schedule}"
                     f"\n"
                     f"\nWarning: If you want to make use of this bot, be careful to not overflow your schedule and give attention to the incoming messages, do not just look and pass."
