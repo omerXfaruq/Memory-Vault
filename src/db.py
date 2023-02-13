@@ -16,6 +16,7 @@ class UserBase(SQLModel):
     active: Optional[bool] = True
     scheduled_hours: Optional[str] = default_schedule
     last_sent_reminder_id: Optional[int] = -1
+    auto_add_active: Optional[bool] = True
 
 
 class User(UserBase, table=True):
@@ -126,10 +127,27 @@ def leave_user(
             return found_user
 
 
+def toggle_mode(
+    user: UserCreate,
+    session: Session = next(get_session()),
+) -> Optional[bool]:
+    found_user = session.exec(
+        select(User).where(User.telegram_chat_id == user.telegram_chat_id)
+    ).first()
+    if found_user is None:
+        return None
+    else:
+        found_user.auto_add_active = not found_user.auto_add_active
+        session.add(found_user)
+        session.commit()
+        session.refresh(found_user)
+        return found_user.auto_add_active
+
+
 def get_user_status(
     telegram_chat_id: int,
     session: Session = next(get_session()),
-) -> Tuple[Optional[int], Optional[bool]]:
+) -> Optional[User]:
     """
     Get status of the user.
 
@@ -144,9 +162,9 @@ def get_user_status(
         select(User).where(User.telegram_chat_id == telegram_chat_id)
     ).first()
     if found_user is None:
-        return None, None
+        return None
     else:
-        return found_user.gmt, found_user.active
+        return found_user
 
 
 def select_random_memories(
@@ -187,6 +205,26 @@ def select_random_memories(
         session.commit()
 
     return memories
+
+
+def count_memories(
+    user: User,
+    session: Session = next(get_session()),
+) -> int:
+    """
+    Count the memory-vault.
+
+    Args:
+        user:
+        session:
+
+    Returns:
+
+    """
+    mem_count = session.scalar(
+        select(func.count(Reminder.id).where(Reminder.user_id == user.id))
+    )
+    return mem_count
 
 
 def list_memories(

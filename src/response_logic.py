@@ -284,15 +284,14 @@ class ResponseLogic:
                     return Constants.Broadcast.success(name, language_code)
 
         elif ResponseLogic.check_command_type(first_word, "status"):
-            gmt, active = get_user_status(chat_id)
-            if gmt is None:
+            user = get_user_status(chat_id)
+            if user.gmt is None:
                 return Constants.Common.inactive_user(name, language_code)
             else:
-                schedule = get_schedule(user)
-                schedule = ResponseLogic.readable_schedule(schedule)
-                memory_count = len(list_memories(user))
+                schedule = ResponseLogic.readable_schedule(user.scheduled_hours)
+                memory_count = count_memories(user)
                 return Constants.Status.get_status(
-                    name, language_code, gmt, active, schedule, memory_count
+                    name, language_code, user.gmt, user.active, schedule, user.auto_add_active, memory_count,
                 )
 
         elif ResponseLogic.check_command_type(first_word, "feedback"):
@@ -325,6 +324,17 @@ class ResponseLogic:
                 )
                 await Events.send_a_message_to_user(chat_id, memory)
                 return ""
+
+        elif ResponseLogic.check_command_type(first_word, "mode"):
+            auto_add_active = toggle_mode(user)
+            if auto_add_active is None:
+                return Constants.Common.inactive_user(name, language_code)
+            elif auto_add_active:
+                return Constants.Mode.active_auto(name, language_code)
+            else:
+                return Constants.Mode.inactive_auto(name, language_code)
+
+            # update model and db
 
         elif ResponseLogic.check_command_type(first_word, "support"):
             return Constants.Support.support(name, language_code)
