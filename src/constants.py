@@ -215,7 +215,7 @@ class Constants:
                 )
             else:
                 return (
-                    f"{name}, you disabled easy note addition. From now on, to add your notes, use this command after sending your message, /add"
+                    f"{name}, you disabled easy note addition. To add a note, use this command after sending your message, /add"
                     f"\nTo activate this feature again, /mode"
                 )
 
@@ -223,13 +223,40 @@ class Constants:
         def active_auto(name: str, language_code: str = "en") -> str:
             if language_code == "tr":
                 return (
-                    f"{name}, kolay not ekleme özelliğini açtın. Bundan sonra yolladığın notları direk Kasana ekleyeceğim."
+                    f"{name}, kolay not ekleme özelliğini açtın. Bundan sonra yolladığın her mesaji Kasana ekleyeceğim."
                     f"\nBu özelliği kapatmak için, /mode"
                 )
             else:
                 return (
-                    f"{name}, you activated easy note addition system. I will add the notes that you send me automatically."
+                    f"{name}, you activated easy note addition system. I will add every message you send to the Vault."
                     f"\nTo deactivate this feature, /mode"
+                )
+
+    class Silent:
+        @staticmethod
+        def is_silent(name: str, language_code: str = "en") -> str:
+            if language_code == "tr":
+                return (
+                    f"{name}, sessiz ekleme seçeneğini açtın. Bundan eklemelere verdiğim onay çok kısa olacak."
+                    f"\nBu özelliği kapatmak için, /silent"
+                )
+            else:
+                return (
+                    f"{name}, you activated silent add. Note add confirmations will be very short."
+                    f"\nTo disable this feature, /silent"
+                )
+
+        @staticmethod
+        def not_silent(name: str, language_code: str = "en") -> str:
+            if language_code == "tr":
+                return (
+                    f"{name}, sessiz ekleme seçeneğini kapattın, artık eklediğin notları geri göndererek eklediğin notu haberdar edeceğim."
+                    f"\nBu özelliği açmak için, /silent"
+                )
+            else:
+                return (
+                    f"{name}, you disabled silent add. I will confirm note additions by sending the note back."
+                    f"\nTo activate this feature, /silent"
                 )
 
     class Send:
@@ -277,18 +304,14 @@ class Constants:
         @staticmethod
         def success(name: str, language_code: str = "en", note: str = "") -> str:
             if language_code == "tr":
-                return (
-                    f"{name}, not kasana eklendi. Merak etme, onu güvende tutacağım {Constants.smile}"
-                    f"\n"
-                    f"\n Eğer son eklediğin notu silmek istiyorsan, bu komutu kullan /undo"
-                )
+                return f"{name}, not kasana eklendi. Merak etme, onu güvende tutacağım {Constants.smile}, iptal için, /undo"
 
             else:
-                return (
-                    f"{name}, the note is added to your memory vault. No worries, I will keep it safe {Constants.smile}"
-                    f"\n"
-                    f"\nIf you want to delete the last added note, you can use /undo"
-                )
+                return f"{name}, the note is added to your memory vault. No worries, I will keep it safe {Constants.smile}, for undo, /undo"
+
+        @staticmethod
+        def silent_success() -> str:
+            return f"✔"
 
     class Delete:
         @staticmethod
@@ -442,17 +465,20 @@ class Constants:
             active: bool = True,
             schedule: str = "",
             auto_add: bool = True,
+            is_silent: bool = True,
             note_count: int = 0,
         ) -> str:
             if language_code == "tr":
                 daily_is_active = "aktif" if active else "pasif"
-                auto_add_is_active = "aktif" if auto_add else "pasif"
+                auto_add = "aktif" if auto_add else "pasif"
+                is_silent = "aktif" if is_silent else "pasif"
 
                 return (
                     f"Mevcut durumun:"
                     f"\n- Gmt: *GMT{gmt}*"
                     f"\n- Günlük gönderim: *{daily_is_active}*"
-                    f"\n- Kolay not ekleme: *{auto_add_is_active}*"
+                    f"\n- Kolay not ekleme: *{auto_add}*"
+                    f"\n- Sessiz not ekleme: *{is_silent}*"
                     f"\n- Hatıra Kasandaki not sayısı: {note_count}"
                     f"\n- Takvim: (saat - hatırlatma sayısı)"
                     f"\n{schedule}"
@@ -461,13 +487,15 @@ class Constants:
                 )
             else:
                 daily_is_active = "active" if active else "inactive"
-                auto_add_is_active = "active" if auto_add else "inactive"
+                auto_add = "active" if auto_add else "inactive"
+                is_silent = "active" if is_silent else "inactive"
 
                 return (
                     f"Your current status:"
                     f"\n- Gmt: *GMT{gmt}*"
                     f"\n- Daily sending: *{daily_is_active}*"
-                    f"\n- Easy note addition: *{auto_add_is_active}*"
+                    f"\n- Easy note addition: *{auto_add}*"
+                    f"\n- Silent note addition: *{is_silent}*"
                     f"\n- Number of notes in the Vault: {note_count}"
                     f"\n- Schedule: (hour - reminder count)"
                     f"\n{schedule}"
