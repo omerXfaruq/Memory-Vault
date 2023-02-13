@@ -291,7 +291,13 @@ class ResponseLogic:
                 schedule = ResponseLogic.readable_schedule(user.scheduled_hours)
                 memory_count = count_memories(user)
                 return Constants.Status.get_status(
-                    name, language_code, user.gmt, user.active, schedule, user.auto_add_active, memory_count,
+                    name,
+                    language_code,
+                    user.gmt,
+                    user.active,
+                    schedule,
+                    user.auto_add_active,
+                    memory_count,
                 )
 
         elif ResponseLogic.check_command_type(first_word, "feedback"):

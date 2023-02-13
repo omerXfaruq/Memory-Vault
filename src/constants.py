@@ -559,15 +559,17 @@ class Constants:
         @staticmethod
         def tutorial_3(name: str, language_code: str = "en"):
             if language_code == "tr":
-                return (f"Constants.Help.small_help_message(name, language_code)"
-                        f"\n"
-                        f"\nTebrikler {name}! Rehberi tamamladın, seninle çıkacağamız yolculuk için çok heyecanlıyım 🤗"
-                        )
+                return (
+                    f"Constants.Help.small_help_message(name, language_code)"
+                    f"\n"
+                    f"\nTebrikler {name}! Rehberi tamamladın, seninle çıkacağamız yolculuk için çok heyecanlıyım 🤗"
+                )
             else:
-                return (f"Constants.Help.small_help_message(name, language_code)"
-                        f"\n"
-                        f"\nCongratulatıons {name}! You completed the tutorials, let's have great journey together 🤗"
-                        )
+                return (
+                    f"Constants.Help.small_help_message(name, language_code)"
+                    f"\n"
+                    f"\nCongratulatıons {name}! You completed the tutorials, let's have great journey together 🤗"
+                )
 
     class Package:
         @staticmethod
