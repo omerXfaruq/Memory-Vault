@@ -33,75 +33,14 @@ Memory Vault is a Telegram bot that you can store your notes, and get reminded r
 <img src="img/0.mv-quickstart1.png" alt="drawing" width="500"/>
 
 
-# Contents
+# Introduction 
 
-[0. Intro](#-memory-vault)
-
-[1. Start](#start)
-
-[2. Use Cases](#use-cases)
-
-[3. Tutorials](#tutorials)
-
-[4. Software Information](#software-information)
+[https://farukozderim.github.io/Memory-Vault/](https://farukozderim.github.io/Memory-Vault/)
 
 
 
 
-
-## Start
-Hello Ömer Faruk 👋🏻
-
-Keeping note of beautiful & important stuff that we come across throughout the life, and later remembering them is quite difficult isn't it 😔? Here is the Memory Vault for the rescue! Just take your notes, and I will randomly remind them everyday 😎
-
-Unfortunately in this era our days&agendas are very busy and it is very hard to follow something consistently. Memory Vault helps us on this front by continuously reminding our notes daily, so that we won't ever forget them. 
-
-❤️ Sincerely thanks to my dear wife Seyyide for the beautiful idea.
-
-
-## Use Cases
-1. Habit Building 
-<img src="img/ex1.png" alt="drawing" width="500"/>
-2. Language Learning
-<img src="img/ex2.png" alt="drawing" width="500"/>
-3. Developing Enterprenurship Vision
-<img src="img/ex3.png" alt="drawing" width="500"/>
-4. Learning new names
-<img src="img/ex4.png" alt="drawing" width="500"/>
-5. Anything Custom, Memory Vault is very flexible and general solution!
-
-## [Try it from here!](https://t.me/Memory_Vault_Bot)
-
-## Tutorials
-1. 
-<img src="img/0.start.png" alt="drawing" width="500"/>
-
-2. 
-
-<img src="img/1.tutorials.png" alt="drawing" width="500"/>
-
-3.
-
-<img src="img/2.tutorials.png" alt="drawing" width="500"/>
-
-4. 
-<img src="img/3.adds.png" alt="drawing" width="500"/>
-
-5.
-<img src="img/4.delete.png" alt="drawing" width="500"/>
-
-6.
-<img src="img/5.empty-a-vault.png" alt="drawing" width="500"/>
-
-7.
-<img src="img/6.schedule.png" alt="drawing" width="500"/>
-
-8.
-<img src="img/7.help.png" alt="drawing" width="500"/>
-
-## [Try it from here!](https://t.me/Memory_Vault_Bot)
-
-# Software Information
+# Software 
 
 
 ## Requirements
