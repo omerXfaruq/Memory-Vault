@@ -2,7 +2,7 @@
   <h1> Memory-Vault</h1> 
   <em> Click on the image to try it</em> 
 
-  [<img src="img/memory_vault_pp.png" alt="memory-vault" width=400>](http://t.me/memory_vault_bot)<br>
+  [<img src="img/memory_vault_pp.png" alt="memory-vault" width=300>](http://t.me/memory_vault_bot)<br>
   <em>Whisper to future, Digital sticky notes, Learning machine</em>
 </div>
 
