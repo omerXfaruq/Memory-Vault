@@ -18,24 +18,9 @@ Memory Vault is a Telegram bot that you can store your notes, and get reminded r
 <em>(Just an engineer, without any design skills :D)</em>
 </div>
 
-**Use Cases**
-
-1. Habit Building
-2. Language Learning
-3. Learning the way of Entrepreneurship
-4. Remembering names
-5. Notetaking
-6. Or, Anything Custom, Memory Vault is very flexible and general solution!
-
-
-<img src="img/0.mv-quickstart.png" alt="drawing" width="500"/>
-
-<img src="img/0.mv-quickstart1.png" alt="drawing" width="500"/>
-
-
 # Introduction 
 
-[https://farukozderim.github.io/Memory-Vault/](https://farukozderim.github.io/Memory-Vault/)
+[farukozderim.github.io/Memory-Vault/](https://farukozderim.github.io/Memory-Vault/)
 
 
 
