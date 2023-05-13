@@ -2,7 +2,7 @@ import random
 import os
 import sys
 
-from typing import List
+from typing import List, Optional
 import datetime
 import asyncio
 from httpx import AsyncClient, Response
@@ -87,12 +87,15 @@ class Events:
         telegram_chat_id: int,
         message_list: List[str],
         notify: bool = False,
+        from_chat_id: Optional[int] = None,
+
     ) -> bool:
         for message in message_list:
             await Events.send_a_message_to_user(
                 chat_id=telegram_chat_id,
                 message=message,
                 notify=notify,
+                from_chat_id=from_chat_id
             )
         return True
 
@@ -110,7 +113,6 @@ class Events:
                     chat_id=telegram_chat_id,
                     message=message,
                     notify=notify,
-                    sleep_time=0.01 * rank,
                 )
             )
         return True
@@ -122,6 +124,7 @@ class Events:
         chat_id: int,
         convert: bool,
         notify: bool = False,
+        from_chat_id: Optional[int] = None,
     ) -> (str, ResponseToMessage):
         """
         Creates the response message
@@ -136,13 +139,13 @@ class Events:
             chat_id:
             convert: Converts the encoded message to related type of message, if True
             notify: If false, send the message without notifying.
+            from_chat_id: If specified, fromchatid and chatid are different.
 
         Returns:
             converted_message:
 
         """
         message_id = None
-        from_chat_id = None
         text = None
         print(f"%% {datetime.datetime.now()}: Message is: {message}")
         url = cls.TELEGRAM_SEND_MESSAGE_URL
@@ -156,8 +159,9 @@ class Events:
 
                 elif words[0] == "message_id:":
                     message_id = int(words[1])
-                    from_chat_id = chat_id
                     url = cls.TELEGRAM_COPY_MESSAGE_URL
+                    if from_chat_id is None:
+                        from_chat_id = chat_id
                 else:
                     text = message
 
@@ -183,9 +187,10 @@ class Events:
         retry_count: int = 3,
         convert: bool = True,
         notify: bool = False,
+        from_chat_id: Optional[int] = None,
     ) -> bool:
         url, message = await cls.create_response_message(
-            message, chat_id, convert, notify
+            message, chat_id, convert, notify, from_chat_id
         )
         print(f"%% {datetime.datetime.now()}: Message is: {message}")
 
