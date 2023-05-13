@@ -132,6 +132,38 @@ class ResponseLogic:
                 )
                 return response_message
 
+        elif ResponseLogic.check_command_type(first_word, "privatelist"):
+            memories = list_memories(user)
+
+            if memories is None:
+                return Constants.Common.inactive_user(name, language_code)
+            memory_count = len(memories)
+            if memory_count == 0:
+                return Constants.Common.no_memory_found(name, language_code)
+            else:
+                background_message_list = []
+
+                response_message = Constants.List.list_messages(
+                    name, memory_count, language_code
+                )
+
+                background_message_list.append(response_message)
+
+                for message_id, reminder in enumerate(memories):
+                    background_message_list.append(f"*{message_id}*: ")
+                    background_message_list.append(reminder.reminder)
+
+                asyncio.create_task(
+                    Events.send_message_list_at_background(
+                        telegram_chat_id=message.from_field.id,
+                        message_list=background_message_list,
+                        notify=False,
+                        from_chat_id=message.chat.id,
+                    )
+                )
+                return ""
+
+
         elif ResponseLogic.check_command_type(first_word, "del"):
             resp = delete_last_sent_memory(user)
             if resp is None:
