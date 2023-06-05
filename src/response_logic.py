@@ -97,6 +97,7 @@ class ResponseLogic:
                     if package_id >= len(Packages.functions) or package_id < 0:
                         return Constants.Package.incorrect_id(name, language_code)
 
+                    user = get_user_status(user.telegram_chat_id)
                     success = add_package(user, package_id)
                     if not success:
                         return Constants.Package.already_added(name, language_code)
@@ -162,7 +163,6 @@ class ResponseLogic:
                     )
                 )
                 return ""
-
 
         elif ResponseLogic.check_command_type(first_word, "del"):
             resp = delete_last_sent_memory(user)

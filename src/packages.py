@@ -34,11 +34,22 @@ class Packages:
             except:
                 XU100USD_DEGISIM = 0
 
+            try:
+                XAUUSD = round(GA / USDTRY * 31.1, 2)
+            except:
+                XAUUSD = 0
+
+            try:
+                XAUUSD_DEGISIM = round(GA_DEGISIM / USD_DEGISIM, 2)
+            except:
+                XAUUSD_DEGISIM = 0
+
             message = (
                 f"*USD*: {USDTRY} -- % {USD_DEGISIM} \n"
                 f"*XU100*: {XU100} -- % {XU100_DEGISIM} \n"
                 f"*XU100/USD*: {XU100USD} -- % {XU100USD_DEGISIM} \n"
                 f"*GA*: {GA} -- % {GA_DEGISIM} \n"
+                f"*XAUUSD*: {XAUUSD} -- % {XAUUSD_DEGISIM} \n"
             )
             return message
 

@@ -296,7 +296,7 @@ def add_memory(
 
 
 def add_package(
-    user: UserCreate,
+    user: User,
     package_id: int,
     session: Session = next(get_session()),
 ) -> Optional[Union[Reminder, bool]]:
