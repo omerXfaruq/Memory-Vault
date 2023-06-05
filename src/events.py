@@ -88,14 +88,13 @@ class Events:
         message_list: List[str],
         notify: bool = False,
         from_chat_id: Optional[int] = None,
-
     ) -> bool:
         for message in message_list:
             await Events.send_a_message_to_user(
                 chat_id=telegram_chat_id,
                 message=message,
                 notify=notify,
-                from_chat_id=from_chat_id
+                from_chat_id=from_chat_id,
             )
         return True
 
