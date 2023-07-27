@@ -100,11 +100,11 @@ class Constants:
             if language_code == "tr":
                 return (
                     f"\n- /leave ile günlük not hatırlatmasını durdurabilirsin"
+                    f"\n- /undo ile en son eklediğin notu geri alabilirsin"
                     f"\n- /del ile en son yollanan notu silebilirsin"
                     f"\n- /status ile status bilgini alabilirsin"
                     f"\n- /list ile tüm notlarını görebilirsin"
                     f"\n- /schedule ile tüm takvimini güncelleyebilirsin"
-                    f"\n- /mode ile kolay ekleme özelliğini kapatıp açabilirsin"
                     f"\n"
                     f"\nTemel komutlarım bunlardı, günlük takvimi ayarlama vb. diğer komutları görmek için, /helpbig."
                 )
@@ -112,11 +112,11 @@ class Constants:
             else:
                 return (
                     f"\n- /leave to deactivate daily note reminders"
+                    f"\n- /undo to undo the last note addition"
                     f"\n- /del to delete the last sent note"
                     f"\n- /status to get your status information"
-                    f"\n- /list to list notes"
+                    f"\n- /list to list your notes"
                     f"\n- /schedule to customize your schedule and frequency"
-                    f"\n- /mode to toggle easy note addition"
                     f"\n"
                     f"\nThese were my main commands, to see additional please use, /helpbig."
                 )
@@ -130,17 +130,21 @@ class Constants:
                     f"\n- /send veya *send* ile rastgele bir not yollarım"
                     f"\n- *send number* ile çok sayıda not yollarım"
                     f"\n"
+                    f"\n- /easyadd ile kolay ekleme özelliğini kapatıp açabilirsin"
+                    f"\n- /silentadd ile sessiz ekleme özelliğini kapatıp açabilirsin"
+                    f"\n"
+                    f"\n /listprivate ile bir gruptaki notları özelden gönderirim"
+                    f"\n"
                     f"\n- *gmt zaman-dilimi* ile zaman dilimi belirleyebilirsin, varsayılan zaman dilimi *GMT0*'dır"
                     f"\nÖrnek:"
                     f"\nGMT+3: *gmt 3*"
                     f"\nGMT-5: *gmt -5*"
                     f"\n"
-                    f"\n- /support veya *support* ile beni nasıl destekleyebileceğini öğrenebilirsin"
-                    f"\n- *feedback Cümle* ile bot hakkındaki düşüncelerini veya ƒeedback'lerini yollayabilirsin"
-                    f"\n"
                     f"\n*Grup Kullanımı*"
                     f"\n- *Birden fazla Hatıra Kasasına* sahip olmak için beni farklı gruplarda kullanabilirsin. Mesela bir kelime öğrenme grubu kurabilirsin."
                     f"\n- Örnek grup: Kuran'ı Kerim'den Dualar(@PrayersFromQuran)"
+                    f"\n"
+                    f"\n Daha fazlası için [tıkla](https://linktr.ee/MemoryVaultBot)"
                 )
             else:
                 return (
@@ -148,18 +152,21 @@ class Constants:
                     f"\n- /join or *join* to activate daily note sending"
                     f"\n- /send or *send* to get a random note"
                     f"\n- *send number* to get multiple random notes"
+                    f"\n- /listprivate to receive the notes inside a group privately"
+                    f"\n"
+                    f"\n- /easyadd to toggle easy note addition. Useful for chat groups."
+                    f"\n- /silentadd to toggle silent note addition, when disabled you receive the note back with an undo button"
                     f"\n"
                     f"\n- *gmt timezone* to set your timezone,  the default timezone is *GMT0*"
                     f"\nExamples:"
                     f"\nGMT+3: *gmt 3*"
                     f"\nGMT-5: *gmt -5*"
                     f"\n"
-                    f"\n- /support or *support* to learn how to support me"
-                    f"\n- *feedback Sentence* to send your thoughts and feedbacks about the bot"
-                    f"\n"
                     f"\n*Group Usage*"
                     f"\n- *You can have multiple memory vaults* by using different groups, as an example, can create a *language learning group*"
                     f"\n- Example group: @PrayersFromQuran"
+                    f"\n"
+                    f"\n For more [click](https://linktr.ee/MemoryVaultBot)"
                 )
 
     class Join:
@@ -205,18 +212,18 @@ class Constants:
             else:
                 return f"{name}, Your account is already inactive."
 
-    class Mode:
+    class EasyAdd:
         @staticmethod
         def inactive_auto(name: str, language_code: str = "en") -> str:
             if language_code == "tr":
                 return (
                     f"{name}, kolay not ekleme özelliğini kapattın. Bundan sonra not eklemek için mesajını gönderdikten sonra bu komutu kullanmalısın, /add"
-                    f"\nBu özelliği tekrar açmak için, /mode"
+                    f"\nBu özelliği tekrar açmak için, /easyadd"
                 )
             else:
                 return (
                     f"{name}, you disabled easy note addition. To add a note, use this command after sending your message, /add"
-                    f"\nTo activate this feature again, /mode"
+                    f"\nTo activate this feature again, /easyadd"
                 )
 
         @staticmethod
@@ -224,39 +231,39 @@ class Constants:
             if language_code == "tr":
                 return (
                     f"{name}, kolay not ekleme özelliğini açtın. Bundan sonra yolladığın her mesaji Kasana ekleyeceğim."
-                    f"\nBu özelliği kapatmak için, /mode"
+                    f"\nBu özelliği kapatmak için, /easyadd"
                 )
             else:
                 return (
                     f"{name}, you activated easy note addition system. I will add every message you send to the Vault."
-                    f"\nTo deactivate this feature, /mode"
+                    f"\nTo deactivate this feature, /easyadd"
                 )
 
-    class Silent:
+    class SilentAdd:
         @staticmethod
         def is_silent(name: str, language_code: str = "en") -> str:
             if language_code == "tr":
                 return (
-                    f"{name}, sessiz ekleme seçeneğini açtın. Bundan eklemelere verdiğim onay çok kısa olacak."
-                    f"\nBu özelliği kapatmak için, /silent"
+                    f"{name}, sessiz ekleme seçeneğini açtın. Bundan not ekleme onayı çok kısa olacak."
+                    f"\nBu özelliği kapatmak için, /silentadd"
                 )
             else:
                 return (
                     f"{name}, you activated silent add. Note add confirmations will be very short."
-                    f"\nTo disable this feature, /silent"
+                    f"\nTo disable this feature, /silentadd"
                 )
 
         @staticmethod
         def not_silent(name: str, language_code: str = "en") -> str:
             if language_code == "tr":
                 return (
-                    f"{name}, sessiz ekleme seçeneğini kapattın, artık eklediğin notları geri göndererek eklediğin notu haberdar edeceğim."
-                    f"\nBu özelliği açmak için, /silent"
+                    f"{name}, sessiz ekleme seçeneğini kapattın, artık eklediğin notları tekrar ederek onaylayacağım."
+                    f"\nBu özelliği açmak için, /silentadd"
                 )
             else:
                 return (
                     f"{name}, you disabled silent add. I will confirm note additions by sending the note back."
-                    f"\nTo activate this feature, /silent"
+                    f"\nTo activate this feature, /silentadd"
                 )
 
     class Send:
@@ -495,7 +502,7 @@ class Constants:
                     f"\n- Gmt: *GMT{gmt}*"
                     f"\n- Daily sending: *{daily_is_active}*"
                     f"\n- Easy note addition: *{auto_add}*"
-                    f"\n- Silent note addition: *{is_silent}*"
+                    f"\n- SilentAdd note addition: *{is_silent}*"
                     f"\n- Number of notes in the Vault: {note_count}"
                     f"\n- Schedule: (hour - reminder count)"
                     f"\n{schedule}"
