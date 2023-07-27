@@ -17,7 +17,7 @@ class UserBase(SQLModel):
     scheduled_hours: Optional[str] = default_schedule
     last_sent_reminder_id: Optional[int] = -1
     auto_add_active: Optional[bool] = True
-    is_silent: Optional[bool] = False
+    is_silent: Optional[bool] = True
 
 
 class User(UserBase, table=True):
@@ -128,7 +128,7 @@ def leave_user(
             return found_user
 
 
-def toggle_mode(
+def toggle_easyadd(
     user: UserCreate,
     session: Session = next(get_session()),
 ) -> Optional[bool]:

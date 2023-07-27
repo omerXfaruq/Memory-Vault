@@ -343,23 +343,23 @@ class ResponseLogic:
                 await Events.send_a_message_to_user(chat_id, memory)
                 return ""
 
-        elif ResponseLogic.check_command_type(first_word, "mode"):
-            auto_add_active = toggle_mode(user)
+        elif ResponseLogic.check_command_type(first_word, "easyadd"):
+            auto_add_active = toggle_easyadd(user)
             if auto_add_active is None:
                 return Constants.Common.inactive_user(name, language_code)
             elif auto_add_active:
-                return Constants.Mode.active_auto(name, language_code)
+                return Constants.EasyAdd.active_auto(name, language_code)
             else:
-                return Constants.Mode.inactive_auto(name, language_code)
+                return Constants.EasyAdd.inactive_auto(name, language_code)
 
-        elif ResponseLogic.check_command_type(first_word, "silent"):
+        elif ResponseLogic.check_command_type(first_word, "silentadd"):
             is_silent = toggle_silent(user)
             if is_silent is None:
                 return Constants.Common.inactive_user(name, language_code)
             elif is_silent:
-                return Constants.Silent.is_silent(name, language_code)
+                return Constants.SilentAdd.is_silent(name, language_code)
             else:
-                return Constants.Silent.not_silent(name, language_code)
+                return Constants.SilentAdd.not_silent(name, language_code)
 
             # update model and db
 
