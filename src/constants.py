@@ -612,13 +612,13 @@ class Constants:
             if language_code == "tr":
                 return (
                     f"Hatıra kasasına hazır paketler de ekleyebilirsin.\n"
-                    f"Paket eklemek için, package add package-no, kullanabilirsin\n"
+                    f"Paket eklemek için, package add package-id, kullanabilirsin\n"
                     f"örn: *package add 0*"
                 )
             else:
                 return (
                     f"You can also add preprepared packages to your Memory Vault.\n"
-                    f"To add a package you can use, package add package-no\n"
+                    f"To add a package you can use, package add package-id\n"
                     f"ex: *package add 0*"
                 )
 
