@@ -53,5 +53,31 @@ class Packages:
             )
             return message
 
-    functions = [get_tr_stocks]
-    titles = ["TR Stocks & Currency"]
+    @staticmethod
+    async def get_yahoo_tr_stocks() -> str:
+        import yfinance as yf
+
+        key_list = {
+            "USDTRY": "TRY=X",
+            "EURTRY": "EURTRY=X",
+            "ASELS": "ASELS.IS",
+            "PGSUS": "PGSUS.IS",
+            "EREGL": "EREGL.IS",
+            "FROTO": "FROTO.IS",
+            "KCHOL": "KCHOL.IS",
+            "SAHOL": "SAHOL.IS",
+            "SASA": "SASA.IS",
+            "BIMAS": "BIMAS.IS",
+            "TUR": "TUR",
+        }
+        words = []
+        for key, value in key_list.items():
+            info = yf.Ticker(value).info
+            ask = info["ask"]
+            previous = info["previousClose"]
+            change = (ask - previous) / previous * 100
+            words.append(f"{key}: {ask} --- %{round(change, 2)}")
+        return "\n".join(words)
+
+    functions = [get_tr_stocks, get_yahoo_tr_stocks]
+    titles = ["TR Stocks & Currency", "Yahoo TR Stocks & Currency"]
