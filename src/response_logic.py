@@ -85,7 +85,13 @@ class ResponseLogic:
 
         elif ResponseLogic.check_command_type(first_word, "package"):
             if len(split_text) == 1:  # package
-                return Constants.Package.help(name, language_code)
+                words = [f"{i}: {j}" for i, j in enumerate(Packages.titles)]
+                return (
+                    Constants.Package.help(name, language_code)
+                    + f"\n\n*Package id: Package*\n"
+                    + "\n".join(words)
+                )
+
             elif len(split_text) >= 3:
                 if split_text[1] == "add":
                     package_id = 0
@@ -103,6 +109,7 @@ class ResponseLogic:
                         return Constants.Package.already_added(name, language_code)
 
                     return Constants.Package.success(name, language_code, package_id)
+
             else:
                 return Constants.Package.incorrect_id(name, language_code)
 
