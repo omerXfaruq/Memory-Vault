@@ -76,7 +76,7 @@ class Packages:
             ask = info["ask"]
             previous = info["previousClose"]
             change = (ask - previous) / previous * 100
-            words.append(f"*{key}*: {ask} --- % {round(change, 2)}")
+            words.append(f"*{key}*: {round(ask,2)} --- % {round(change, 2)}")
         return "\n".join(words)
 
     functions = [get_tr_stocks, get_yahoo_tr_stocks]
