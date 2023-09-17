@@ -20,7 +20,7 @@ Memory Vault is a Telegram bot that you can store your notes, and get reminded r
 
 # Introduction 
 
-[farukozderim.github.io/Memory-Vault/](https://farukozderim.github.io/Memory-Vault/)
+[omerXfaruq.github.io/Memory-Vault/](https://omerXfaruq.github.io/Memory-Vault/)
 
 
 
