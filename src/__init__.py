@@ -55,8 +55,7 @@ if __name__ == "__main__":
             "src.listener:app",
             host="0.0.0.0",
             port=PORT,
-            reload=True,
-            log_level="info",
+            reload=False,
         )
     else:
         print("Fail, closing the app.")

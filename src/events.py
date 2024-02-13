@@ -154,7 +154,7 @@ class Events:
             if len(words) == 2:
                 if words[0] == "package:":
                     fn_id = int(words[1])
-                    text = await (Packages.functions[fn_id]())
+                    text = await Packages.functions[fn_id]()
 
                 elif words[0] == "message_id:":
                     message_id = int(words[1])

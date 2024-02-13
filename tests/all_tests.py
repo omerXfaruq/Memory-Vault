@@ -1,12 +1,12 @@
 import pytest
 
 from fastapi.testclient import TestClient
-from sqlmodel import Session, SQLModel, create_engine, select
 from sqlmodel.pool import StaticPool
 
-from src.listener import app, User, UserCreate, get_session
+from src.listener import app
 from src.events import Events
 from src.db import *
+from src.message_validations import MessageBodyModel
 
 pytest_plugins = ("pytest_asyncio",)
 
@@ -183,3 +183,33 @@ def test_print_help_message():
 
     print()
     print(Constants.Help.help_message(name, language_code))
+
+
+def test_validate(client):
+    req = {
+        "update_id": 677224863,
+        "message": {
+            "message_id": 28583,
+            "from": {
+                "id": 861126057,
+                "is_bot": False,
+                "first_name": "Ömer Faruk",
+                "last_name": "Özdemir",
+                "username": "omerXfaruq",
+                "language_code": "en",
+            },
+            "chat": {
+                "id": 861126057,
+                "first_name": "Ömer Faruk",
+                "last_name": "Özdemir",
+                "username": "omerXfaruq",
+                "type": "private",
+            },
+            "date": 1707848171,
+            "text": "/help",
+            "entities": [{"offset": 0, "length": 7, "type": "bot_command"}],
+        },
+    }
+    message = MessageBodyModel(**req)
+    resp = client.post(f"/webhook/{Events.TOKEN}", json=req)
+    print(resp)

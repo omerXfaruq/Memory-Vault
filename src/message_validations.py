@@ -15,9 +15,9 @@ class From(BaseModel):
     last_name: Optional[str]
     id: Optional[int]
     first_name: Optional[str]
-    user_name: Optional[str]
+    user_name: Optional[str] = None
     language_code: Optional[str]
-    is_bot: Optional[str]
+    is_bot: Optional[bool] = None
 
 
 class ReplyMessage(BaseModel):
@@ -38,18 +38,18 @@ class NewChatMember(BaseModel):
 class Message(BaseModel):
     date: Optional[int]
     chat: Optional[Chat]
-    message_id: Optional[str]
+    message_id: Optional[int]
     from_field: Optional[From] = Field(alias="from")
-    forward_date: Optional[int]
+    forward_date: Optional[int] = None
     text: Optional[str]
-    photo: Optional[List[File]]
-    document: Optional[File]
-    video: Optional[File]
-    video_note: Optional[File]
-    voice: Optional[File]
-    new_chat_member: Optional[NewChatMember]
-    left_chat_member: Optional[NewChatMember]
-    group_chat_created: Optional[bool]
+    photo: Optional[List[File]] = None
+    document: Optional[File] = None
+    video: Optional[File] = None
+    video_note: Optional[File] = None
+    voice: Optional[File] = None
+    new_chat_member: Optional[NewChatMember] = None
+    left_chat_member: Optional[NewChatMember] = None
+    group_chat_created: Optional[bool] = None
 
 
 class ChatGroup(BaseModel):
@@ -79,8 +79,8 @@ class MyChatMember(BaseModel):
 class MessageBodyModel(BaseModel):
     update_id: Optional[int]
     message: Optional[Message]
-    my_chat_member: Optional[MyChatMember]
-    reply_to_message: Optional[ReplyMessage]
+    my_chat_member: Optional[MyChatMember] = None
+    reply_to_message: Optional[ReplyMessage] = None
 
 
 class ResponseToMessage(BaseModel):
@@ -89,7 +89,7 @@ class ResponseToMessage(BaseModel):
     from_chat_id: Optional[int]
     message_id: Optional[int]
     text: Optional[str]
-    photo: Optional[str]
-    document: Optional[str]
+    photo: Optional[str] = None
+    document: Optional[str] = None
     parse_mode: Optional[str] = "Markdown"
     disable_notification: Optional[bool]
