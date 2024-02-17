@@ -2,7 +2,12 @@ import asyncio
 import logging
 import time
 from fastapi import FastAPI, Request
+from fastapi.encoders import jsonable_encoder
+from fastapi.exceptions import RequestValidationError
 from fastapi.responses import PlainTextResponse
+from starlette import status
+from starlette.responses import JSONResponse
+
 from .db import *
 from .message_validations import MessageBodyModel, ResponseToMessage
 from .constants import Constants
@@ -33,6 +38,14 @@ async def exception_handler(request: Request, call_next):
     return response
 
 
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    print(JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content=jsonable_encoder({"detail": exc.errors(), "body": exc.body}),
+    ).__repr__())
+
+
 @app.get("/health")
 async def health():
     return {"healthy": True}
@@ -44,7 +57,7 @@ async def listen_telegram_messages(r: Request, message: MessageBodyModel):
     print(f"%% {datetime.datetime.now()} Incoming Request: {await r.json()}")
 
     response_message = ""
-    chat_id = 0
+    chat_id = message.message.chat.id
 
     if message.message:
         if message.message.left_chat_member:
@@ -60,7 +73,6 @@ async def listen_telegram_messages(r: Request, message: MessageBodyModel):
             pass
         else:
             name = message.message.from_field.first_name
-            chat_id = message.message.chat.id
             language_code = message.message.from_field.language_code
 
             response_message = await ResponseLogic.create_response(
@@ -90,7 +102,6 @@ async def listen_telegram_messages(r: Request, message: MessageBodyModel):
     return ResponseToMessage(
         text=response_message, chat_id=chat_id, disable_notification=True
     )
-
 
 @app.post(f"/trigger_send_user_hourly_memories/{Events.TOKEN}")
 async def trigger_send_user_hourly_memories(*, session: Session = Depends(get_session)):
