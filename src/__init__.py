@@ -6,8 +6,8 @@ import uvicorn
 import asyncio
 import datetime
 
-from .events import Events
-from .constants import Constants
+from events import Events
+from constants import Constants
 
 __all__ = []
 

@@ -2,17 +2,13 @@ import asyncio
 import logging
 import time
 from fastapi import FastAPI, Request
-from fastapi.encoders import jsonable_encoder
-from fastapi.exceptions import RequestValidationError
 from fastapi.responses import PlainTextResponse
-from starlette import status
-from starlette.responses import JSONResponse
 
-from .db import *
-from .message_validations import MessageBodyModel, ResponseToMessage
-from .constants import Constants
-from .events import Events
-from .response_logic import ResponseLogic
+from db import *
+from message_validations import MessageBodyModel, ResponseToMessage
+from constants import Constants
+from events import Events
+from response_logic import ResponseLogic
 
 app = FastAPI(openapi_url=None)
 logging.basicConfig(filename="exceptions.log", encoding="utf-8", level=logging.ERROR)
@@ -102,7 +98,7 @@ async def listen_telegram_messages(r: Request, message: MessageBodyModel):
             )
             await Events.send_a_message_to_user(chat_id, start_message)
             response_message = Constants.Start.group_warning(name, language_code)
-
+    print(f"Response: {response_message}")
     return ResponseToMessage(
         text=response_message, chat_id=chat_id, disable_notification=True
     )

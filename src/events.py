@@ -1,4 +1,3 @@
-import random
 import os
 import sys
 
@@ -7,9 +6,9 @@ import datetime
 import asyncio
 from httpx import AsyncClient, Response
 
-from .message_validations import ResponseToMessage
-from .db import db_read_users, Reminder, User, select_random_memories
-from .packages import Packages
+from message_validations import ResponseToMessage
+from db import db_read_users, User, select_random_memories
+from packages import Packages
 
 
 class Events:
