@@ -63,7 +63,7 @@ pydantic==1.8.2
     #   -r requirements.in
     #   fastapi
     #   sqlmodel
-pyngrok==5.1.0
+pyngrok==7.1.2
     # via -r requirements.in
 pyparsing==3.0.6
     # via packaging

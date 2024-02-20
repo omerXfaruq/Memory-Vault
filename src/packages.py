@@ -1,4 +1,5 @@
 from httpx import AsyncClient
+import yfinance as yf
 
 
 class Packages:
@@ -17,7 +18,10 @@ class Packages:
             USDTRY = round(USDTRY, 2)
             USD_DEGISIM = float(js["USD"]["degisim"])
             USD_DEGISIM = round(USD_DEGISIM, 2)
-            XU100 = (float(js["XU100"]["satis"]) + float(js["XU100"]["alis"])) / 2
+            XU100 = (
+                float(js["XU100"]["satis"].replace(".", "").replace(",", "."))
+                + float(js["XU100"]["alis"].replace(".", "").replace(",", "."))
+            ) / 2
             XU100 = round(XU100, 2)
             XU100_DEGISIM = float(js["XU100"]["degisim"])
             XU100_DEGISIM = round(XU100_DEGISIM, 2)
@@ -55,7 +59,6 @@ class Packages:
 
     @staticmethod
     async def get_yahoo_tr_stocks() -> str:
-        import yfinance as yf
 
         key_list = {
             "USDTRY": "TRY=X",

@@ -1,3 +1,4 @@
+import datetime
 import sys
 import os
 
@@ -47,7 +48,7 @@ if __name__ == "__main__":
         if running_option == "self_signed":
             Events.SELF_SIGNED = True
 
-    print(Events.HOST_URL)
+    print(f"%% New run: {datetime.datetime.now()}")
     success = loop.run_until_complete(Events.set_telegram_webhook_url())
 
     if success:
@@ -55,7 +56,7 @@ if __name__ == "__main__":
             "src.listener:app",
             host="0.0.0.0",
             port=PORT,
-            reload=True,
+            reload=False,
             log_level="info",
         )
     else:
