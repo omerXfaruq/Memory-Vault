@@ -38,12 +38,16 @@ async def exception_handler(request: Request, call_next):
     return response
 
 
+"""
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
-    print(JSONResponse(
+    print(exc.body)
+    print(exc.errors)
+    return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         content=jsonable_encoder({"detail": exc.errors(), "body": exc.body}),
-    ).__repr__())
+    )
+"""
 
 
 @app.get("/health")
@@ -102,6 +106,7 @@ async def listen_telegram_messages(r: Request, message: MessageBodyModel):
     return ResponseToMessage(
         text=response_message, chat_id=chat_id, disable_notification=True
     )
+
 
 @app.post(f"/trigger_send_user_hourly_memories/{Events.TOKEN}")
 async def trigger_send_user_hourly_memories(*, session: Session = Depends(get_session)):

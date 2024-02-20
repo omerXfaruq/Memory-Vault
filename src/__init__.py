@@ -4,6 +4,7 @@ import os
 from pyngrok import ngrok
 import uvicorn
 import asyncio
+import datetime
 
 from .events import Events
 from .constants import Constants
@@ -47,7 +48,7 @@ if __name__ == "__main__":
         if running_option == "self_signed":
             Events.SELF_SIGNED = True
 
-    print(Events.HOST_URL)
+    print(f"%%New Run: {datetime.datetime.now()}")
     success = loop.run_until_complete(Events.set_telegram_webhook_url())
 
     if success:

@@ -4,44 +4,44 @@ from pydantic import BaseModel, Field
 
 
 class Chat(BaseModel):
-    last_name: Optional[str]
-    id: Optional[int]
-    type: Optional[str]
-    first_name: Optional[str]
-    username: Optional[str]
+    last_name: Optional[str] = None
+    id: Optional[int] = None
+    type: Optional[str] = None
+    first_name: Optional[str] = None
+    username: Optional[str] = None
 
 
 class From(BaseModel):
-    last_name: Optional[str]
-    id: Optional[int]
-    first_name: Optional[str]
+    last_name: Optional[str] = None
+    id: Optional[int] = None
+    first_name: Optional[str] = None
     user_name: Optional[str] = None
-    language_code: Optional[str]
+    language_code: Optional[str] = None
     is_bot: Optional[bool] = None
 
 
 class ReplyMessage(BaseModel):
-    date: Optional[int]
-    chat: Optional[Chat]
-    message_id: Optional[int]
-    text: Optional[str]
+    date: Optional[int] = None
+    chat: Optional[Chat] = None
+    message_id: Optional[int] = None
+    text: Optional[str] = None
 
 
 class File(BaseModel):
-    file_id: Optional[str]
+    file_id: Optional[str] = None
 
 
 class NewChatMember(BaseModel):
-    id: Optional[int]
+    id: Optional[int] = None
 
 
 class Message(BaseModel):
-    date: Optional[int]
-    chat: Optional[Chat]
-    message_id: Optional[int]
+    date: Optional[int] = None
+    chat: Optional[Chat] = None
+    message_id: Optional[int] = None
     from_field: Optional[From] = Field(alias="from")
     forward_date: Optional[int] = None
-    text: Optional[str]
+    text: Optional[str] = None
     photo: Optional[List[File]] = None
     document: Optional[File] = None
     video: Optional[File] = None
@@ -53,32 +53,32 @@ class Message(BaseModel):
 
 
 class ChatGroup(BaseModel):
-    id: Optional[int]
-    title: Optional[str]
-    type: Optional[str]
+    id: Optional[int] = None
+    title: Optional[str] = None
+    type: Optional[str] = None
 
 
 class MockVal(BaseModel):
-    rand_int: Optional[int]
+    rand_int: Optional[int] = None
 
 
 class OtherChatMember(BaseModel):
-    user: Optional[From]
-    status: Optional[str]
+    user: Optional[From] = None
+    status: Optional[str] = None
 
 
 class MyChatMember(BaseModel):
-    rand_int: Optional[int]
-    chat: Optional[ChatGroup]
+    rand_int: Optional[int] = None
+    chat: Optional[ChatGroup] = None
     from_field: Optional[From] = Field(alias="from")
-    date: Optional[int]
-    old_chat_member: Optional[OtherChatMember]
-    new_chat_member: Optional[OtherChatMember]
+    date: Optional[int] = None
+    old_chat_member: Optional[OtherChatMember] = None
+    new_chat_member: Optional[OtherChatMember] = None
 
 
 class MessageBodyModel(BaseModel):
-    update_id: Optional[int]
-    message: Optional[Message]
+    update_id: Optional[int] = None
+    message: Optional[Message] = None
     my_chat_member: Optional[MyChatMember] = None
     reply_to_message: Optional[ReplyMessage] = None
 
