@@ -9,3 +9,4 @@ uvicorn
 pydantic
 httpx
 yfinance
+python-dotenv

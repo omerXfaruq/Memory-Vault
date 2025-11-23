@@ -100,6 +100,8 @@ pytest-asyncio==1.3.0
     # via -r requirements.in
 python-dateutil==2.9.0.post0
     # via pandas
+python-dotenv==1.2.1
+    # via -r requirements.in
 pytokens==0.3.0
     # via black
 pytz==2025.2

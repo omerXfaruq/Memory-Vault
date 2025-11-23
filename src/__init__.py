@@ -1,12 +1,18 @@
 import datetime
 import sys
 import os
+from pathlib import Path
 
 import uvicorn
 import asyncio
+from dotenv import load_dotenv
 
 from .events import Events
 from .constants import Constants
+
+# Load environment variables from .env file
+env_path = Path(__file__).parent.parent / ".env"
+load_dotenv(env_path)
 
 __all__ = []
 
