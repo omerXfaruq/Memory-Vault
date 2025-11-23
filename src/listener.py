@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import time
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.responses import PlainTextResponse
 from .db import *
@@ -9,14 +10,18 @@ from .constants import Constants
 from .events import Events
 from .response_logic import ResponseLogic
 
-app = FastAPI(openapi_url=None)
-logging.basicConfig(filename="exceptions.log", encoding="utf-8", level=logging.ERROR)
 
-
-@app.on_event("startup")
-def on_startup():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup
     create_db_and_tables()
     asyncio.create_task(Events.main_event())
+    yield
+    # Shutdown (if needed in the future)
+
+
+app = FastAPI(openapi_url=None, lifespan=lifespan)
+logging.basicConfig(filename="exceptions.log", encoding="utf-8", level=logging.ERROR)
 
 
 @app.middleware("http")
@@ -40,8 +45,13 @@ async def health():
 
 @app.post(f"/webhook/{Events.TOKEN}")
 async def listen_telegram_messages(r: Request, message: MessageBodyModel):
-    print(f"%% {datetime.datetime.now()} Incoming Message: {message.dict()}")
-    print(f"%% {datetime.datetime.now()} Incoming Request: {await r.json()}")
+    print(f"%% {datetime.datetime.now()} Incoming Message: {message.model_dump()}")
+    try:
+        request_json = await r.json()
+        print(f"%% {datetime.datetime.now()} Incoming Request: {request_json}")
+    except Exception as e:
+        print(f"%% {datetime.datetime.now()} Error reading request JSON: {e}")
+        request_json = {}
 
     response_message = ""
     chat_id = 0

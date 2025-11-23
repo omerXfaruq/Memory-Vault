@@ -1,12 +1,12 @@
 black
 pytest
-asyncio
+pytest-asyncio
 sqlmodel
 sqlalchemy
 pyngrok
 fastapi
 uvicorn
 pydantic
-typing
 httpx
-datetime
+yfinance
+python-dotenv

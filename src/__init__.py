@@ -1,29 +1,27 @@
 import datetime
 import sys
 import os
+from pathlib import Path
 
-from pyngrok import ngrok
 import uvicorn
 import asyncio
+from dotenv import load_dotenv
+
+# Load environment variables from .env file BEFORE importing modules that use them
+env_path = Path(__file__).parent.parent / ".env"
+load_dotenv(env_path)
 
 from .events import Events
 from .constants import Constants
 
 __all__ = []
 
-if __name__ == "__main__":
-    if Events.TOKEN is None:
-        sys.exit("No TELEGRAM_TOKEN found in the environment, exiting now.")
-
+async def setup_application(running_option: str | None) -> bool:
+    """Setup the application asynchronously."""
     PORT = Events.PORT
-    loop = asyncio.get_event_loop()
-
-    # Run with ngrok if the parameter is given
-    running_option = None
-    if len(sys.argv) == 2:
-        running_option = sys.argv[1]
 
     if running_option == "ngrok":
+        from pyngrok import ngrok
         ngrok_token = str(os.environ.get("NGROK_TOKEN"))
         if ngrok_token == "None":
             print(
@@ -37,19 +35,32 @@ if __name__ == "__main__":
         public_url = http_tunnel.public_url
         ssh_url = ssh_tunnel.public_url
         Events.HOST_URL = public_url
-        _ = loop.run_until_complete(
-            Events.send_a_message_to_user(
-                Constants.BROADCAST_CHAT_ID, f"ssh: {ssh_url}, http:{public_url}"
-            )
+        await Events.send_a_message_to_user(
+            Constants.BROADCAST_CHAT_ID, f"ssh: {ssh_url}, http:{public_url}"
         )
     else:
-        public_url = loop.run_until_complete(Events.get_public_ip())
+        public_url = await Events.get_public_ip()
         Events.HOST_URL = f"https://{public_url}"
         if running_option == "self_signed":
             Events.SELF_SIGNED = True
 
     print(f"%% New run: {datetime.datetime.now()}")
-    success = loop.run_until_complete(Events.set_telegram_webhook_url())
+    success = await Events.set_telegram_webhook_url()
+    return success
+
+
+if __name__ == "__main__":
+    if Events.TOKEN is None:
+        sys.exit("No TELEGRAM_TOKEN found in the environment, exiting now.")
+
+    PORT = Events.PORT
+
+    # Run with ngrok if the parameter is given
+    running_option = None
+    if len(sys.argv) == 2:
+        running_option = sys.argv[1]
+
+    success = asyncio.run(setup_application(running_option))
 
     if success:
         uvicorn.run(

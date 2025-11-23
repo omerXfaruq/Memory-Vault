@@ -194,7 +194,7 @@ class Events:
         print(f"%% {datetime.datetime.now()}: Message is: {message}")
 
         for retry in range(retry_count):
-            response = await cls.request(url, message.dict())
+            response = await cls.request(url, message.model_dump())
             if response.status_code == 200:
                 return True
             elif response.status_code == 429:
