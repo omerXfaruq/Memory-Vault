@@ -288,7 +288,7 @@ def add_memory(
         user_id=user.id,
     )
 
-    db_reminder = Reminder.from_orm(reminder)
+    db_reminder = Reminder.model_validate(reminder)
     session.add(db_reminder)
     session.commit()
     session.refresh(db_reminder)
@@ -532,7 +532,7 @@ def db_create_user(
     session: Session = next(get_session()),
 ) -> Optional[User]:
     try:
-        user = User.from_orm(user)
+        user = User.model_validate(user)
         session.add(user)
         session.commit()
         session.refresh(user)
