@@ -7,12 +7,12 @@ import uvicorn
 import asyncio
 from dotenv import load_dotenv
 
-from .events import Events
-from .constants import Constants
-
-# Load environment variables from .env file
+# Load environment variables from .env file BEFORE importing modules that use them
 env_path = Path(__file__).parent.parent / ".env"
 load_dotenv(env_path)
+
+from .events import Events
+from .constants import Constants
 
 __all__ = []
 
